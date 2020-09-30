@@ -19,6 +19,7 @@ public class MediaResource {
 	private static final String MEDIA_EXTENSION = "";
 	private static final String ROOT_DIR = "/tmp/media/";
 
+	
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
