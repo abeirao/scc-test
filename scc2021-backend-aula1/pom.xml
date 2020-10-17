@@ -32,6 +32,7 @@
       <artifactId>azure-storage</artifactId>  
       <version>8.6.5</version> 
     </dependency> 
+    
   </dependencies>  
   <build> 
     <sourceDirectory>src</sourceDirectory>  
@@ -74,8 +75,8 @@
               </resource> 
             </resources> 
           </deployment>  
-          <resourceGroup>lab1</resourceGroup>  
-          <appName>scc-test1</appName> 
+          <resourceGroup>lab-50415</resourceGroup>  
+          <appName>scc-test-50415</appName> 
         </configuration> 
       </plugin> 
     </plugins> 
