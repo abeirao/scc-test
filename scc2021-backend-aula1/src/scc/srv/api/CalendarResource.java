@@ -1,5 +1,8 @@
 package scc.srv.api;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -30,4 +33,9 @@ public interface CalendarResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String delete(@PathParam("id") String id);	
+	
+	@GET
+	@Path("/{id}/date/{date}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Map<String, String> getCalendarEntry(@PathParam("id") String id, @PathParam("date") String date);
 }

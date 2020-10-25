@@ -3,17 +3,21 @@ package scc.srv;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import scc.srv.api.*;
 
+/**
+ * Cloud Computing Systems project - Reservation system
+ * @author Henrique Realinho - nr 50415
+ *
+ */
 public class MainApplication extends Application
 {
 	private Set<Object> singletons = new HashSet<Object>();
 	private Set<Class<?>> resources = new HashSet<Class<?>>();
 
-	public MainApplication() {
+	public MainApplication() { // add resources to resources set
 		resources.add(ControlResource.class);
 		resources.add(MediaResource.class);
 		resources.add(CalendarResource.class);

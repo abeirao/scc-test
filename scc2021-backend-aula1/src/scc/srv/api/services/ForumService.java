@@ -1,10 +1,10 @@
-package srv.controllers;
+package scc.srv.api.services;
 
 import scc.data.Forum;
 import scc.data.ForumMessage;
 import scc.srv.api.ForumResource;
 
-public class ForumController implements ForumResource {
+public class ForumService implements ForumResource {
 
 	@Override
 	public Forum get(String id) {

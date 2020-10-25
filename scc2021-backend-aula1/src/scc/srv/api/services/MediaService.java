@@ -1,14 +1,6 @@
-package srv.controllers;
+package scc.srv.api.services;
 
 import java.io.ByteArrayOutputStream;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.blob.CloudBlob;
@@ -18,7 +10,7 @@ import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import scc.srv.api.MediaResource;
 import scc.utils.Hash;
 
-public class MediaController implements MediaResource {
+public class MediaService implements MediaResource {
 	
 	// azure cloud storage account connection string
 	private static final String STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=scc50415;AccountKey=fR4+F2fg/uozoauqf2iWJRPvyyqMj1wqjGB/52N07mkOQx0btUy90EGt1CL5luMAIrZn0p/CTvMCIc5eNoB7/w==;EndpointSuffix=core.windows.net";
@@ -40,10 +32,7 @@ public class MediaController implements MediaResource {
 		}
 	}
 	
-	@POST
-	@Path("/")
-	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
-	@Produces(MediaType.APPLICATION_JSON)
+	@Override
 	public String upload(byte[] contents) {
 		try {
 			String id = Hash.of(contents);
@@ -56,10 +45,8 @@ public class MediaController implements MediaResource {
 		}
 	}
 
-	@GET
-	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_OCTET_STREAM)
-	public byte[] download(@PathParam("id") String id) {
+	@Override
+	public byte[] download(String id) {
 		try {
 			CloudBlob blob = init().getBlobReferenceFromServer(id);
 		
@@ -79,7 +66,15 @@ public class MediaController implements MediaResource {
 
 	@Override
 	public String delete(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			CloudBlob blob = init().getBlobReferenceFromServer(id);
+			blob.delete();
+		
+			return id;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
