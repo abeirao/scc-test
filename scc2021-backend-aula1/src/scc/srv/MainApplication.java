@@ -9,7 +9,7 @@ import scc.srv.api.*;
 
 /**
  * Cloud Computing Systems project - Reservation system
- * @author Henrique Realinho - nr 50415
+ * @author Henrique Realinho - number 50415
  *
  */
 public class MainApplication extends Application
@@ -17,12 +17,14 @@ public class MainApplication extends Application
 	private Set<Object> singletons = new HashSet<Object>();
 	private Set<Class<?>> resources = new HashSet<Class<?>>();
 
-	public MainApplication() { // add resources to resources set
+	// add resources to resources set
+	public MainApplication() { 
 		resources.add(ControlResource.class);
 		resources.add(MediaResource.class);
 		resources.add(CalendarResource.class);
 		resources.add(EntityResource.class);
 		resources.add(ForumResource.class);
+		resources.add(ReservationResource.class);
 	}
 
 	@Override

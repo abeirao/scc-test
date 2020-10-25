@@ -10,6 +10,10 @@ import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import scc.srv.api.MediaResource;
 import scc.utils.Hash;
 
+/** 
+ * Media service for the reservations service
+ * Uses blob storage to store media files
+ */
 public class MediaService implements MediaResource {
 	
 	// azure cloud storage account connection string
