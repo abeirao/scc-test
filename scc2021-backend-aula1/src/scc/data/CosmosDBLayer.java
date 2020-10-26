@@ -15,6 +15,14 @@ public class CosmosDBLayer {
 	private static final String DB_KEY = "5R65BmoJPwE2t1DMlwItCyz6zXJIob69DIwDi0dQ3LwIp0mI9EZKMl5jqSjL2lBtc84NZk5EvM6iAGztayN9Qg==";
 	private static final String DB_NAME = "scc50415";
 	
+	enum Containers {
+		ENTITIES, RESERVATIONS, CALENDARS
+	}
+	
+	public static final String ENTITIES = "entities";
+	public static final String CALENDARS = "calendars";
+	public static final String RESERVATIONS = "reservations";
+	
 	private static CosmosDBLayer instance;
 
 	public static synchronized CosmosDBLayer getInstance() {
@@ -36,7 +44,10 @@ public class CosmosDBLayer {
 	
 	private CosmosClient client;
 	private CosmosDatabase db;
+	
 	private CosmosContainer entities;
+	private CosmosContainer reservations;
+	private CosmosContainer calendars;
 	
 	public CosmosDBLayer(CosmosClient client) {
 		this.client = client;
@@ -46,7 +57,9 @@ public class CosmosDBLayer {
 		if( db != null)
 			return;
 		db = client.getDatabase(DB_NAME);
-		entities = db.getContainer("entities");
+		entities = db.getContainer(Containers.ENTITIES.toString().toLowerCase());
+		reservations = db.getContainer(Containers.RESERVATIONS.toString().toLowerCase());
+		calendars = db.getContainer(Containers.CALENDARS.toString().toLowerCase());
 		
 	}
 
@@ -75,6 +88,65 @@ public class CosmosDBLayer {
 	}
 	
 	
+	public CosmosItemResponse<Object> delete(String container, Object item) {
+		init();
+		switch (container) {
+			case RESERVATIONS:
+				return reservations.deleteItem(item, new CosmosItemRequestOptions());
+			case CALENDARS:
+				return calendars.deleteItem(item, new CosmosItemRequestOptions());
+			case ENTITIES:
+				return entities.deleteItem(item, new CosmosItemRequestOptions());
+			default:
+				return null;
+		}		
+	}
+	
+	public CosmosItemResponse<Object> put(String container, Object item) {
+		init();
+		switch (container) {
+			case RESERVATIONS:
+				return reservations.createItem(item);
+			case CALENDARS:
+				return calendars.createItem(item);
+			case ENTITIES:
+				return entities.createItem(item);
+			default:
+				return null;
+		}
+	}
+	
+	public CosmosPagedIterable<Object> getById(String container, String id) {
+		init();
+		String query = "SELECT * FROM " + container + " " + container + ".id=\"" + id + "\"";
+
+		switch (container) {
+			case RESERVATIONS:
+				return reservations.queryItems(query, new CosmosQueryRequestOptions(), Reservation.class);
+			case CALENDARS:
+				return calendars.queryItems(query, new CosmosQueryRequestOptions(), Calendar.class);
+			case ENTITIES:
+				return entities.queryItems(query, new CosmosQueryRequestOptions(), Entity.class);
+			default:
+				return null;
+		}
+	}
+	
+	public CosmosPagedIterable<Object> getAll(String container) {
+		init();
+		String query = "SELECT * FROM " + container + " ";
+
+		switch (container) {
+			case RESERVATIONS:
+				return reservations.queryItems(query, new CosmosQueryRequestOptions(), Reservation.class);
+			case CALENDARS:
+				return calendars.queryItems(query, new CosmosQueryRequestOptions(), Calendar.class);
+			case ENTITIES:
+				return entities.queryItems(query, new CosmosQueryRequestOptions(), Entity.class);
+			default:
+				return null;
+		}
+	}
 	
 	
 }
