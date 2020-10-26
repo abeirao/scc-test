@@ -122,11 +122,11 @@ public class CosmosDBLayer {
 
 		switch (container) {
 			case RESERVATIONS:
-				return reservations.queryItems(query, new CosmosQueryRequestOptions(), Reservation.class);
+//				return reservations.queryItems(query, new CosmosQueryRequestOptions(), Reservation.class);
 			case CALENDARS:
-				return calendars.queryItems(query, new CosmosQueryRequestOptions(), Calendar.class);
+	//			return calendars.queryItems(query, new CosmosQueryRequestOptions(), Calendar.class);
 			case ENTITIES:
-				return entities.queryItems(query, new CosmosQueryRequestOptions(), Entity.class);
+		//		return entities.queryItems(query, new CosmosQueryRequestOptions(), Entity.class);
 			default:
 				return null;
 		}
@@ -138,11 +138,11 @@ public class CosmosDBLayer {
 
 		switch (container) {
 			case RESERVATIONS:
-				return reservations.queryItems(query, new CosmosQueryRequestOptions(), Reservation.class);
+			//	return reservations.queryItems(query, new CosmosQueryRequestOptions(), Reservation.class);
 			case CALENDARS:
-				return calendars.queryItems(query, new CosmosQueryRequestOptions(), Calendar.class);
+				//return calendars.queryItems(query, new CosmosQueryRequestOptions(), Calendar.class);
 			case ENTITIES:
-				return entities.queryItems(query, new CosmosQueryRequestOptions(), Entity.class);
+				//return entities.queryItems(query, new CosmosQueryRequestOptions(), Entity.class);
 			default:
 				return null;
 		}

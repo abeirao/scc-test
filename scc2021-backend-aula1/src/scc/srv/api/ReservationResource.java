@@ -29,5 +29,15 @@ public interface ReservationResource {
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Reservation deleteReservation(@PathParam("id") String id);
+
+	@GET
+	@Path("")
+	@Produces(MediaType.APPLICATION_JSON)
+	Reservation[] getReservations();
+
+	@GET
+	@Path("/entity/{entityId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	Reservation[] getReservationsFromEntity(@PathParam("entityId") String entityId);
 		
 }

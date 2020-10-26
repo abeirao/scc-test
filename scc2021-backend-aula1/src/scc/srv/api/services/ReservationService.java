@@ -6,6 +6,16 @@ import scc.srv.api.ReservationResource;
 public class ReservationService implements ReservationResource {
 
 	@Override
+	public Reservation[] getReservationsFromEntity(String entityId) {
+		return null;
+	}
+	
+	@Override
+	public Reservation[] getReservations() {
+		return null;	
+	}
+	
+	@Override
 	public Reservation addReservation(Reservation reservation) {
 		// TODO Auto-generated method stub
 		return null;
