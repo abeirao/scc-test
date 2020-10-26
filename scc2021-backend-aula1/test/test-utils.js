@@ -6,7 +6,10 @@
 module.exports = {
   uploadImageBody,
   processUploadReply,
-  selectImageToDownload
+  selectImageToDownload,
+  postEntity,
+  processPostReply, 
+  selectEntity
 }
 
 
