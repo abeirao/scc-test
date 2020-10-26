@@ -15,30 +15,57 @@ import scc.data.ForumMessage;
 @Path("/forum")
 public interface ForumResource {
 	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Forum get(@PathParam("id") String id);
 	
+	/**
+	 * 
+	 * @param forum
+	 * @return
+	 */
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Forum create(Forum forum);	
 	
-
+	/**
+	 * 
+	 * @param forumId
+	 * @param newMessage
+	 * @return
+	 */
 	@POST
 	@Path("/new/{forumId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String addMessage(@PathParam("forumId") String forumId, ForumMessage newMessage);
 	
+	/**
+	 * 
+	 * @param forumId
+	 * @param messageToReply
+	 * @param newMessage
+	 * @return
+	 */
 	@POST
 	@Path("/reply/{forumId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String reply(@PathParam("forumId") String forumId, ForumMessage messageToReply, ForumMessage newMessage);
 	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@DELETE
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)

@@ -15,7 +15,7 @@ import scc.data.Reservation;
 public interface ReservationResource {
 
 	/**
-	 * 
+	 * Create a new reservation
 	 * @param reservation
 	 * @return
 	 */
@@ -26,7 +26,7 @@ public interface ReservationResource {
 	public Reservation addReservation(Reservation reservation);
 	
 	/**
-	 * 
+	 * Return a reservation by its id
 	 * @param id
 	 * @return
 	 */
@@ -36,7 +36,7 @@ public interface ReservationResource {
 	public Reservation getReservation(@PathParam("id") String id);
 	
 	/**
-	 * 
+	 * Delete a reservation by its id
 	 * @param id
 	 * @return
 	 */
@@ -46,7 +46,7 @@ public interface ReservationResource {
 	public Reservation deleteReservation(@PathParam("id") String id);
 
 	/**
-	 * 
+	 * Return all reservations in the system
 	 * @return
 	 */
 	@GET
@@ -55,7 +55,7 @@ public interface ReservationResource {
 	Reservation[] getReservations();
 
 	/**
-	 * 
+	 * Return all reservations for a given entity
 	 * @param entityId
 	 * @return
 	 */

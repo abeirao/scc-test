@@ -5,8 +5,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/ctrl")
-public class ControlResource  // testing resource - delete in production
+@Path("/test")
+public class TestResource // only for testing
 {
 
 	@Path("/version")
@@ -16,7 +16,7 @@ public class ControlResource  // testing resource - delete in production
 		return "v: 0001";
 	}
 	
-	@Path("/test")
+	@Path("/")
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String test() {

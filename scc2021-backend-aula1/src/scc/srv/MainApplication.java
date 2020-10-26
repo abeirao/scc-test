@@ -19,7 +19,7 @@ public class MainApplication extends Application
 
 	// add resources to resources set
 	public MainApplication() { 
-		resources.add(ControlResource.class);
+		resources.add(TestResource.class);
 		resources.add(MediaResource.class);
 		resources.add(CalendarResource.class);
 		resources.add(EntityResource.class);
