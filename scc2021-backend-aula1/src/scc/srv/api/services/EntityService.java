@@ -8,30 +8,27 @@ public class EntityService implements EntityResource {
 	
 	// TODO
 	
-	private Database db;
 	
 	public EntityService() {
-		db = new Database();
 	}
 	
 	@Override
 	public Entity get(String id) {
-		return db.get(id);
+		return null;
 	}
 
 	@Override
 	public String create(Entity entity) {
-		return db.put(entity).getId();
+		return null;
 	}
 
 	@Override
 	public Entity delete(String id) {
-		return db.delete(id);
+		return null;
 	}
 
 	@Override
 	public Entity update(Entity entity) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
