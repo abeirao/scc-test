@@ -1,5 +1,25 @@
 package scc.srv.api.services;
 
-public class ReservationService {
+import scc.data.Reservation;
+import scc.srv.api.ReservationResource;
 
+public class ReservationService implements ReservationResource {
+
+	@Override
+	public Reservation addReservation(Reservation reservation) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Reservation getReservation(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Reservation deleteReservation(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
