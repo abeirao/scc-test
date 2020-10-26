@@ -89,6 +89,8 @@ public class CosmosDBLayer {
 	
 	
 	public CosmosItemResponse<Object> delete(String container, Object item) {
+		// TODO delete by id
+		
 		init();
 		switch (container) {
 			case RESERVATIONS:
@@ -117,6 +119,8 @@ public class CosmosDBLayer {
 	}
 	
 	public CosmosPagedIterable<Object> getById(String container, String id) {
+		// TODO
+		
 		init();
 		String query = "SELECT * FROM " + container + " " + container + ".id=\"" + id + "\"";
 
@@ -133,6 +137,8 @@ public class CosmosDBLayer {
 	}
 	
 	public CosmosPagedIterable<Object> getAll(String container) {
+		// TODO
+		
 		init();
 		String query = "SELECT * FROM " + container + " ";
 

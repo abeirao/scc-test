@@ -17,23 +17,43 @@ public interface EntityResource {
 	
 	static final String ENDPOINT = "/entity";
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Entity get(@PathParam("id") String id);
 	
+	/**
+	 * 
+	 * @param entity
+	 * @return
+	 */
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String create(Entity entity);		
 	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@DELETE
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Entity delete(@PathParam("id") String id);
 	
+	/**
+	 * 
+	 * @param entity
+	 * @return
+	 */
 	@PUT
 	@Path("")
 	@Consumes(MediaType.APPLICATION_JSON)

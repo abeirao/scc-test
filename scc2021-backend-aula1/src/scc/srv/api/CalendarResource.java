@@ -17,23 +17,44 @@ import scc.data.Forum;
 
 public interface CalendarResource {
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Calendar get(@PathParam("id") String id);
 	
+	/**
+	 * 
+	 * @param entity
+	 * @return
+	 */
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String create(Calendar entity);	
+	public Calendar create(Calendar entity);	
 	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@DELETE
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String delete(@PathParam("id") String id);	
+	public Calendar delete(@PathParam("id") String id);	
 	
+	/**
+	 * 
+	 * @param id
+	 * @param date
+	 * @return
+	 */
 	@GET
 	@Path("/{id}/date/{date}")
 	@Produces(MediaType.APPLICATION_JSON)

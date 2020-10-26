@@ -1,5 +1,9 @@
 package scc.srv.api.services;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import scc.data.CosmosDBLayer;
 import scc.data.Database;
 import scc.data.Entity;
 import scc.srv.api.EntityResource;
@@ -7,9 +11,12 @@ import scc.srv.api.EntityResource;
 public class EntityService implements EntityResource {
 	
 	// TODO
-	
+	private Map<String, Entity> entities;
+	private CosmosDBLayer cosmosDB;
 	
 	public EntityService() {
+		entities = new HashMap<>();
+		cosmosDB =  CosmosDBLayer.getInstance();
 	}
 	
 	@Override
@@ -24,7 +31,7 @@ public class EntityService implements EntityResource {
 
 	@Override
 	public Entity delete(String id) {
-		return null;
+		return (Entity) cosmosDB.delete(CosmosDBLayer.ENTITIES, id).getItem();
 	}
 
 	@Override

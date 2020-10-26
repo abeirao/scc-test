@@ -6,7 +6,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/ctrl")
-public class ControlResource 
+public class ControlResource  // testing resource - delete in production
 {
 
 	@Path("/version")

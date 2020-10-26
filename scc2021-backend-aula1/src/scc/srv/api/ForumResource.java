@@ -24,7 +24,7 @@ public interface ForumResource {
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String create(Forum entity);	
+	public Forum create(Forum forum);	
 	
 
 	@POST
