@@ -160,7 +160,7 @@ public class CosmosDBLayer {
 				return null;
 		}
 	}
-	
+		
 	// ????
 	
 	public Reservation getReservation(String id){
@@ -179,4 +179,28 @@ public class CosmosDBLayer {
 		return entities.readItem(id, new PartitionKey(id), Entity.class).getItem();
 	}
 	
+
+	public CosmosPagedIterable<Reservation> getAllReservations() {
+		init();
+		String query = "SELECT * FROM " + RESERVATIONS + " ";
+		return reservations.queryItems(query, new CosmosQueryRequestOptions(), Reservation.class);
+	}
+	
+	public CosmosPagedIterable<Calendar> getAllCalendars() {
+		init();
+		String query = "SELECT * FROM " + CALENDARS + " ";
+		return calendars.queryItems(query, new CosmosQueryRequestOptions(), Calendar.class);
+	}
+	
+	public CosmosPagedIterable<Forum> getAllForums() {
+		init();
+		String query = "SELECT * FROM " + FORUMS + " ";
+		return forums.queryItems(query, new CosmosQueryRequestOptions(), Forum.class);
+	}
+	
+	public CosmosPagedIterable<Entity> getAllEntities() {
+		init();
+		String query = "SELECT * FROM " + ENTITIES + " ";
+		return entities.queryItems(query, new CosmosQueryRequestOptions(), Entity.class);
+	}
 }

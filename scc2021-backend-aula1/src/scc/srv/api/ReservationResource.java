@@ -11,6 +11,9 @@ import javax.ws.rs.core.MediaType;
 
 import scc.data.Reservation;
 
+import java.util.Iterator;
+import java.util.List;
+
 @Path("/reservations")
 public interface ReservationResource {
 
@@ -52,7 +55,7 @@ public interface ReservationResource {
 	@GET
 	@Path("")
 	@Produces(MediaType.APPLICATION_JSON)
-	Reservation[] getReservations();
+	Iterator<Reservation> getReservations();
 
 	/**
 	 * Return all reservations for a given entity
@@ -62,6 +65,6 @@ public interface ReservationResource {
 	@GET
 	@Path("/entity/{entityId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	Reservation[] getReservationsFromEntity(@PathParam("entityId") String entityId);
+	List<Reservation> getReservationsFromEntity(@PathParam("entityId") String entityId);
 		
 }

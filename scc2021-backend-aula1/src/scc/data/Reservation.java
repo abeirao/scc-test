@@ -1,11 +1,14 @@
 package scc.data;
 
+import scc.srv.api.services.MediaService;
+
 public class Reservation {
     private String name;
     private String day;
     private String id;
     private String entityId;
 	private String _rid;
+	private MediaService media;
 
 	public String get_rid() {
 		return _rid;
@@ -36,6 +39,12 @@ public class Reservation {
 	}
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
+	}
+	public MediaService getMedia() {
+		return media;
+	}
+	public void setMedia(MediaService media) {
+		this.media = media;
 	}
 
 

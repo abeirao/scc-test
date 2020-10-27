@@ -62,7 +62,6 @@ public class MediaService implements MediaResource {
 			
 			return contents;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -76,7 +75,6 @@ public class MediaService implements MediaResource {
 		
 			return id;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}

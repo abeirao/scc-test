@@ -1,6 +1,8 @@
 package scc.srv.api.services;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import scc.data.CosmosDBLayer;
@@ -10,34 +12,30 @@ import scc.srv.api.ReservationResource;
 
 public class ReservationService implements ReservationResource {
 
-	private Map<String, Reservation> reservations;
 	private CosmosDBLayer cosmosDB;
 	
 	public ReservationService() {
-		reservations = new HashMap<>();
 		cosmosDB =  CosmosDBLayer.getInstance();
 	}
 	
 	@Override
-	public Reservation[] getReservationsFromEntity(String entityId) {
-		return null;
+	public List<Reservation> getReservationsFromEntity(String entityId) {
+		return null; // TODO
 	}
 	
 	@Override
-	public Reservation[] getReservations() {
-		return null;	
+	public Iterator<Reservation> getReservations() {		
+		return cosmosDB.getAllReservations().iterator();	
 	}
 	
 	@Override
 	public Reservation addReservation(Reservation reservation) {
-		reservations.put(reservation.getId(), reservation);
 		cosmosDB.put(CosmosDBLayer.RESERVATIONS, reservation);
 		return reservation;
 	}
 
 	@Override
 	public Reservation getReservation(String id) {
-		// TODO Auto-generated method stub
 		return cosmosDB.getReservation(id);
 	}
 

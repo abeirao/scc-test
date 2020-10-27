@@ -10,12 +10,10 @@ import scc.srv.api.CalendarResource;
 
 public class CalendarService implements CalendarResource {
 	
-	private Map<String, Calendar> calendars;
 	private CosmosDBLayer cosmosDB;
 
 	// TODO
 	public CalendarService() {
-		calendars = new HashMap<>();
 		cosmosDB =  CosmosDBLayer.getInstance();
 		init();
 	}
@@ -27,28 +25,25 @@ public class CalendarService implements CalendarResource {
 
 	@Override
 	public Calendar get(String id) {
-		// TODO Auto-generated method stub
 		return cosmosDB.getCalendar(id);
 	}
 
 
 	@Override
 	public Calendar create(Calendar calendar) {
-		// TODO Auto-generated method stub
 		cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
 		return calendar;
 	}
 
 	@Override
 	public Calendar delete(String id) {
-		// TODO Auto-generated method stub
 		return (Calendar) cosmosDB.delete(CosmosDBLayer.CALENDARS, id).getItem();
 	}
 
 	@Override
 	public Map<String, String> getCalendarEntry(String id, String date) {
 		// TODO Auto-generated method stub
-		Date dateO = new Date(date);
+		
 		
 		return null;
 	}

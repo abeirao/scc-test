@@ -11,11 +11,9 @@ import scc.srv.api.ForumResource;
 
 public class ForumService implements ForumResource {
 	
-	private Map<String, Forum> forums;
 	private CosmosDBLayer cosmosDB;
 	
 	public ForumService() {
-		forums = new HashMap<>();
 		cosmosDB =  CosmosDBLayer.getInstance();
 	}
 	
@@ -28,8 +26,8 @@ public class ForumService implements ForumResource {
 	@Override
 	public Forum create(Forum forum) {
 		// TODO Auto-generated method stub
-		cosmosDB.put(CosmosDBLayer.CALENDARS, forum);
-		return null;
+		cosmosDB.put(CosmosDBLayer.FORUMS, forum);
+		return forum;
 	}
 
 	@Override
@@ -49,7 +47,9 @@ public class ForumService implements ForumResource {
 	@Override
 	public String reply(String forumId, ForumMessage messageToReply, ForumMessage newMessage) {
 		// TODO Auto-generated method stub
-		return null;
+		Forum forum = cosmosDB.getForum(forumId);
+		
+		return newMessage.getMsg();
 	}
 
 	@Override

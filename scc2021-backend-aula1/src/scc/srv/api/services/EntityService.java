@@ -10,11 +10,9 @@ import scc.srv.api.EntityResource;
 public class EntityService implements EntityResource {
 	
 	// TODO
-	private Map<String, Entity> entities;
 	private CosmosDBLayer cosmosDB;
 	
 	public EntityService() {
-		entities = new HashMap<>();
 		cosmosDB =  CosmosDBLayer.getInstance();
 	}
 	
@@ -26,7 +24,7 @@ public class EntityService implements EntityResource {
 	@Override
 	public Entity create(Entity entity) {
 		cosmosDB.put(CosmosDBLayer.ENTITIES, entity);
-		return null;
+		return entity;
 	}
 
 	@Override
@@ -36,7 +34,11 @@ public class EntityService implements EntityResource {
 
 	@Override
 	public Entity update(Entity entity) {
-		return null;
+		cosmosDB.put(CosmosDBLayer.ENTITIES, entity);
+		return entity;
 	}
 
+	public void createReservation() {
+		
+	}
 }

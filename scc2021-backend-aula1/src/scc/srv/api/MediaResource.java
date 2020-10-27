@@ -10,7 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 
-@Path("/media")
+@Path("/reservations/media")
 public interface MediaResource {
 
 	/**
