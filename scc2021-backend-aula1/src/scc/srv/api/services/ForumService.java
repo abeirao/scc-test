@@ -21,19 +21,22 @@ public class ForumService implements ForumResource {
 	@Override
 	public Forum get(String id) {
 		// TODO Auto-generated method stub
-		return null;
+		return cosmosDB.getForum(id);
 	}
 
 	@Override
 	public Forum create(Forum forum) {
 		// TODO Auto-generated method stub
-		return forum;
+		cosmosDB.put(CosmosDBLayer.CALENDARS, forum);
+		return null;
 	}
 
 	@Override
 	public String addMessage(String forumId, ForumMessage newMessage) {
 		// TODO Auto-generated method stub
-		return null;
+		forums.put(forumId, newMessage);
+		cosmosDB.put(CosmosDBLayer.FORUMS, newMessage);
+		return newMessage;
 	}
 
 	@Override
@@ -43,9 +46,9 @@ public class ForumService implements ForumResource {
 	}
 
 	@Override
-	public String delete(String id) {
+	public Forum delete(String id) {
 		// TODO Auto-generated method stub
-		return null;
+		return (Forum) cosmosDB.delete(CosmosDBLayer.FORUMS, id).getItem();
 	}
 
 }

@@ -28,8 +28,9 @@ public class CalendarService implements CalendarResource {
 	@Override
 	public Calendar get(String id) {
 		// TODO Auto-generated method stub
-		return null;
+		return cosmosDB.getCalendar(id);
 	}
+
 
 	@Override
 	public Calendar create(Calendar calendar) {

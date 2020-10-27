@@ -38,7 +38,7 @@ public class ReservationService implements ReservationResource {
 	@Override
 	public Reservation getReservation(String id) {
 		// TODO Auto-generated method stub
-		return null;
+		return cosmosDB.getReservation(id);
 	}
 
 	@Override
