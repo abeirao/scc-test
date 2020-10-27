@@ -3,6 +3,8 @@ package scc.data;
 import java.util.Map;
 
 public class Calendar {
+	
+	private String _rid;
     private String id;
     private String name;
     private String description;
@@ -10,6 +12,12 @@ public class Calendar {
     private Map<String, Reservation> reservations;
     private Map <String, String> calendarEntry;
 
+	public String get_rid() {
+		return _rid;
+	}
+	public void set_rid(String _rid) {
+		this._rid = _rid;
+	}
     public String getId() {
 		return id;
 	}

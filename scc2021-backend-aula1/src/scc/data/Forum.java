@@ -5,6 +5,14 @@ public class Forum {
     private String id;
     private String entityId;
     private String[] messages;
+	private String _rid;
+    
+	public String get_rid() {
+		return _rid;
+	}
+	public void set_rid(String _rid) {
+		this._rid = _rid;
+	}
 	public String getId() {
 		return id;
 	}

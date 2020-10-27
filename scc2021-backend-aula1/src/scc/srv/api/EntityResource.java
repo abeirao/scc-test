@@ -36,7 +36,7 @@ public interface EntityResource {
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String create(Entity entity);		
+	public Entity create(Entity entity);		
 	
 	/**
 	 * 

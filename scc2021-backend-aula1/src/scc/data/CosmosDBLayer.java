@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedIterable;
 
 public class CosmosDBLayer {
@@ -16,12 +17,13 @@ public class CosmosDBLayer {
 	private static final String DB_NAME = "scc50415";
 	
 	enum Containers {
-		ENTITIES, RESERVATIONS, CALENDARS
+		ENTITIES, RESERVATIONS, CALENDARS, FORUMS
 	}
 	
 	public static final String ENTITIES = "entities";
 	public static final String CALENDARS = "calendars";
 	public static final String RESERVATIONS = "reservations";
+	public static final String FORUMS = "forums";
 	
 	private static CosmosDBLayer instance;
 
@@ -48,6 +50,7 @@ public class CosmosDBLayer {
 	private CosmosContainer entities;
 	private CosmosContainer reservations;
 	private CosmosContainer calendars;
+	private CosmosContainer forums;
 	
 	public CosmosDBLayer(CosmosClient client) {
 		this.client = client;
@@ -60,7 +63,7 @@ public class CosmosDBLayer {
 		entities = db.getContainer(Containers.ENTITIES.toString().toLowerCase());
 		reservations = db.getContainer(Containers.RESERVATIONS.toString().toLowerCase());
 		calendars = db.getContainer(Containers.CALENDARS.toString().toLowerCase());
-		
+		forums = db.getContainer(Containers.FORUMS.toString().toLowerCase());
 	}
 
 	public CosmosItemResponse<Object> delEntity(Entity entity) {
@@ -99,6 +102,8 @@ public class CosmosDBLayer {
 				return calendars.deleteItem(item, new CosmosItemRequestOptions());
 			case ENTITIES:
 				return entities.deleteItem(item, new CosmosItemRequestOptions());
+			case FORUMS:
+				return forums.deleteItem(item, new CosmosItemRequestOptions());
 			default:
 				return null;
 		}		
@@ -113,6 +118,8 @@ public class CosmosDBLayer {
 				return calendars.createItem(item);
 			case ENTITIES:
 				return entities.createItem(item);
+			case FORUMS:
+				return forums.deleteItem(item, new CosmosItemRequestOptions());
 			default:
 				return null;
 		}
@@ -126,7 +133,7 @@ public class CosmosDBLayer {
 
 		switch (container) {
 			case RESERVATIONS:
-//				return reservations.queryItems(query, new CosmosQueryRequestOptions(), Reservation.class);
+				// .queryItems(query, new CosmosQueryRequestOptions(), Reservation.class);
 			case CALENDARS:
 	//			return calendars.queryItems(query, new CosmosQueryRequestOptions(), Calendar.class);
 			case ENTITIES:
@@ -154,5 +161,22 @@ public class CosmosDBLayer {
 		}
 	}
 	
+	// ????
+	
+	public Reservation getReservation(String id){
+		return reservations.readItem(id, new PartitionKey(id), Reservation.class).getItem(); 
+	}
+	
+	public Calendar getCalendar(String id) {
+		return calendars.readItem(id, new PartitionKey(id), Calendar.class).getItem(); 
+	}
+	
+	public Forum getForum(String id) {
+		return forums.readItem(id, new PartitionKey(id), Forum.class).getItem(); 
+	}
+	
+	public Entity getEntity(String id) {
+		return entities.readItem(id, new PartitionKey(id), Entity.class).getItem();
+	}
 	
 }

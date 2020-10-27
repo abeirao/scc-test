@@ -5,7 +5,14 @@ public class Reservation {
     private String day;
     private String id;
     private String entityId;
-    
+	private String _rid;
+
+	public String get_rid() {
+		return _rid;
+	}
+	public void set_rid(String _rid) {
+		this._rid = _rid;
+	}
 	public String getName() {
 		return name;
 	}

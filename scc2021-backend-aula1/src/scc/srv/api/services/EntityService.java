@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import scc.data.CosmosDBLayer;
-import scc.data.Database;
 import scc.data.Entity;
 import scc.srv.api.EntityResource;
 
@@ -21,11 +20,12 @@ public class EntityService implements EntityResource {
 	
 	@Override
 	public Entity get(String id) {
-		return null;
+		return cosmosDB.getEntity(id);
 	}
 
 	@Override
-	public String create(Entity entity) {
+	public Entity create(Entity entity) {
+		cosmosDB.put(CosmosDBLayer.ENTITIES, entity);
 		return null;
 	}
 
