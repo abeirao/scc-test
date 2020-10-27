@@ -1,10 +1,12 @@
 package scc.data;
 
+import java.util.List;
+
 public class Forum {
 
     private String id;
     private String entityId;
-    private String[] messages;
+    private List<ForumMessage> messages;
 	private String _rid;
     
 	public String get_rid() {
@@ -25,10 +27,10 @@ public class Forum {
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
 	}
-	public String[] getMessages() {
+	public List<ForumMessage> getMessages() {
 		return messages;
 	}
-	public void setMessages(String[] messages) {
+	public void setMessages(List<ForumMessage> messages) {
 		this.messages = messages;
 	}
 

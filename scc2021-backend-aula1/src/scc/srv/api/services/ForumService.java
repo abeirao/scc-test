@@ -1,6 +1,7 @@
 package scc.srv.api.services;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import scc.data.CosmosDBLayer;
@@ -32,10 +33,16 @@ public class ForumService implements ForumResource {
 	}
 
 	@Override
-	public String addMessage(String forumId, ForumMessage newMessage) {
+	public ForumMessage addMessage(String forumId, ForumMessage newMessage) {
 		// TODO Auto-generated method stub
-		forums.put(forumId, newMessage);
-		cosmosDB.put(CosmosDBLayer.FORUMS, newMessage);
+		Forum forum = cosmosDB.getForum(forumId);
+		
+		List<ForumMessage> messages = forum.getMessages();
+		messages.add(newMessage);
+		forum.setMessages(messages);
+		
+		cosmosDB.put(CosmosDBLayer.FORUMS, forum);
+		
 		return newMessage;
 	}
 

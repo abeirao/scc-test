@@ -46,7 +46,7 @@ public interface ForumResource {
 	@Path("/new/{forumId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String addMessage(@PathParam("forumId") String forumId, ForumMessage newMessage);
+	public ForumMessage addMessage(@PathParam("forumId") String forumId, ForumMessage newMessage);
 	
 	/**
 	 * 
@@ -70,5 +70,5 @@ public interface ForumResource {
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String delete(@PathParam("id") String id);
+	public Forum delete(@PathParam("id") String id);
 }
