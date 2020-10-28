@@ -5,7 +5,7 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
-import scc.srv.api.*;
+import scc.srv.api.services.*;
 
 /**
  * Cloud Computing Systems project - Reservation system
@@ -19,11 +19,11 @@ public class MainApplication extends Application
 
 	// add resources to resources set
 	public MainApplication() { 
-		resources.add(MediaResource.class);
-		resources.add(CalendarResource.class);
-		resources.add(EntityResource.class);
-		resources.add(ForumResource.class);
-		resources.add(ReservationResource.class);
+		resources.add(MediaService.class);
+		resources.add(CalendarService.class);
+		resources.add(EntityService.class);
+		resources.add(ForumService.class);
+		resources.add(ReservationService.class);
 	}
 
 	@Override
