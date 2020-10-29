@@ -45,7 +45,7 @@ scenarios:
             Content-Type: application/json
             Accept: application/json
           beforeRequest: "postEntity"
-          afterResponse: "processPostReply"
+          afterResponse: "processPostEntityReply"
   - name: 'Get entity'
     weight: 5
     flow:

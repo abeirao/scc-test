@@ -8,7 +8,7 @@ module.exports = {
   processUploadReply,
   selectImageToDownload,
   postEntity,
-  processPostReply,
+  processPostEntityReply,
   selectEntity
 }
 
@@ -76,6 +76,8 @@ function loadEntities() {
     "listed": "true",
 
   }
+  entities.push(entity)
+  reservationIds.push(reservation.id)
 }
 
 function loadForums() {
@@ -88,6 +90,7 @@ function loadForums() {
 
   }
   forums.push(forum)
+  forumIds.push(forum.id)
 }
 
 function loadCalendars() {
@@ -103,18 +106,21 @@ function loadCalendars() {
 
   }
   calendars.push(calendar)
+  calendarsIds.push(calendar.id)
 }
 
 function loadReservations() {
   var reservation =
   {
-    "employees":[
-      {"firstName":"John", "lastName":"Doe"},
-      {"firstName":"Anna", "lastName":"Smith"},
-      {"firstName":"Peter", "lastName":"Jones"}
-    ]
+    "_rid":"0",
+    "id":"0",
+    "name":"lunch",
+    "day":"monday",
+    "entityId":"0",
+    "media":"media",
   }
   reservations.push(reservation)
+  reservationIds.push(reservation.id)
 
 }
 
@@ -163,13 +169,11 @@ function postEntity(requestParams, context) {
 }
 
 
-
-function processPostReply(requestParams, response, context) {
+function processPostEntityReply(requestParams, response, context) {
 	if( typeof response.body !== 'undefined' && response.body.length > 0) {
 		entitiesIds.push(response.body)
 	}
     return next()
-
 }
 
 function selectEntity(context, events, done) {
