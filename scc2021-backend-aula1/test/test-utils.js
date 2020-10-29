@@ -8,7 +8,7 @@ module.exports = {
   processUploadReply,
   selectImageToDownload,
   postEntity,
-  processPostReply, 
+  processPostReply,
   selectEntity
 }
 
@@ -65,19 +65,57 @@ function loadImage() {
 }
 
 function loadEntities() {
-	
+	var entitie =
+  {
+    "_rid": "0",
+    "id": "0",
+    "name": "mcdonalds",
+    "description": "very nice",
+    "mediaIds": [],
+    "calendarIds": [],
+    "listed": "true",
+
+  }
 }
 
 function loadForums() {
-	
+  var forum =
+  {
+    "_rid":"0",
+    "id":"0",
+    "messages": [],
+    "entityId":"0",
+
+  }
+  forums.push(forum)
 }
 
 function loadCalendars() {
-	
+  var calendar =
+  {
+    "_rid":"0",
+    "id":"0",
+    "name":"0",
+    "description":"0",
+    "availableDays":["21/10/2020"],
+    "reservations": []
+    "calendarEntry": []
+
+  }
+  calendars.push(calendar)
 }
 
 function loadReservations() {
-	
+  var reservation =
+  {
+    "employees":[
+      {"firstName":"John", "lastName":"Doe"},
+      {"firstName":"Anna", "lastName":"Smith"},
+      {"firstName":"Peter", "lastName":"Jones"}
+    ]
+  }
+  reservations.push(reservation)
+
 }
 
 loadImages();
