@@ -18,10 +18,11 @@ const fetch = require('node-fetch')
 
 var imagesIds = []
 var images = []
+var entitiesIds = []
+var entities = []
 
 // All endpoints starting with the following prefixes will be aggregated in the same for the statistics
-var statsPrefix = [ ["/media/","GET"]
-	]
+var statsPrefix = [ ["/media/","GET"]]
 
 // Function used to compress statistics
 global.myProcessEndpoint = function( str, method) {
@@ -91,14 +92,29 @@ function selectImageToDownload(context, events, done) {
 }
 
 // TODO
-function postEntity(requestParams, context) {
 
+function postEntity(requestParams, context) {
+	requestParams.body = entities.sample()
+	return next()
 }
 
-function processPostReply(requestParams, context) {
+
+
+function processPostReply(requestParams, response, context) {
+	if( typeof response.body !== 'undefined' && response.body.length > 0) {
+		entitiesIds.push(response.body)
+	}
+    return next()
 
 }
 
 function selectEntity(context, events, done) {
+	if(entitiesIds.length > 0) {
+		context.vars.entityId = entitiesIds.sample()
+	}
+	else {
+		delete context.vars.entityId
+	}
+	return done()
 
 }
