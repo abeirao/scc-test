@@ -20,6 +20,12 @@ var imagesIds = []
 var images = []
 var entitiesIds = []
 var entities = []
+var forumIds = []
+var forums = []
+var calendarIds = []
+var calendars = []
+var reservationIds = []
+var reservations = []
 
 // All endpoints starting with the following prefixes will be aggregated in the same for the statistics
 var statsPrefix = [ ["/media/","GET"]]
@@ -45,7 +51,7 @@ function random( val){
 }
 
 // Loads data about images from disk
-function loadData() {
+function loadImage() {
 	var i
 	var basefile
 	if( fs.existsSync( '/images'))
@@ -58,7 +64,27 @@ function loadData() {
 	}
 }
 
-loadData();
+function loadEntities() {
+	
+}
+
+function loadForums() {
+	
+}
+
+function loadCalendars() {
+	
+}
+
+function loadReservations() {
+	
+}
+
+loadImages();
+loadEntities();
+loadForums();
+loadCalendars();
+loadReservations();
 
 /**
  * Sets the body to an image, when using images.
