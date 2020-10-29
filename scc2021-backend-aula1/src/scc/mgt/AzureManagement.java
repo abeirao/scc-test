@@ -297,11 +297,11 @@ public class AzureManagement {
 		try {
 			// TODO: These variable allow you to control what is being created
 			final boolean CREATE_STORAGE = false;
-			final boolean CREATE_COSMOSDB = false;
-			final boolean CREATE_REDIS = false;
+			final boolean CREATE_COSMOSDB = true;
+			final boolean CREATE_REDIS = true;
 		
 			// TODO: change your suffix and other names if you want
-			final String MY_SUFFIX = "4204"; // Add your suffix here
+			final String MY_SUFFIX = "50415"; // Add your suffix here
 			final String AZURE_COSMOSDB_NAME = "sccdbacc" + MY_SUFFIX;	// Cosmos DB account name
 			final String AZURE_COSMOSDB_DATABASE = "sccdb" + MY_SUFFIX;	// Cosmos DB database name
 			final String[] BLOB_CONTAINERS = { "images" };	// Contaienrs to add to the blob storage
@@ -399,6 +399,10 @@ public class AzureManagement {
 							createCosmosCollection(cosmosClient, AZURE_COSMOSDB_DATABASE, "Entities", "/id",
 									new String[] { "/id2" });
 							createCosmosCollection(cosmosClient, AZURE_COSMOSDB_DATABASE, "Forum", "/id",
+									null);
+							createCosmosCollection(cosmosClient, AZURE_COSMOSDB_DATABASE, "Calendar", "/id",
+									null);
+							createCosmosCollection(cosmosClient, AZURE_COSMOSDB_DATABASE, "Reservation", "/id",
 									null);
 
 						} catch (Exception e) {
