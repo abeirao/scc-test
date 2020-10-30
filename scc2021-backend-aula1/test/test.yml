@@ -11,7 +11,7 @@ config:
     arrivalRate: 1
     rampTo: 5
   - name: "Main test"    # MAIN TESTS: duration: 20s, with 5 new clients/sec
-    duration: 20         # NOTE: number of clients per second will depend on the complexity of your scenarios
+    duration: 60         # NOTE: number of clients per second will depend on the complexity of your scenarios
     arrivalRate: 5       # you need to try a number that can be handled by the client
 
 
