@@ -9,7 +9,16 @@ module.exports = {
   selectImageToDownload,
   postEntity,
   processPostEntityReply,
-  selectEntity
+  selectEntity,
+  postCalendar,
+  processPostCalendarReply,
+  selectCalendar,
+  postForum,
+  processPostForumReply,
+  selectForum,
+  postReservation,
+  processPostReservationReply,
+  selectReservation
 }
 
 
@@ -266,6 +275,3 @@ function selectCalendar(context, events, done) {
 	return done()
 
 }
-
-
-

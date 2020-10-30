@@ -40,7 +40,7 @@ scenarios:
     weight: 1
     flow:
       - post:
-          url: "/entity"
+          url: "/entities"
           headers:
             Content-Type: application/json
             Accept: application/json
@@ -51,7 +51,64 @@ scenarios:
     flow:
       - function: "selectEntity"
       - get:
-          url: "/entity/{{ id }}"
+          url: "/entities/{{ id }}"
           headers:
             Accept: application/json
           ifTrue: "id"
+- name: 'Upload forum'
+  weight: 1
+  flow:
+    - post:
+        url: "/forums"
+        headers:
+          Content-Type: application/json
+          Accept: application/json
+        beforeRequest: "postForum"
+        afterResponse: "processPostForumReply"
+- name: 'Get forum'
+  weight: 5
+  flow:
+    - function: "selectForum"
+    - get:
+        url: "/forums/{{ id }}"
+        headers:
+          Accept: application/json
+        ifTrue: "id"
+- name: 'Upload reservation'
+  weight: 1
+  flow:
+    - post:
+        url: "/reservations"
+        headers:
+          Content-Type: application/json
+          Accept: application/json
+        beforeRequest: "postReservation"
+        afterResponse: "processPostReservationReply"
+- name: 'Get Reservation'
+  weight: 5
+  flow:
+    - function: "selectReservation"
+    - get:
+        url: "/reservations/{{ id }}"
+        headers:
+          Accept: application/json
+        ifTrue: "id"
+- name: 'Upload calendar'
+  weight: 1
+  flow:
+    - post:
+        url: "/calendars"
+        headers:
+          Content-Type: application/json
+          Accept: application/json
+        beforeRequest: "postCalendar"
+        afterResponse: "processPostCalendarReply"
+- name: 'Get calendar'
+  weight: 5
+  flow:
+    - function: "selectCalendar"
+    - get:
+        url: "/calendars/{{ id }}"
+        headers:
+          Accept: application/json
+        ifTrue: "id"
