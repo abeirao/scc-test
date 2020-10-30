@@ -11,28 +11,39 @@ import scc.srv.api.CalendarResource;
 public class CalendarService implements CalendarResource {
 	
 	private CosmosDBLayer cosmosDB;
+	private Map<String, Calendar> calendars;
 
 	public CalendarService() {
 		cosmosDB =  CosmosDBLayer.getInstance();
+		calendars = new HashMap<>();
 	}
 
 	// TODO add caching
 
 	@Override
 	public Calendar get(String id) {
-		return cosmosDB.getCalendar(id);
+		Calendar calendar = calendars.get(id);
+		if (calendar == null)
+			calendar = cosmosDB.getCalendar(id);
+		return calendar;
 	}
 
 
 	@Override
 	public Calendar create(Calendar calendar) {
 		cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
+		calendars.put(calendar.getId(), calendar);
 		return calendar;
 	}
 
 	@Override
 	public Calendar delete(String id) {
-		Calendar calendar = this.get(id);
+		Calendar calendar = calendars.get(id);
+		if (calendar == null)
+			calendar = cosmosDB.getCalendar(id);
+		else
+			calendars.remove(id);
+		
 		return (Calendar) cosmosDB.delete(CosmosDBLayer.CALENDARS, calendar).getItem();
 	}
 
