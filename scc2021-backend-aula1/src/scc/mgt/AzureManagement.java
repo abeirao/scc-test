@@ -398,11 +398,11 @@ public class AzureManagement {
 							//TODO: create the collections you have in your application
 							createCosmosCollection(cosmosClient, AZURE_COSMOSDB_DATABASE, "Entities", "/id",
 									new String[] { "/id2" });
-							createCosmosCollection(cosmosClient, AZURE_COSMOSDB_DATABASE, "Forum", "/id",
+							createCosmosCollection(cosmosClient, AZURE_COSMOSDB_DATABASE, "Forums", "/id",
 									null);
-							createCosmosCollection(cosmosClient, AZURE_COSMOSDB_DATABASE, "Calendar", "/id",
+							createCosmosCollection(cosmosClient, AZURE_COSMOSDB_DATABASE, "Calendars", "/id",
 									null);
-							createCosmosCollection(cosmosClient, AZURE_COSMOSDB_DATABASE, "Reservation", "/id",
+							createCosmosCollection(cosmosClient, AZURE_COSMOSDB_DATABASE, "Reservations", "/id",
 									null);
 
 						} catch (Exception e) {

@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import scc.data.Calendar;
 import scc.data.Forum;
 
+@Path("calendar")
 public interface CalendarResource {
 
 	/**

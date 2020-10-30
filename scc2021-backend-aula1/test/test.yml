@@ -40,7 +40,7 @@ scenarios:
     weight: 1
     flow:
       - post:
-          url: "/entities"
+          url: "/entity"
           headers:
             Content-Type: application/json
             Accept: application/json
@@ -51,7 +51,7 @@ scenarios:
     flow:
       - function: "selectEntity"
       - get:
-          url: "/entities/{{ id }}"
+          url: "/entity/{{ id }}"
           headers:
             Accept: application/json
           ifTrue: "id"
@@ -59,7 +59,7 @@ scenarios:
   weight: 1
   flow:
     - post:
-        url: "/forums"
+        url: "/forum"
         headers:
           Content-Type: application/json
           Accept: application/json
@@ -70,7 +70,7 @@ scenarios:
   flow:
     - function: "selectForum"
     - get:
-        url: "/forums/{{ id }}"
+        url: "/forum/{{ id }}"
         headers:
           Accept: application/json
         ifTrue: "id"
@@ -97,7 +97,7 @@ scenarios:
   weight: 1
   flow:
     - post:
-        url: "/calendars"
+        url: "/calendar"
         headers:
           Content-Type: application/json
           Accept: application/json
@@ -108,7 +108,7 @@ scenarios:
   flow:
     - function: "selectCalendar"
     - get:
-        url: "/calendars/{{ id }}"
+        url: "/calendar/{{ id }}"
         headers:
           Accept: application/json
         ifTrue: "id"
