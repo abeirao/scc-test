@@ -304,7 +304,7 @@ public class AzureManagement {
 			final String MY_SUFFIX = "50415"; // Add your suffix here
 			final String AZURE_COSMOSDB_NAME = "sccdbacc" + MY_SUFFIX;	// Cosmos DB account name
 			final String AZURE_COSMOSDB_DATABASE = "sccdb" + MY_SUFFIX;	// Cosmos DB database name
-			final String[] BLOB_CONTAINERS = { "images" };	// Contaienrs to add to the blob storage
+			final String[] BLOB_CONTAINERS = { "images" };	// Containers to add to the blob storage
 
 			final Region[] REGIONS = new Region[] { Region.EUROPE_WEST }; // Define the regions to deploy resources here
 
