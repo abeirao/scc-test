@@ -89,5 +89,5 @@ public interface EntityResource {
 	@POST
 	@Path("/{id}/reservations")
 	@Consumes(MediaType.APPLICATION_JSON)
-	void createReservation(String id, Reservation reservation);	
+	void createReservation(@PathParam("id") String id, Reservation reservation);	
 }

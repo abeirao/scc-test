@@ -61,6 +61,7 @@ public class EntityService implements EntityResource {
 		Entity entity = cosmosDB.getEntity(id);
 		 
 		// TODO
+		// should call other service's methods ???
 	}
 	
 }

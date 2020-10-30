@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
-import scc.srv.api.TestingService;
 import scc.srv.api.services.*;
 
 /**
@@ -25,7 +24,6 @@ public class MainApplication extends Application
 		resources.add(EntityService.class);
 		resources.add(ForumService.class);
 		resources.add(ReservationService.class);
-		resources.add(TestingService.class);
 	}
 
 	@Override
