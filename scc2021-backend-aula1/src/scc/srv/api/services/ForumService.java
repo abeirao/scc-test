@@ -1,6 +1,7 @@
 package scc.srv.api.services;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -51,13 +52,13 @@ public class ForumService implements ForumResource {
 
 	@Override
 	public Forum delete(String id) {
-		return (Forum) cosmosDB.delete(CosmosDBLayer.FORUMS, id).getItem();
+		Forum forum = this.get(id);
+		return (Forum) cosmosDB.delete(CosmosDBLayer.FORUMS, forum).getItem();
 	}
 	
 	@Override
-	public Forum getForumByEntity(String entityId) {
-		return null; // TODO - query is cosmosDBLayer
-		// return cosmosDB.getForumByEntity(entityId);
+	public Iterator<Forum> getForumByEntity(String entityId) {
+		return cosmosDB.getForumByEntity(entityId).iterator();
 	}
 	
 	

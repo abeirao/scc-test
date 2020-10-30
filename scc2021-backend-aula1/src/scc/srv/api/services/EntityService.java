@@ -29,7 +29,8 @@ public class EntityService implements EntityResource {
 
 	@Override
 	public Entity delete(String id) {
-		return (Entity) cosmosDB.delete(CosmosDBLayer.ENTITIES, id).getItem();
+		Entity entity = this.get(id);
+		return (Entity) cosmosDB.delete(CosmosDBLayer.ENTITIES, entity).getItem();
 	}
 
 	@Override

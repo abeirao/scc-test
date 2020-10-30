@@ -19,9 +19,8 @@ public class ReservationService implements ReservationResource {
 	}
 	
 	@Override
-	public List<Reservation> getReservationsFromEntity(String entityId) {
-		return null; // TODO query in cosmos db layer 
-		// return cosmosDB.getReservationsByEntity(entityId)
+	public Iterator<Reservation> getReservationsFromEntity(String entityId) {
+		return cosmosDB.getReservationsByEntity(entityId).iterator();
 	}
 	
 	@Override
@@ -42,6 +41,7 @@ public class ReservationService implements ReservationResource {
 
 	@Override
 	public Reservation deleteReservation(String id) {
-		return (Reservation) cosmosDB.delete(CosmosDBLayer.RESERVATIONS, id).getItem();
+		Reservation reservation = this.getReservation(id);
+		return (Reservation) cosmosDB.delete(CosmosDBLayer.RESERVATIONS, reservation).getItem();
 	}
 }

@@ -91,9 +91,7 @@ public class CosmosDBLayer {
 	}
 	
 	
-	public CosmosItemResponse<Object> delete(String container, Object item) {
-		// TODO delete by id
-		
+	public CosmosItemResponse<Object> delete(String container, Object item) {		
 		init();
 		switch (container) {
 			case RESERVATIONS:
@@ -166,4 +164,17 @@ public class CosmosDBLayer {
 		String query = "SELECT * FROM " + ENTITIES + " ";
 		return entities.queryItems(query, new CosmosQueryRequestOptions(), Entity.class);
 	}
+	
+	public CosmosPagedIterable<Forum> getForumByEntity(String entityId) {
+		init();
+		String query = "SELECT * FROM " + FORUMS + " WHERE entityId=\"" + entityId + "\"";
+		return forums.queryItems(query, new CosmosQueryRequestOptions(), Forum.class);
+	}
+	
+	public CosmosPagedIterable<Reservation> getReservationsByEntity(String entityId) {
+		init();
+		String query = "SELECT * FROM " + RESERVATIONS + " WHERE entityId=\"" + entityId + "\"";
+		return reservations.queryItems(query, new CosmosQueryRequestOptions(), Reservation.class);
+	}
+	
 }

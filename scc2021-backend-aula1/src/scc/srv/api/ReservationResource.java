@@ -65,6 +65,6 @@ public interface ReservationResource {
 	@GET
 	@Path("/entity/{entityId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	List<Reservation> getReservationsFromEntity(@PathParam("entityId") String entityId);
+	Iterator<Reservation> getReservationsFromEntity(@PathParam("entityId") String entityId);
 		
 }

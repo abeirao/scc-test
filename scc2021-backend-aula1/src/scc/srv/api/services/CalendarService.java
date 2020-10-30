@@ -32,7 +32,8 @@ public class CalendarService implements CalendarResource {
 
 	@Override
 	public Calendar delete(String id) {
-		return (Calendar) cosmosDB.delete(CosmosDBLayer.CALENDARS, id).getItem();
+		Calendar calendar = this.get(id);
+		return (Calendar) cosmosDB.delete(CosmosDBLayer.CALENDARS, calendar).getItem();
 	}
 
 	@Override

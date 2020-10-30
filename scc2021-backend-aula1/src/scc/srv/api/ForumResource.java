@@ -1,5 +1,7 @@
 package scc.srv.api;
 
+import java.util.Iterator;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -79,5 +81,5 @@ public interface ForumResource {
 	@GET
 	@Path("/{id}/forums")
 	@Produces(MediaType.APPLICATION_JSON)
-	Forum getForumByEntity(@PathParam("entityId") String entityId);
+	Iterator<Forum> getForumByEntity(@PathParam("entityId") String entityId);
 }
