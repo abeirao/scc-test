@@ -68,7 +68,16 @@ public interface ForumResource {
 	 */
 	@DELETE
 	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Forum delete(@PathParam("id") String id);
+
+	/**
+	 * 
+	 * @param entityId
+	 * @return
+	 */
+	@GET
+	@Path("/{id}/forums")
+	@Produces(MediaType.APPLICATION_JSON)
+	Forum getForumByEntity(@PathParam("entityId") String entityId);
 }

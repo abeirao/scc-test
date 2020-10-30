@@ -53,5 +53,13 @@ public class ForumService implements ForumResource {
 	public Forum delete(String id) {
 		return (Forum) cosmosDB.delete(CosmosDBLayer.FORUMS, id).getItem();
 	}
+	
+	@Override
+	public Forum getForumByEntity(String entityId) {
+		return null; // TODO - query is cosmosDBLayer
+		// return cosmosDB.getForumByEntity(entityId);
+	}
+	
+	
 
 }
