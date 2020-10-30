@@ -248,7 +248,7 @@ public class AzureManagement {
 			db.createContainer(props);
 			System.out.println("CosmosDB collection created with success: name = " + collectionName + "@" + dbname);
 
-		} catch (Exception e) { // TODO: Something has gone terribly wrong.
+		} catch (Exception e) { 
 			e.printStackTrace();
 			return;
 		}

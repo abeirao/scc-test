@@ -18,6 +18,8 @@ public class ReservationService implements ReservationResource {
 		cosmosDB =  CosmosDBLayer.getInstance();
 	}
 	
+	// TODO add caching
+	
 	@Override
 	public Iterator<Reservation> getReservationsFromEntity(String entityId) {
 		return cosmosDB.getReservationsByEntity(entityId).iterator();

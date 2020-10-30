@@ -12,11 +12,11 @@ public class CalendarService implements CalendarResource {
 	
 	private CosmosDBLayer cosmosDB;
 
-
 	public CalendarService() {
 		cosmosDB =  CosmosDBLayer.getInstance();
 	}
-	
+
+	// TODO add caching
 
 	@Override
 	public Calendar get(String id) {
@@ -39,7 +39,7 @@ public class CalendarService implements CalendarResource {
 	@Override
 	public Map<String, String> getCalendarEntry(String id, String date) {
 		// TODO Auto-generated method stub
-		
+		// what is this ????
 		
 		return null;
 	}

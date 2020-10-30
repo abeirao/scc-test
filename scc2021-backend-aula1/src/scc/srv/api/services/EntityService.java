@@ -60,7 +60,7 @@ public class EntityService implements EntityResource {
 	public void createReservation(String id, Reservation reservation) {
 		Entity entity = cosmosDB.getEntity(id);
 		 
-		// TODO
+		// TODO - create reservation for this entity
 		// should call other service's methods ???
 	}
 	
