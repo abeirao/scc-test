@@ -16,31 +16,26 @@ public class ReservationController implements ReservationAPI {
 
 	@Override
 	public Reservation addReservation(Reservation reservation) {
-		// TODO Auto-generated method stub
-		return null;
+		return reservations.addReservation(reservation);
 	}
 
 	@Override
 	public Reservation getReservation(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return reservations.getReservation(id);
 	}
 
 	@Override
 	public Reservation deleteReservation(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return reservations.deleteReservation(id);
 	}
 
 	@Override
 	public Iterator<Reservation> getReservations() {
-		// TODO Auto-generated method stub
-		return null;
+		return reservations.getReservations();
 	}
 
 	@Override
 	public Iterator<Reservation> getReservationsFromEntity(String entityId) {
-		// TODO Auto-generated method stub
-		return null;
+		return reservations.getReservationsFromEntity(entityId);
 	}
 }

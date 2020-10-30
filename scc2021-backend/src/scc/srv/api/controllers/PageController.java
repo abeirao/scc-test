@@ -11,31 +11,27 @@ public class PageController implements PageAPI {
 	private PageService pages;
 	
 	public PageController() {
-		this.pages = pages;
+		this.pages = new PageService();
 	}
 
 	@Override
 	public List<Entity> popularEntities() {
-		// TODO Auto-generated method stub
-		return null;
+		return pages.popularEntities();
 	}
 
 	@Override
 	public String listedEntity(String entityId) {
-		// TODO Auto-generated method stub
-		return null;
+		return pages.listedEntity(entityId);
 	}
 
 	@Override
 	public void setEntityLike(String entityId) {
-		// TODO Auto-generated method stub
-		
+		pages.setEntityLike(entityId);
 	}
 
 	@Override
 	public String reservationStatistics() {
-		// TODO Auto-generated method stub
-		return null;
+		return pages.reservationStatistics();
 	}
 
 }

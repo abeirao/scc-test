@@ -17,37 +17,31 @@ public class ForumController implements ForumAPI {
 
 	@Override
 	public Forum get(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return forums.get(id);
 	}
 
 	@Override
 	public Forum create(Forum forum) {
-		// TODO Auto-generated method stub
-		return null;
+		return forums.create(forum);
 	}
 
 	@Override
 	public ForumMessage addMessage(String forumId, ForumMessage newMessage) {
-		// TODO Auto-generated method stub
-		return null;
+		return forums.addMessage(forumId, newMessage);
 	}
 
 	@Override
 	public String reply(String forumId, ForumMessage messageToReply, ForumMessage newMessage) {
-		// TODO Auto-generated method stub
-		return null;
+		return forums.reply(forumId, messageToReply, newMessage);
 	}
 
 	@Override
 	public Forum delete(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return forums.delete(id);
 	}
 
 	@Override
 	public Iterator<Forum> getForumByEntity(String entityId) {
-		// TODO Auto-generated method stub
-		return null;
+		return forums.getForumByEntity(entityId);
 	}
 }

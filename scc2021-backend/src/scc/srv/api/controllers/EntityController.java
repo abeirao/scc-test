@@ -15,43 +15,36 @@ public class EntityController implements EntityAPI {
 
 	@Override
 	public Entity get(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return entities.get(id);
 	}
 
 	@Override
 	public Entity create(Entity entity) {
-		// TODO Auto-generated method stub
-		return null;
+		return entities.create(entity);
 	}
 
 	@Override
 	public Entity delete(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return entities.delete(id);
 	}
 
 	@Override
 	public Entity update(Entity entity) {
-		// TODO Auto-generated method stub
-		return null;
+		return entities.update(entity);
 	}
 
 	@Override
 	public void addCalendar(String id, String calendarId) {
-		// TODO Auto-generated method stub
-		
+		entities.addCalendar(id, calendarId);
 	}
 
 	@Override
 	public void addMedia(String id, String mediaId) {
-		// TODO Auto-generated method stub
-		
+		entities.addMedia(id, mediaId);
 	}
 
 	@Override
 	public void createReservation(String id, Reservation reservation) {
-		// TODO Auto-generated method stub
-		
+		entities.createReservation(id, reservation);
 	}
 }
