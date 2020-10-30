@@ -15,7 +15,7 @@ import scc.utils.Hash;
  * Uses blob storage to store media files
  */
 public class MediaService {
-	// TODO conn string
+	
 	// azure cloud storage account connection string
 	private static final String STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=scc50415;AccountKey=fR4+F2fg/uozoauqf2iWJRPvyyqMj1wqjGB/52N07mkOQx0btUy90EGt1CL5luMAIrZn0p/CTvMCIc5eNoB7/w==;EndpointSuffix=core.windows.net";
 	

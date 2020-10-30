@@ -44,7 +44,6 @@ public class CalendarService {
 
 	public Map<String, String> getCalendarEntry(String id, String date) {
 		// TODO Auto-generated method stub
-		// what is this ????
 		
 		return null;
 	}

@@ -295,15 +295,13 @@ public class AzureManagement {
 
 	public static void main(String[] args) {
 		try {
-			// TODO: These variable allow you to control what is being created
 			final boolean CREATE_STORAGE = false;
 			final boolean CREATE_COSMOSDB = true;
 			final boolean CREATE_REDIS = true;
 		
-			// TODO: change your suffix and other names if you want
 			final String MY_SUFFIX = "50415"; // Add your suffix here
-			final String AZURE_COSMOSDB_NAME = "sccdbacc" + MY_SUFFIX;	// Cosmos DB account name
-			final String AZURE_COSMOSDB_DATABASE = "sccdb" + MY_SUFFIX;	// Cosmos DB database name
+			final String AZURE_COSMOSDB_NAME = "sccdbc" + MY_SUFFIX;	// Cosmos DB account name
+			final String AZURE_COSMOSDB_DATABASE = "scc" + MY_SUFFIX;	// Cosmos DB database name
 			final String[] BLOB_CONTAINERS = { "images" };	// Containers to add to the blob storage
 
 			final Region[] REGIONS = new Region[] { Region.EUROPE_WEST }; // Define the regions to deploy resources here
@@ -395,7 +393,6 @@ public class AzureManagement {
 							}
 							CosmosClient cosmosClient = getCosmosClient(accountCosmosDB);
 							createCosmosDatabase(cosmosClient, AZURE_COSMOSDB_DATABASE);
-							//TODO: create the collections you have in your application
 							createCosmosCollection(cosmosClient, AZURE_COSMOSDB_DATABASE, "Entities", "/id",
 									new String[] { "/id2" });
 							createCosmosCollection(cosmosClient, AZURE_COSMOSDB_DATABASE, "Forums", "/id",
