@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 
 
 @Path("/media")
-public interface MediaResource {
+public interface MediaAPI {
 
 	/**
 	 * 

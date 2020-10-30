@@ -1,4 +1,4 @@
-package scc.srv.api.services;
+package scc.srv.api.resources;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,9 +8,9 @@ import java.util.Map;
 import scc.data.CosmosDBLayer;
 import scc.data.Forum;
 import scc.data.ForumMessage;
-import scc.srv.api.ForumResource;
+import scc.srv.api.ForumAPI;
 
-public class ForumService implements ForumResource {
+public class ForumService implements ForumAPI {
 	
 	private CosmosDBLayer cosmosDB;
 	

@@ -16,7 +16,7 @@ import scc.data.Calendar;
 import scc.data.Forum;
 
 @Path("/calendar")
-public interface CalendarResource {
+public interface CalendarAPI {
 
 	/**
 	 * 

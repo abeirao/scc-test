@@ -1,4 +1,4 @@
-package scc.srv.api.services;
+package scc.srv.api.resources;
 
 import java.io.ByteArrayOutputStream;
 
@@ -7,14 +7,14 @@ import com.microsoft.azure.storage.blob.CloudBlob;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 
-import scc.srv.api.MediaResource;
+import scc.srv.api.MediaAPI;
 import scc.utils.Hash;
 
 /** 
  * Media service for the reservations service
  * Uses blob storage to store media files
  */
-public class MediaService implements MediaResource {
+public class MediaService implements MediaAPI {
 	
 	// azure cloud storage account connection string
 	private static final String STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=scc50415;AccountKey=fR4+F2fg/uozoauqf2iWJRPvyyqMj1wqjGB/52N07mkOQx0btUy90EGt1CL5luMAIrZn0p/CTvMCIc5eNoB7/w==;EndpointSuffix=core.windows.net";

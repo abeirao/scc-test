@@ -15,7 +15,7 @@ import scc.data.Forum;
 import scc.data.ForumMessage;
 
 @Path("/forum")
-public interface ForumResource {
+public interface ForumAPI {
 	
 	/**
 	 * 

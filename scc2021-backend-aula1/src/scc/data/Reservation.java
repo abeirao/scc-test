@@ -1,6 +1,6 @@
 package scc.data;
 
-import scc.srv.api.services.MediaService;
+import scc.srv.api.resources.MediaService;
 
 public class Reservation {
     private String name;

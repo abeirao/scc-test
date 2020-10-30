@@ -14,7 +14,7 @@ import scc.data.Entity;
 import scc.data.Reservation;
 
 @Path("/entity")
-public interface EntityResource {
+public interface EntityAPI {
 	
 	static final String ENDPOINT = "/entity";
 

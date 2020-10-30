@@ -1,4 +1,4 @@
-package scc.srv.api.services;
+package scc.srv.api.resources;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -6,9 +6,9 @@ import java.util.Map;
 
 import scc.data.Calendar;
 import scc.data.CosmosDBLayer;
-import scc.srv.api.CalendarResource;
+import scc.srv.api.CalendarAPI;
 
-public class CalendarService implements CalendarResource {
+public class CalendarService implements CalendarAPI {
 	
 	private CosmosDBLayer cosmosDB;
 	private Map<String, Calendar> calendars;

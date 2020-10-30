@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Path("/reservations")
-public interface ReservationResource {
+public interface ReservationAPI {
 
 	/**
 	 * Create a new reservation

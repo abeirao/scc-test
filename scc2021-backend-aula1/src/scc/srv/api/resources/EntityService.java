@@ -1,4 +1,4 @@
-package scc.srv.api.services;
+package scc.srv.api.resources;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,9 +6,9 @@ import java.util.Map;
 import scc.data.CosmosDBLayer;
 import scc.data.Entity;
 import scc.data.Reservation;
-import scc.srv.api.EntityResource;
+import scc.srv.api.EntityAPI;
 
-public class EntityService implements EntityResource {
+public class EntityService implements EntityAPI {
 	
 	private CosmosDBLayer cosmosDB;
 	

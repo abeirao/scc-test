@@ -1,4 +1,4 @@
-package scc.srv.api.services;
+package scc.srv.api.resources;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,9 +8,9 @@ import java.util.Map;
 import scc.data.CosmosDBLayer;
 import scc.data.Forum;
 import scc.data.Reservation;
-import scc.srv.api.ReservationResource;
+import scc.srv.api.ReservationAPI;
 
-public class ReservationService implements ReservationResource {
+public class ReservationService implements ReservationAPI {
 
 	private CosmosDBLayer cosmosDB;
 	private HashMap<String, Reservation> reservations;
