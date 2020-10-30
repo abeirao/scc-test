@@ -1,4 +1,8 @@
-config
+*config
+
+*.project
+
+*.classpath
 
 # Compiled class file
 *.class
