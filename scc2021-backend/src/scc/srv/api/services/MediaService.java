@@ -1,4 +1,4 @@
-package scc.srv.api.resources;
+package scc.srv.api.services;
 
 import java.io.ByteArrayOutputStream;
 
@@ -14,8 +14,8 @@ import scc.utils.Hash;
  * Media service for the reservations service
  * Uses blob storage to store media files
  */
-public class MediaService implements MediaAPI {
-	
+public class MediaService {
+	// TODO conn string
 	// azure cloud storage account connection string
 	private static final String STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=scc50415;AccountKey=fR4+F2fg/uozoauqf2iWJRPvyyqMj1wqjGB/52N07mkOQx0btUy90EGt1CL5luMAIrZn0p/CTvMCIc5eNoB7/w==;EndpointSuffix=core.windows.net";
 	
@@ -36,7 +36,7 @@ public class MediaService implements MediaAPI {
 		}
 	}
 	
-	@Override
+
 	public String upload(byte[] contents) {
 		try {
 			String id = Hash.of(contents);
@@ -49,7 +49,6 @@ public class MediaService implements MediaAPI {
 		}
 	}
 
-	@Override
 	public byte[] download(String id) {
 		try {
 			CloudBlob blob = init().getBlobReferenceFromServer(id);
@@ -67,7 +66,7 @@ public class MediaService implements MediaAPI {
 		}
 	}
 
-	@Override
+	
 	public String delete(String id) {
 		try {
 			CloudBlob blob = init().getBlobReferenceFromServer(id);

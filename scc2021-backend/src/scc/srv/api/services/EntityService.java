@@ -1,4 +1,4 @@
-package scc.srv.api.resources;
+package scc.srv.api.services;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import scc.data.Entity;
 import scc.data.Reservation;
 import scc.srv.api.EntityAPI;
 
-public class EntityService implements EntityAPI {
+public class EntityService   {
 	
 	private CosmosDBLayer cosmosDB;
 	
@@ -16,30 +16,25 @@ public class EntityService implements EntityAPI {
 		cosmosDB =  CosmosDBLayer.getInstance();
 	}
 	
-	@Override
 	public Entity get(String id) {
 		return cosmosDB.getEntity(id);
 	}
 
-	@Override
 	public Entity create(Entity entity) {
 		cosmosDB.put(CosmosDBLayer.ENTITIES, entity);
 		return entity;
 	}
 
-	@Override
 	public Entity delete(String id) {
 		Entity entity = this.get(id);
 		return (Entity) cosmosDB.delete(CosmosDBLayer.ENTITIES, entity).getItem();
 	}
 
-	@Override
 	public Entity update(Entity entity) {
 		cosmosDB.put(CosmosDBLayer.ENTITIES, entity);
 		return entity;
 	}
 	
-	@Override
 	public void addMedia(String id, String mediaId) {
 		Entity entity = cosmosDB.getEntity(id);
 		String[] mediaIds = entity.getMediaIds();
@@ -47,7 +42,6 @@ public class EntityService implements EntityAPI {
 		mediaIds[mediaIds.length-1] = mediaId;		
 	}
 	
-	@Override
 	public void addCalendar(String id, String calendarId) {
 		Entity entity = cosmosDB.getEntity(id);
 		String[] calendarIds = entity.getMediaIds();
@@ -56,7 +50,6 @@ public class EntityService implements EntityAPI {
 	}
 	
 
-	@Override
 	public void createReservation(String id, Reservation reservation) {
 		Entity entity = cosmosDB.getEntity(id);
 		 

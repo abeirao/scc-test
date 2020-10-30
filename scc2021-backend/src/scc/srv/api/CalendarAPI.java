@@ -37,7 +37,7 @@ public interface CalendarAPI {
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Calendar create(Calendar entity);	
+	public Calendar create(Calendar calendar);	
 	
 	/**
 	 * 

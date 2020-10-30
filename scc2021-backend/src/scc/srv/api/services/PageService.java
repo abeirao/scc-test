@@ -1,31 +1,31 @@
-package scc.srv.api.resources;
+package scc.srv.api.services;
 
 import java.util.List;
 
 import scc.data.Entity;
 import scc.srv.api.PageAPI;
 
-public class PageService implements PageAPI {
+public class PageService {
 
-	@Override
+	
 	public List<Entity> popularEntities() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public String listedEntity(String entityId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public void setEntityLike(String entityId) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public String reservationStatistics() {
 		// TODO Auto-generated method stub
 		return null;

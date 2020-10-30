@@ -5,7 +5,7 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
-import scc.srv.api.resources.*;
+import scc.srv.api.services.*;
 
 /**
  * Cloud Computing Systems project - Reservation system
