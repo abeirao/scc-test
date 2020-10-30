@@ -161,7 +161,7 @@ function selectImageToDownload(context, events, done) {
 	return done()
 }
 
-// TODO
+// entities
 
 function postEntity(requestParams, context) {
 	requestParams.body = entities.sample()
@@ -186,3 +186,86 @@ function selectEntity(context, events, done) {
 	return done()
 
 }
+
+// forums
+
+function postForum(requestParams, context) {
+	requestParams.body = forums.sample()
+	return next()
+}
+
+function processPostForumReply(requestParams, response, context) {
+	if( typeof response.body !== 'undefined' && response.body.length > 0) {
+		forumIds.push(response.body)
+	}
+    return next()
+}
+
+
+function selectForum(context, events, done) {
+	if(forumIds.length > 0) {
+		context.vars.forumId = forumIds.sample()
+	}
+	else {
+		delete context.vars.forumId
+	}
+	return done()
+
+}
+
+
+// Calendars
+
+function postCalendar(requestParams, context) {
+	requestParams.body = calendars.sample()
+	return next()
+}
+
+function processPostCalendarReply(requestParams, response, context) {
+	if( typeof response.body !== 'undefined' && response.body.length > 0) {
+		calendarIds.push(response.body)
+	}
+    return next()
+}
+
+
+function selectCalendar(context, events, done) {
+	if(calendarIds.length > 0) {
+		context.vars.calendarId = calendarIds.sample()
+	}
+	else {
+		delete context.vars.calendarId
+	}
+	return done()
+
+}
+
+
+// Reservations
+
+function postReservation(requestParams, context) {
+	requestParams.body = reservations.sample()
+	return next()
+}
+
+function processPostReservationReply(requestParams, response, context) {
+	if( typeof response.body !== 'undefined' && response.body.length > 0) {
+		reservationIds.push(response.body)
+	}
+    return next()
+}
+
+
+function selectCalendar(context, events, done) {
+	if(reservationIds.length > 0) {
+		context.vars.reservationId = reservationIds.sample()
+	}
+	else {
+		delete context.vars.reservationId
+	}
+	return done()
+
+}
+
+
+
