@@ -19,20 +19,17 @@ public class ForumService implements ForumResource {
 	
 	@Override
 	public Forum get(String id) {
-		// TODO Auto-generated method stub
 		return cosmosDB.getForum(id);
 	}
 
 	@Override
 	public Forum create(Forum forum) {
-		// TODO Auto-generated method stub
 		cosmosDB.put(CosmosDBLayer.FORUMS, forum);
 		return forum;
 	}
 
 	@Override
 	public ForumMessage addMessage(String forumId, ForumMessage newMessage) {
-		// TODO Auto-generated method stub
 		Forum forum = cosmosDB.getForum(forumId);
 		
 		List<ForumMessage> messages = forum.getMessages();
@@ -54,7 +51,6 @@ public class ForumService implements ForumResource {
 
 	@Override
 	public Forum delete(String id) {
-		// TODO Auto-generated method stub
 		return (Forum) cosmosDB.delete(CosmosDBLayer.FORUMS, id).getItem();
 	}
 

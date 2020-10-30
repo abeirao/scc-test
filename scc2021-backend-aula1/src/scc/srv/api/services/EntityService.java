@@ -9,7 +9,6 @@ import scc.srv.api.EntityResource;
 
 public class EntityService implements EntityResource {
 	
-	// TODO
 	private CosmosDBLayer cosmosDB;
 	
 	public EntityService() {

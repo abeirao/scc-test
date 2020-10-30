@@ -12,16 +12,11 @@ public class CalendarService implements CalendarResource {
 	
 	private CosmosDBLayer cosmosDB;
 
-	// TODO
+
 	public CalendarService() {
 		cosmosDB =  CosmosDBLayer.getInstance();
-		init();
 	}
 	
-	private void init() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public Calendar get(String id) {

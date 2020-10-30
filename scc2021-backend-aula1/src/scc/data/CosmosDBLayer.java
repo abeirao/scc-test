@@ -125,43 +125,6 @@ public class CosmosDBLayer {
 		}
 	}
 	
-	public CosmosPagedIterable<Object> getById(String container, String id) {
-		// TODO
-		
-		init();
-		String query = "SELECT * FROM " + container + " " + container + ".id=\"" + id + "\"";
-
-		switch (container) {
-			case RESERVATIONS:
-				// .queryItems(query, new CosmosQueryRequestOptions(), Reservation.class);
-			case CALENDARS:
-	//			return calendars.queryItems(query, new CosmosQueryRequestOptions(), Calendar.class);
-			case ENTITIES:
-		//		return entities.queryItems(query, new CosmosQueryRequestOptions(), Entity.class);
-			default:
-				return null;
-		}
-	}
-	
-	public CosmosPagedIterable<Object> getAll(String container) {
-		// TODO
-		
-		init();
-		String query = "SELECT * FROM " + container + " ";
-
-		switch (container) {
-			case RESERVATIONS:
-			//	return reservations.queryItems(query, new CosmosQueryRequestOptions(), Reservation.class);
-			case CALENDARS:
-				//return calendars.queryItems(query, new CosmosQueryRequestOptions(), Calendar.class);
-			case ENTITIES:
-				//return entities.queryItems(query, new CosmosQueryRequestOptions(), Entity.class);
-			default:
-				return null;
-		}
-	}
-		
-	// ????
 	
 	public Reservation getReservation(String id){
 		return reservations.readItem(id, new PartitionKey(id), Reservation.class).getItem(); 
