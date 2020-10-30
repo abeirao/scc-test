@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import scc.data.Entity;
+import scc.data.Reservation;
 
 @Path("/entity")
 public interface EntityResource {
@@ -58,5 +59,35 @@ public interface EntityResource {
 	@Path("")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Entity update(Entity entity);	
+	public Entity update(Entity entity);
+
+	/**
+	 * 
+	 * @param id
+	 * @param calendarId
+	 */
+	@PUT
+	@Path("/{id}/calendar/{calendarId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	void addCalendar(@PathParam("id") String id, @PathParam("calendarId") String calendarId);
+	
+	/**
+	 * 
+	 * @param id
+	 * @param mediaId
+	 */
+	@PUT
+	@Path("/{id}/media/{mediaId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	void addMedia(@PathParam("id") String id, @PathParam("mediaId") String mediaId);
+
+	/**
+	 * 
+	 * @param id
+	 * @param reservation
+	 */
+	@POST
+	@Path("/{id}/reservations")
+	@Consumes(MediaType.APPLICATION_JSON)
+	void createReservation(String id, Reservation reservation);	
 }

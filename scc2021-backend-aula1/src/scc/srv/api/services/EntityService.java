@@ -5,6 +5,7 @@ import java.util.Map;
 
 import scc.data.CosmosDBLayer;
 import scc.data.Entity;
+import scc.data.Reservation;
 import scc.srv.api.EntityResource;
 
 public class EntityService implements EntityResource {
@@ -36,8 +37,29 @@ public class EntityService implements EntityResource {
 		cosmosDB.put(CosmosDBLayer.ENTITIES, entity);
 		return entity;
 	}
-
-	public void createReservation() {
-		
+	
+	@Override
+	public void addMedia(String id, String mediaId) {
+		Entity entity = cosmosDB.getEntity(id);
+		String[] mediaIds = entity.getMediaIds();
+		mediaIds = new String[mediaIds.length+1];
+		mediaIds[mediaIds.length-1] = mediaId;		
 	}
+	
+	@Override
+	public void addCalendar(String id, String calendarId) {
+		Entity entity = cosmosDB.getEntity(id);
+		String[] calendarIds = entity.getMediaIds();
+		calendarIds = new String[calendarIds.length+1];
+		calendarIds[calendarIds.length-1] = calendarId;		
+	}
+	
+
+	@Override
+	public void createReservation(String id, Reservation reservation) {
+		Entity entity = cosmosDB.getEntity(id);
+		 
+		// TODO
+	}
+	
 }

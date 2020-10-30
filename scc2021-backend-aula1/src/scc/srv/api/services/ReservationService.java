@@ -20,7 +20,8 @@ public class ReservationService implements ReservationResource {
 	
 	@Override
 	public List<Reservation> getReservationsFromEntity(String entityId) {
-		return null; // TODO
+		return null; // TODO query in cosmos db layer 
+		// return cosmosDB.getReservationsByEntity(entityId)
 	}
 	
 	@Override
