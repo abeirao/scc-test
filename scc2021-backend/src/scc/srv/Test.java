@@ -41,8 +41,8 @@ public class Test {
 			res.setEntityId(entityId);
 			res.setMedia(null);
 			
-//			EntityService entService = new EntityService();
-//			ReservationService resService = new ReservationService();
+			EntityService entService = new EntityService();
+			ReservationService resService = new ReservationService();
 			
 //			System.out.println(entService.create(ent).toString());
 //			System.out.println(entService.get(ent.getId()).toString());
