@@ -59,8 +59,25 @@ public class Entity {
 				+ Arrays.toString(mediaIds) + ", calendarId=" + Arrays.toString(calendarIds) + ", listed=" + listed + "]";
 	}
 	
-	public static Entity getEntityFromString(String entity) {
-		// TODO Auto-generated method stub
-		return null;
+	public static Entity getEntityFromString(String entityAsString) { 
+		// parse an entity in the form of string to an entity object
+		
+		String _rid = entityAsString.substring(entityAsString.indexOf("rid="), entityAsString.indexOf(','));
+		String id = null; // TODO 
+		String name = null;
+		String description = null;
+		String[] mediaIds = null;
+		String[] calendarIds = null;
+		boolean listed = false;
+		
+		Entity entity = new Entity();
+		entity.set_rid(_rid);
+		entity.setId(id);
+		entity.setName(name);
+		entity.setDescription(description);
+		entity.setMediaIds(mediaIds);
+		entity.setCalendarIds(calendarIds);
+		entity.setListed(listed);
+		return entity;
 	}
 }

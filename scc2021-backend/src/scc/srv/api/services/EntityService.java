@@ -35,8 +35,8 @@ public class EntityService   {
 	}
 
 	public Entity create(Entity entity) {
-		cosmosDB.put(CosmosDBLayer.ENTITIES, entity);
-		jedis.set(ENTITY_KEY_PREFIX + entity.getId(), entity.toString());
+		cosmosDB.put(CosmosDBLayer.ENTITIES, entity); // add to db
+		jedis.set(ENTITY_KEY_PREFIX + entity.getId(), entity.toString()); // add to cache
 		return entity;
 	}
 
