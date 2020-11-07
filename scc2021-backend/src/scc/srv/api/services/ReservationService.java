@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import redis.clients.jedis.Jedis;
 import scc.data.CosmosDBLayer;
 import scc.data.Forum;
@@ -18,6 +23,8 @@ public class ReservationService {
 	protected final String RESERVATION_KEY_PREFIX = "reservation: ";
 	protected final String RESERVATION_ENTITY_KEY_PREFIX = "entityReservations: ";
 	
+	ObjectMapper mapper = new ObjectMapper();
+	
 	private CosmosDBLayer cosmosDB;
 	private Jedis jedis;
 	
@@ -27,9 +34,20 @@ public class ReservationService {
 	}
 
 	public Iterator<Reservation> getReservationsFromEntity(String entityId) {
-		String reservations = jedis.get(RESERVATION_ENTITY_KEY_PREFIX + entityId); 
+		Set<Reservation> reservations = null;
+		try {
+			reservations = mapper.readValues(jedis.get(RESERVATION_ENTITY_KEY_PREFIX + entityId), new TypeReference<List<Reservation>>() {});
+						
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
 		if (reservations != null)
-			return null; // TODO reservations to Set
+			return reservations.iterator(); 
 		return cosmosDB.getReservationsByEntity(entityId).iterator();
 	}
 	
@@ -39,15 +57,29 @@ public class ReservationService {
 	
 	public Reservation addReservation(Reservation reservation) {
 		// add reservation to cache
-		jedis.set(RESERVATION_KEY_PREFIX + reservation.getId(), reservation.toString());
-		// add reservation to entity reservations in cache
-		jedis.sadd(RESERVATION_ENTITY_KEY_PREFIX + reservation.getEntityId(), reservation.toString()); 
+		try {
+			jedis.set(RESERVATION_KEY_PREFIX + reservation.getId(), mapper.writeValueAsString(reservation));	
+			// add reservation to entity reservations in cache
+			jedis.sadd(RESERVATION_ENTITY_KEY_PREFIX + reservation.getEntityId(), mapper.writeValueAsString(reservation)); 
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		cosmosDB.put(CosmosDBLayer.RESERVATIONS, reservation);
 		return reservation;
+		
 	}
 	
 	public Reservation getReservation(String id) {
-		Reservation reservation = Reservation.fromString(jedis.get(RESERVATION_KEY_PREFIX + id));
+		Reservation reservation = null;
+		try {
+			reservation = mapper.readValue(jedis.get(RESERVATION_KEY_PREFIX + id), Reservation.class);
+		} catch (JsonMappingException e) {
+			
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 		if (reservation == null)
 			reservation = cosmosDB.getReservation(id);
 		

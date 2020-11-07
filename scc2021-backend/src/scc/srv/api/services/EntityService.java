@@ -3,6 +3,8 @@ package scc.srv.api.services;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
@@ -29,14 +31,28 @@ public class EntityService   {
 	}
 	
 	public Entity get(String id) { 
-		String entity = jedis.get(ENTITY_KEY_PREFIX + id);
+		Entity entity = null;
+		try {
+			entity = mapper.readValue(jedis.get(ENTITY_KEY_PREFIX + id), Entity.class);
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (entity != null)
-			return Entity.fromString(entity);
+			return entity;
 		return cosmosDB.getEntity(id);
 	}
 
 	public Entity create(Entity entity) {
-		cosmosDB.put(CosmosDBLayer.ENTITIES, entity); // add to db
+		try {
+			cosmosDB.put(CosmosDBLayer.ENTITIES, mapper.writeValueAsString(entity));
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // add to db
 		jedis.set(ENTITY_KEY_PREFIX + entity.getId(), entity.toString()); // add to cache
 		return entity;
 	}
@@ -49,7 +65,12 @@ public class EntityService   {
 
 	public Entity update(Entity entity) {
 		cosmosDB.put(CosmosDBLayer.ENTITIES, entity);
-		jedis.set(ENTITY_KEY_PREFIX + entity.getId(), entity.toString());
+		try {
+			jedis.set(ENTITY_KEY_PREFIX + entity.getId(), mapper.writeValueAsString(entity));
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return entity;
 	}
 	
