@@ -39,7 +39,6 @@ public class Test {
 			res.setDay("day 0");
 			res.setId("0" + System.currentTimeMillis());
 			res.setEntityId(entityId);
-			res.setMedia(null);
 			
 			EntityService entService = new EntityService();
 			ReservationService resService = new ReservationService();
@@ -57,7 +56,7 @@ public class Test {
 	
 	/* test redis */
 	public static void testRedis(Entity ent, Reservation res) {
-
+		System.out.println(" TESTING REDIS ");
 		ObjectMapper mapper = new ObjectMapper();
 		
 		try (Jedis jedis = RedisCache.getCachePool().getResource()) {
@@ -81,8 +80,7 @@ public class Test {
 		            } catch (JsonProcessingException e) {
 		                e.printStackTrace();
 		            }
-		        });
-		        
+		        });		        
 	        }
 	        Iterator<Reservation> it = reservations.iterator();
 			System.out.println("reservations by entity: ");

@@ -39,7 +39,6 @@ public class RedisTest {
 			reservation.setId(resId);
 			reservation.setName("Teste");
 			reservation.setEntityId(ent.getId());
-			reservation.setMedia(media);
 			reservation.setDay(day);
 			
 			EntityService entities = new EntityService();
