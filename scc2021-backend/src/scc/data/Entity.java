@@ -58,26 +58,4 @@ public class Entity {
 		return "Entity [_rid=" + _rid + ", id=" + id + ", name=" + name + ", description=" + description + ", mediaID="
 				+ Arrays.toString(mediaIds) + ", calendarId=" + Arrays.toString(calendarIds) + ", listed=" + listed + "]";
 	}
-	
-	public static Entity fromString(String entityAsString) { 
-		// parse an entity in the form of string to an entity object
-		
-		String _rid = entityAsString.substring(entityAsString.indexOf("rid="), entityAsString.indexOf(','));
-		String id = null; // TODO 
-		String name = null;
-		String description = null;
-		String[] mediaIds = null;
-		String[] calendarIds = null;
-		boolean listed = false;
-		
-		Entity entity = new Entity();
-		entity.set_rid(_rid);
-		entity.setId(id);
-		entity.setName(name);
-		entity.setDescription(description);
-		entity.setMediaIds(mediaIds);
-		entity.setCalendarIds(calendarIds);
-		entity.setListed(listed);
-		return entity;
-	}
 }
