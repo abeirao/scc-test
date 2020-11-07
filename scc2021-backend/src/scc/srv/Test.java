@@ -38,7 +38,7 @@ public class Test {
 			res.setEntityId(entityId);
 			
 			testRedis(ent, res);
-			//testServices(ent, res);
+			testServices(ent, res);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,7 +59,7 @@ public class Test {
 		
 		
 		System.out.println(resService.deleteReservation("0"));
-		System.out.println(resService.getReservation(res.getId()).toString());
+		System.out.println("should print null: " + resService.getReservation(res.getId()).toString());
 	}
 	
 	/* test redis */
