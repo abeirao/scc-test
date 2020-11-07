@@ -38,7 +38,7 @@ public class Test {
 			res.setEntityId(entityId);
 			
 			testRedis(ent, res);
-			testServices(ent, res);
+			//testServices(ent, res);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,7 +79,8 @@ public class Test {
 			
 			// add reservation to entity on redis
 			jedis.sadd(ReservationService.RESERVATION_ENTITY_KEY_PREFIX + res.getEntityId(), mapper.writeValueAsString(res));			
-			Set<Reservation> reservations = new HashSet<Reservation>();
+			// get reservations by entity from set on cache
+			final Set<Reservation> reservations = new HashSet<Reservation>();
 	        Set<String> s = jedis.smembers(ReservationService.RESERVATION_ENTITY_KEY_PREFIX + res.getEntityId());
 	        if (s != null) {
 		        s.forEach(x -> {
@@ -96,7 +97,25 @@ public class Test {
 				System.out.println(it.next().toString());
 			}
 			
-			// 
+			// remove reservation from reservations by entity on cache
+			jedis.srem(ReservationService.RESERVATION_ENTITY_KEY_PREFIX + res.getEntityId(), mapper.writeValueAsString(res));
+			// get reservations by entity from set on cache
+			Set<Reservation> ress = new HashSet<Reservation>();
+			s = jedis.smembers(ReservationService.RESERVATION_ENTITY_KEY_PREFIX + res.getEntityId());
+	        if (s != null) {
+		        s.forEach(x -> {
+		            try {
+		            	ress.add(mapper.readValue(x, Reservation.class));
+		            } catch (JsonProcessingException e) {
+		                e.printStackTrace();
+		            }
+		        });		        
+	        }
+	        it = ress.iterator();
+			System.out.println("reservations by entity (after delete - should print nothing): ");
+			while(it.hasNext()) {
+				System.out.println(it.next().toString());
+			}			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

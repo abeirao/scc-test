@@ -82,10 +82,17 @@ public class ReservationService {
 	}
 
 	public Reservation deleteReservation(String id) {
-		Reservation reservation = this.getReservation(id);
-		jedis.del(RESERVATION_KEY_PREFIX + id);
-		// delete reservation from reservations by entity on cache TODO
-		
-		return (Reservation) cosmosDB.delete(CosmosDBLayer.RESERVATIONS, reservation).getItem();
+		try {
+			Reservation reservation = this.getReservation(id);
+			// delete reservation from cache
+			jedis.del(RESERVATION_KEY_PREFIX + id);
+			// delete reservation from reservations by entity on cache 
+			jedis.srem(RESERVATION_ENTITY_KEY_PREFIX + reservation.getEntityId(), mapper.writeValueAsString(reservation));
+			// delete reservation from database
+			return (Reservation) cosmosDB.delete(CosmosDBLayer.RESERVATIONS, reservation).getItem();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

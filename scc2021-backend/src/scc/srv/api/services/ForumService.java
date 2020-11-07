@@ -99,11 +99,16 @@ public class ForumService  {
 	}
 
 	public Forum delete(String id) {
-		Forum forum = this.get(id);
-		jedis.del(FORUM_KEY_PREFIX + forum.getId());
-		// delete forum from forums by entity on cache TODO
-		
-		return (Forum) cosmosDB.delete(CosmosDBLayer.FORUMS, forum).getItem();
+		try {
+			Forum forum = this.get(id);
+			jedis.del(FORUM_KEY_PREFIX + forum.getId());
+			// delete forum from forums by entity on cache 
+			jedis.srem(FORUM_ENTITY_KEY_PREFIX + forum.getEntityId(), mapper.writeValueAsString(forum));
+			return (Forum) cosmosDB.delete(CosmosDBLayer.FORUMS, forum).getItem();
+		} catch( Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public Iterator<Forum> getForumByEntity(String entityId) {
