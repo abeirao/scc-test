@@ -1,6 +1,7 @@
 package scc.srv.api.services;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +22,8 @@ import scc.srv.api.ReservationAPI;
 
 public class ReservationService {
 
-	protected final String RESERVATION_KEY_PREFIX = "reservation: ";
-	protected final String RESERVATION_ENTITY_KEY_PREFIX = "entityReservations: ";
+	public static final String RESERVATION_KEY_PREFIX = "reservation: ";
+	public static final String RESERVATION_ENTITY_KEY_PREFIX = "entityReservations: ";
 	
 	ObjectMapper mapper = new ObjectMapper();
 	
@@ -35,19 +36,20 @@ public class ReservationService {
 	}
 
 	public Iterator<Reservation> getReservationsFromEntity(String entityId) {
-		ReservationSet reservations = null;
-		try {
-			reservations = mapper.readValue(jedis.get(RESERVATION_ENTITY_KEY_PREFIX + entityId), ReservationSet.class);
-								
-			if (reservations != null)
-				return reservations.getReservations().iterator(); 
-			
-			return cosmosDB.getReservationsByEntity(entityId).iterator();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
+		Set<Reservation> reservations = new HashSet<Reservation>();
+        Set<String> s = jedis.smembers(RESERVATION_ENTITY_KEY_PREFIX + entityId);
+        if (s != null) {
+	        s.forEach(x -> {
+	            try {
+	                reservations.add(mapper.readValue(x, Reservation.class));
+	            } catch (JsonProcessingException e) {
+	                e.printStackTrace();
+	            }
+	        });
+	        return reservations.iterator();
+        }				
+		return cosmosDB.getReservationsByEntity(entityId).iterator();
+		
 	}
 	
 	public Iterator<Reservation> getReservations() {		

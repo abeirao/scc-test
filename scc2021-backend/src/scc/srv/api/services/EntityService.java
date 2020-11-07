@@ -18,7 +18,7 @@ import scc.srv.api.EntityAPI;
 
 public class EntityService   {
 	
-	protected final String ENTITY_KEY_PREFIX = "entity: ";
+	public static final String ENTITY_KEY_PREFIX = "entity: ";
 
 	ObjectMapper mapper = new ObjectMapper();
 	
