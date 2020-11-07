@@ -35,15 +35,16 @@ public class EntityService   {
 		try {
 			entity = mapper.readValue(jedis.get(ENTITY_KEY_PREFIX + id), Entity.class);
 	
-			if (entity != null) 
-				return entity;
-			jedis.set(ENTITY_KEY_PREFIX + id, mapper.writeValueAsString(entity));
-			return cosmosDB.getEntity(id);
+			if (entity == null) {
+				entity = cosmosDB.getEntity(id);
+				jedis.set(ENTITY_KEY_PREFIX + id, mapper.writeValueAsString(entity));				
+			}
+			return entity;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
-		} 
+		} 		
 	}
 
 	public Entity create(Entity entity) {
