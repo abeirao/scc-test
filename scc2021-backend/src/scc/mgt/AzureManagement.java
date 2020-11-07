@@ -295,10 +295,11 @@ public class AzureManagement {
 
 	public static void main(String[] args) {
 		try {
-			final boolean CREATE_STORAGE = false;
+			final boolean CREATE_STORAGE = true;
 			final boolean CREATE_COSMOSDB = true;
 			final boolean CREATE_REDIS = true;
 		
+			// TODO
 			final String MY_SUFFIX = "50415"; // Add your suffix here
 			final String AZURE_COSMOSDB_NAME = "sccdbc" + MY_SUFFIX;	// Cosmos DB account name
 			final String AZURE_COSMOSDB_DATABASE = "scc" + MY_SUFFIX;	// Cosmos DB database name
