@@ -1,24 +1,16 @@
 package scc.srv.api.services;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import redis.clients.jedis.Jedis;
 import scc.data.CosmosDBLayer;
-import scc.data.Forum;
 import scc.data.Reservation;
-import scc.data.ReservationSet;
 import scc.redis.RedisCache;
-import scc.srv.api.ReservationAPI;
 
 public class ReservationService {
 
