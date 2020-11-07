@@ -1,20 +1,14 @@
 package scc.srv.api.services;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 import scc.data.CosmosDBLayer;
 import scc.data.Entity;
 import scc.data.Reservation;
 import scc.redis.RedisCache;
-import scc.srv.api.EntityAPI;
 
 public class EntityService   {
 	
