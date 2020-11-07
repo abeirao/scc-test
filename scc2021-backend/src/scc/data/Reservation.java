@@ -1,5 +1,7 @@
 package scc.data;
 
+import java.util.Arrays;
+
 import scc.srv.api.services.MediaService;
 
 public class Reservation {
@@ -45,5 +47,10 @@ public class Reservation {
 	}
 	public void setMedia(MediaService media) {
 		this.media = media;
+	}
+	
+	@Override
+	public String toString() {
+		return "Reservation [_rid=" + _rid + ", id=" + id + ", name=" + name;
 	}
 }
