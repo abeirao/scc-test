@@ -72,8 +72,8 @@ public class CosmosDBLayer {
 // TODO
 		db.createContainerIfNotExists(new CosmosContainerProperties(Containers.ENTITIES.toString().toLowerCase(), "/id"));
 		db.createContainerIfNotExists(new CosmosContainerProperties(Containers.RESERVATIONS.toString().toLowerCase(), "/entityId"));
-		db.createContainerIfNotExists(new CosmosContainerProperties(Containers.CALENDARS.toString().toLowerCase(), ""));
-		db.createContainerIfNotExists(new CosmosContainerProperties(Containers.FORUMS.toString().toLowerCase(), ""));
+		db.createContainerIfNotExists(new CosmosContainerProperties(Containers.CALENDARS.toString().toLowerCase(), "/id"));
+		db.createContainerIfNotExists(new CosmosContainerProperties(Containers.FORUMS.toString().toLowerCase(), "/id"));
 	}
 
 	public CosmosItemResponse<Object> delEntity(Entity entity) {
