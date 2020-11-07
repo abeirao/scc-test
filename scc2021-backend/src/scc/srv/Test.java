@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import scc.data.Entity;
 import scc.data.Reservation;
-import scc.data.ReservationSet;
 import scc.redis.RedisCache;
 import scc.srv.api.services.EntityService;
 import scc.srv.api.services.MediaService;
@@ -18,7 +17,6 @@ import scc.srv.api.services.ReservationService;
 import redis.clients.jedis.Jedis;
 
 public class Test {
-	
 	
 	public static void main(String[] args) {
 		
@@ -40,11 +38,7 @@ public class Test {
 			res.setId("0" + System.currentTimeMillis());
 			res.setEntityId(entityId);
 			
-			
-			
-			
 			testRedis(ent, res);
-			
 			testServices(ent, res);
 			
 		} catch (Exception e) {
