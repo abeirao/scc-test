@@ -101,6 +101,8 @@ public class ForumService  {
 	public Forum delete(String id) {
 		Forum forum = this.get(id);
 		jedis.del(FORUM_KEY_PREFIX + forum.getId());
+		// delete forum from forums by entity on cache TODO
+		
 		return (Forum) cosmosDB.delete(CosmosDBLayer.FORUMS, forum).getItem();
 	}
 	

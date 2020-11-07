@@ -84,6 +84,8 @@ public class ReservationService {
 	public Reservation deleteReservation(String id) {
 		Reservation reservation = this.getReservation(id);
 		jedis.del(RESERVATION_KEY_PREFIX + id);
+		// delete reservation from reservations by entity on cache TODO
+		
 		return (Reservation) cosmosDB.delete(CosmosDBLayer.RESERVATIONS, reservation).getItem();
 	}
 }
