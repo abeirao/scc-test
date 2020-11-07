@@ -59,7 +59,7 @@ public class Entity {
 				+ Arrays.toString(mediaIds) + ", calendarId=" + Arrays.toString(calendarIds) + ", listed=" + listed + "]";
 	}
 	
-	public static Entity getEntityFromString(String entityAsString) { 
+	public static Entity fromString(String entityAsString) { 
 		// parse an entity in the form of string to an entity object
 		
 		String _rid = entityAsString.substring(entityAsString.indexOf("rid="), entityAsString.indexOf(','));

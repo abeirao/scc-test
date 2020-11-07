@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -15,7 +16,7 @@ import scc.srv.api.EntityAPI;
 
 public class EntityService   {
 	
-	private final String ENTITY_KEY_PREFIX = "entity: ";
+	protected final String ENTITY_KEY_PREFIX = "entity: ";
 
 	ObjectMapper mapper = new ObjectMapper();
 	
@@ -30,7 +31,7 @@ public class EntityService   {
 	public Entity get(String id) { 
 		String entity = jedis.get(ENTITY_KEY_PREFIX + id);
 		if (entity != null)
-			return Entity.getEntityFromString(entity);
+			return Entity.fromString(entity);
 		return cosmosDB.getEntity(id);
 	}
 

@@ -46,6 +46,15 @@ public class Reservation {
 	public void setMedia(MediaService media) {
 		this.media = media;
 	}
+	
+	public String toString(Reservation reservation) {
+		// TODO
+		return null;
+	}
+	public static Reservation fromString(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 
