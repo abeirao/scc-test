@@ -5,6 +5,7 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -60,10 +61,19 @@ public class CosmosDBLayer {
 		if( db != null)
 			return;
 		db = client.getDatabase(DB_NAME);
+		createContainers();
 		entities = db.getContainer(Containers.ENTITIES.toString().toLowerCase());
 		reservations = db.getContainer(Containers.RESERVATIONS.toString().toLowerCase());
 		calendars = db.getContainer(Containers.CALENDARS.toString().toLowerCase());
 		forums = db.getContainer(Containers.FORUMS.toString().toLowerCase());
+	}
+
+	private void createContainers() {
+// TODO
+		db.createContainerIfNotExists(new CosmosContainerProperties(Containers.ENTITIES.toString(), "/id"));
+		db.createContainerIfNotExists(new CosmosContainerProperties(Containers.RESERVATIONS.toString(), "/entityId"));
+		//db.createContainerIfNotExists(new CosmosContainerProperties(Containers.CALENDARS.toString()));
+		//db.createContainerIfNotExists(new CosmosContainerProperties(Containers.FORUMS.toString()));
 	}
 
 	public CosmosItemResponse<Object> delEntity(Entity entity) {
@@ -107,7 +117,6 @@ public class CosmosDBLayer {
 		}		
 	}
 	
-	// TODO
 	public CosmosItemResponse<Object> put(String container, Object item) {
 		init();
 		switch (container) {
@@ -115,7 +124,7 @@ public class CosmosDBLayer {
 				return reservations.createItem(item);
 			case CALENDARS:
 				return calendars.createItem(item);
-			case ENTITIES:
+			case ENTITIES: 
 				return entities.createItem(item);
 			case FORUMS:
 				return forums.createItem(item);

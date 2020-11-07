@@ -44,7 +44,7 @@ public class EntityService   {
 	public Entity create(Entity entity) {
 		try {
 			 // add to db
-			cosmosDB.put(CosmosDBLayer.ENTITIES, mapper.writeValueAsString(entity));
+			cosmosDB.put(CosmosDBLayer.ENTITIES, entity);
 			// add to cache
 			jedis.set(ENTITY_KEY_PREFIX + entity.getId(), mapper.writeValueAsString(entity)); 
 			return entity;

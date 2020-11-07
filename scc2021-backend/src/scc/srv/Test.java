@@ -12,7 +12,6 @@ import scc.data.Entity;
 import scc.data.Reservation;
 import scc.redis.RedisCache;
 import scc.srv.api.services.EntityService;
-import scc.srv.api.services.MediaService;
 import scc.srv.api.services.ReservationService;
 import redis.clients.jedis.Jedis;
 
@@ -48,14 +47,15 @@ public class Test {
 	
 	/* test services */
 	public static void testServices(Entity ent, Reservation res) {
+		System.out.println(" TESTING SERVICES ");
 		EntityService entService = new EntityService();
 		ReservationService resService = new ReservationService();
 		
 		System.out.println(entService.create(ent).toString());
 		System.out.println(entService.get(ent.getId()).toString());
 		
-		System.out.println(resService.addReservation(res).toString());
-		System.out.println(resService.getReservation(res.getId()).toString());
+//		System.out.println(resService.addReservation(res).toString());
+//		System.out.println(resService.getReservation(res.getId()).toString());
 	}
 	
 	/* test redis */
