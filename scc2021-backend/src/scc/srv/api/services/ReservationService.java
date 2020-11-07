@@ -15,6 +15,7 @@ import redis.clients.jedis.Jedis;
 import scc.data.CosmosDBLayer;
 import scc.data.Forum;
 import scc.data.Reservation;
+import scc.data.ReservationSet;
 import scc.redis.RedisCache;
 import scc.srv.api.ReservationAPI;
 
@@ -34,21 +35,19 @@ public class ReservationService {
 	}
 
 	public Iterator<Reservation> getReservationsFromEntity(String entityId) {
-		Set<Reservation> reservations = null;
+		ReservationSet reservations = null;
 		try {
-			reservations = mapper.readValues(jedis.get(RESERVATION_ENTITY_KEY_PREFIX + entityId), new TypeReference<List<Reservation>>() {});
-						
-		} catch (JsonMappingException e) {
+			reservations = mapper.readValue(jedis.get(RESERVATION_ENTITY_KEY_PREFIX + entityId), ReservationSet.class);
+								
+			if (reservations != null)
+				return reservations.getReservations().iterator(); 
+			
+			return cosmosDB.getReservationsByEntity(entityId).iterator();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		
-		if (reservations != null)
-			return reservations.iterator(); 
-		return cosmosDB.getReservationsByEntity(entityId).iterator();
+			return null;
+		}
 	}
 	
 	public Iterator<Reservation> getReservations() {		
@@ -73,17 +72,17 @@ public class ReservationService {
 	public Reservation getReservation(String id) {
 		Reservation reservation = null;
 		try {
-			reservation = mapper.readValue(jedis.get(RESERVATION_KEY_PREFIX + id), Reservation.class);
-		} catch (JsonMappingException e) {
+			reservation = mapper.readValue(jedis.get(RESERVATION_KEY_PREFIX + id), Reservation.class);		
+			if (reservation == null) {
+				reservation = cosmosDB.getReservation(id);				
+				jedis.set(RESERVATION_KEY_PREFIX + id, mapper.writeValueAsString(reservation));				
+			}
+			return reservation;
 			
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
+			return null;
 		}
-		if (reservation == null)
-			reservation = cosmosDB.getReservation(id);
-		
-		return reservation;
 	}
 
 	public Reservation deleteReservation(String id) {

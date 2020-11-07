@@ -34,27 +34,30 @@ public class EntityService   {
 		Entity entity = null;
 		try {
 			entity = mapper.readValue(jedis.get(ENTITY_KEY_PREFIX + id), Entity.class);
-		} catch (JsonMappingException e) {
+	
+			if (entity != null) 
+				return entity;
+			jedis.set(ENTITY_KEY_PREFIX + id, mapper.writeValueAsString(entity));
+			return cosmosDB.getEntity(id);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (entity != null)
-			return entity;
-		return cosmosDB.getEntity(id);
+			return null;
+		} 
 	}
 
 	public Entity create(Entity entity) {
 		try {
+			 // add to db
 			cosmosDB.put(CosmosDBLayer.ENTITIES, mapper.writeValueAsString(entity));
-		} catch (JsonProcessingException e) {
+			// add to cache
+			jedis.set(ENTITY_KEY_PREFIX + entity.getId(), mapper.writeValueAsString(entity)); 
+			return entity;
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} // add to db
-		jedis.set(ENTITY_KEY_PREFIX + entity.getId(), entity.toString()); // add to cache
-		return entity;
+			return null;
+		}
 	}
 
 	public Entity delete(String id) {
