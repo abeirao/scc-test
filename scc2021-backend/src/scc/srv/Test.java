@@ -40,18 +40,28 @@ public class Test {
 			res.setId("0" + System.currentTimeMillis());
 			res.setEntityId(entityId);
 			
-			EntityService entService = new EntityService();
-			ReservationService resService = new ReservationService();
 			
-//			System.out.println(entService.create(ent).toString());
-//			System.out.println(entService.get(ent.getId()).toString());
 			
 			
 			testRedis(ent, res);
 			
+			testServices(ent, res);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/* test services */
+	public static void testServices(Entity ent, Reservation res) {
+		EntityService entService = new EntityService();
+		ReservationService resService = new ReservationService();
+		
+		System.out.println(entService.create(ent).toString());
+		System.out.println(entService.get(ent.getId()).toString());
+		
+		System.out.println(resService.addReservation(res).toString());
+		System.out.println(resService.getReservation(res.getId()).toString());
 	}
 	
 	/* test redis */
@@ -87,6 +97,8 @@ public class Test {
 			while(it.hasNext()) {
 				System.out.println(it.next().toString());
 			}
+			
+			// 
 			
 		} catch (Exception e) {
 			e.printStackTrace();
