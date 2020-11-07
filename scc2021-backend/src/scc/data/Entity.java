@@ -58,4 +58,9 @@ public class Entity {
 		return "Entity [_rid=" + _rid + ", id=" + id + ", name=" + name + ", description=" + description + ", mediaID="
 				+ Arrays.toString(mediaIds) + ", calendarId=" + Arrays.toString(calendarIds) + ", listed=" + listed + "]";
 	}
+	
+	public static Entity getEntityFromString(String entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
