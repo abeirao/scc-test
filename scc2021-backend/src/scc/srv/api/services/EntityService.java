@@ -20,15 +20,15 @@ public class EntityService   {
 	ObjectMapper mapper = new ObjectMapper();
 	
 	private CosmosDBLayer cosmosDB;
-	private Jedis redis;
+	private Jedis jedis;
 	
 	public EntityService() {
 		cosmosDB =  CosmosDBLayer.getInstance();
-		redis = RedisCache.getCachePool().getResource();
+		jedis = RedisCache.getCachePool().getResource();
 	}
 	
 	public Entity get(String id) { 
-		String entity = redis.get(ENTITY_KEY_PREFIX + id);
+		String entity = jedis.get(ENTITY_KEY_PREFIX + id);
 		if (entity != null)
 			return Entity.getEntityFromString(entity);
 		return cosmosDB.getEntity(id);
@@ -36,19 +36,19 @@ public class EntityService   {
 
 	public Entity create(Entity entity) {
 		cosmosDB.put(CosmosDBLayer.ENTITIES, entity);
-		redis.set(ENTITY_KEY_PREFIX + entity.getId(), entity.toString());
+		jedis.set(ENTITY_KEY_PREFIX + entity.getId(), entity.toString());
 		return entity;
 	}
 
 	public Entity delete(String id) {
 		Entity entity = this.get(id);
-		redis.del(ENTITY_KEY_PREFIX + id);
+		jedis.del(ENTITY_KEY_PREFIX + id);
 		return (Entity) cosmosDB.delete(CosmosDBLayer.ENTITIES, entity).getItem();
 	}
 
 	public Entity update(Entity entity) {
 		cosmosDB.put(CosmosDBLayer.ENTITIES, entity);
-		redis.set(ENTITY_KEY_PREFIX + entity.getId(), entity.toString());
+		jedis.set(ENTITY_KEY_PREFIX + entity.getId(), entity.toString());
 		return entity;
 	}
 	
