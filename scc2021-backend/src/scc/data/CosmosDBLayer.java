@@ -118,7 +118,7 @@ public class CosmosDBLayer {
 			case ENTITIES:
 				return entities.createItem(item);
 			case FORUMS:
-				return forums.deleteItem(item, new CosmosItemRequestOptions());
+				return forums.createItem(item);
 			default:
 				return null;
 		}
