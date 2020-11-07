@@ -22,7 +22,7 @@ public class Test {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 
-			String entityId = "0" + System.currentTimeMillis();
+			String entityId = "0";
 			Entity ent = new Entity();
 			ent.setId(entityId);
 			ent.setName("SCC " + entityId);
@@ -34,7 +34,7 @@ public class Test {
 			Reservation res = new Reservation();
 			res.setName("very nice reservation");
 			res.setDay("day 0");
-			res.setId("0" + System.currentTimeMillis());
+			res.setId("0");
 			res.setEntityId(entityId);
 			
 			testRedis(ent, res);
@@ -54,8 +54,12 @@ public class Test {
 		System.out.println(entService.create(ent).toString());
 		System.out.println(entService.get(ent.getId()).toString());
 		
-//		System.out.println(resService.addReservation(res).toString());
-//		System.out.println(resService.getReservation(res.getId()).toString());
+		System.out.println(resService.addReservation(res).toString());
+		System.out.println(resService.getReservation(res.getId()).toString());
+		
+		
+		System.out.println(resService.deleteReservation("0"));
+		System.out.println(resService.getReservation(res.getId()).toString());
 	}
 	
 	/* test redis */
