@@ -30,15 +30,19 @@ public class PageService {
 	public Iterator<Entity> popularEntities() {
 		// popular entities are the ones in the cache
 		Set<String> keys = jedis.keys(EntityService.ENTITY_KEY_PREFIX + "*");
-		Set<Entity> entities = new HashSet<Entity>();
-		for (String key : keys) {
-			try {
-				entities.add(mapper.readValue(jedis.get(key), Entity.class));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }  
-		} 	
-		return entities.iterator();
+		if (keys.size() > 0) {
+			Set<Entity> entities = new HashSet<Entity>();
+			for (String key : keys) {
+				try {
+					entities.add(mapper.readValue(jedis.get(key), Entity.class));
+	            } catch (JsonProcessingException e) {
+	                e.printStackTrace();
+	            }  
+			} 	
+			return entities.iterator();
+		}
+		else  // if no entities are in cache, return all entities
+			return new EntityService().getAll();		
 	}
 
 	

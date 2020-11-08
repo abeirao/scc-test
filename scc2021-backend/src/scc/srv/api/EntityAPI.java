@@ -1,5 +1,7 @@
 package scc.srv.api;
 
+import java.util.Iterator;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -89,5 +91,10 @@ public interface EntityAPI {
 	@POST
 	@Path("/{id}/reservations")
 	@Consumes(MediaType.APPLICATION_JSON)
-	void createReservation(@PathParam("id") String id, Reservation reservation);	
+	void createReservation(@PathParam("id") String id, Reservation reservation);
+
+	@GET
+	@Path("")
+	@Produces(MediaType.APPLICATION_JSON)
+	Iterator<Entity> getAll();	
 }

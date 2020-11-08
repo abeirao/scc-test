@@ -4,6 +4,7 @@ import scc.data.Entity;
 import scc.data.Reservation;
 import scc.srv.api.EntityAPI;
 import scc.srv.api.services.EntityService;
+import java.util.Iterator;
 
 public class EntityController implements EntityAPI {
 
@@ -13,6 +14,11 @@ public class EntityController implements EntityAPI {
 		this.entities = new EntityService();
 	}
 
+	@Override
+	public Iterator<Entity> getAll() { 
+		return entities.getAll();
+	}
+	
 	@Override
 	public Entity get(String id) {
 		return entities.get(id);

@@ -10,6 +10,8 @@ import scc.data.Entity;
 import scc.data.Reservation;
 import scc.redis.RedisCache;
 
+import java.util.Iterator;
+
 public class EntityService   {
 	
 	public static final String ENTITY_KEY_PREFIX = "entity: ";
@@ -22,6 +24,10 @@ public class EntityService   {
 	public EntityService() {
 		cosmosDB =  CosmosDBLayer.getInstance();
 		jedis = RedisCache.getCachePool().getResource();
+	}
+	
+	public Iterator<Entity> getAll() {
+		return cosmosDB.getAllEntities().iterator(); 		
 	}
 	
 	public Entity get(String id) { 
