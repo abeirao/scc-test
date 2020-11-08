@@ -301,7 +301,7 @@ public class AzureManagement {
 		
 			// TODO
 			final String MY_SUFFIX = "50415"; // Add your suffix here
-			final String AZURE_COSMOSDB_NAME = "sccdbc" + MY_SUFFIX;	// Cosmos DB account name
+			final String AZURE_COSMOSDB_NAME = "scc-cosmos-" + MY_SUFFIX;	// Cosmos DB account name
 			final String AZURE_COSMOSDB_DATABASE = "scc" + MY_SUFFIX;	// Cosmos DB database name
 			final String[] BLOB_CONTAINERS = { "images" };	// Containers to add to the blob storage
 
