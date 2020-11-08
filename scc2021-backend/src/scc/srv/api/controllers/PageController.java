@@ -1,5 +1,6 @@
 package scc.srv.api.controllers;
 
+import java.util.Iterator;
 import java.util.List;
 
 import scc.data.Entity;
@@ -15,7 +16,7 @@ public class PageController implements PageAPI {
 	}
 
 	@Override
-	public List<Entity> popularEntities() {
+	public Iterator<Entity> popularEntities() {
 		return pages.popularEntities();
 	}
 

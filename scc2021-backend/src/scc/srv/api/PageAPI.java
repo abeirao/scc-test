@@ -2,6 +2,7 @@ package scc.srv.api;
 
 import scc.data.*;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -20,7 +21,7 @@ public interface PageAPI {
 	@GET
 	@Path("/entities")
 	@Produces(MediaType.APPLICATION_JSON)
-	List<Entity> popularEntities();
+	Iterator<Entity> popularEntities();
 	
 	@GET
 	@Path("/entities/listed/{entityId}")
