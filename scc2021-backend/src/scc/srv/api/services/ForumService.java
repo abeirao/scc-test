@@ -83,8 +83,8 @@ public class ForumService  {
 
 	public String reply(String forumId, ForumMessage messageToReply, ForumMessage newMessage) {
 		Forum forum = cosmosDB.getForum(forumId);
-		// TODO 
-		
+		// TODO
+		forum.getMessages().add(newMessage);
 		
 		// update
 		cosmosDB.put(CosmosDBLayer.FORUMS, forum);
@@ -93,8 +93,7 @@ public class ForumService  {
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		}		
 		return newMessage.getMsg();
 	}
 
