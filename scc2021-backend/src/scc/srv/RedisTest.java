@@ -1,4 +1,4 @@
-package scc.redis;
+package scc.srv;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import redis.clients.jedis.Jedis;
 import scc.data.Entity;
 import scc.data.Reservation;
+import scc.redis.RedisCache;
 import scc.srv.api.services.EntityService;
 import scc.srv.api.services.MediaService;
 import scc.srv.api.services.ReservationService;
