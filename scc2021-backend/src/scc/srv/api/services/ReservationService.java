@@ -73,8 +73,7 @@ public class ReservationService {
 				reservation = cosmosDB.getReservation(id);				
 				jedis.set(RESERVATION_KEY_PREFIX + id, mapper.writeValueAsString(reservation));				
 			}
-			return reservation;
-			
+			return reservation;			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

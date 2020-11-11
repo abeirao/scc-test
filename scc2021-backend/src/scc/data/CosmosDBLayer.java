@@ -13,6 +13,10 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedIterable;
 
 public class CosmosDBLayer {
+	
+	// TODO geo replication
+	// https://docs.microsoft.com/en-gb/azure/cosmos-db/how-to-multi-master?tabs=api-async
+	
 	private static final String CONNECTION_URL = "https://scc-cosmos-50415.documents.azure.com:443/";
 	private static final String DB_KEY = "bbgF4Re4UQMuEsX0MZSEjuLDCZdMU76srR5VLAnaluK5QuXKcZUeKeFPEp8mMAgZwTMcAUz6T8oW61WTIh5ymg==";//primary connection string> "AccountEndpoint=https://scc-cosmos-50415.documents.azure.com:443/;AccountKey=bbgF4Re4UQMuEsX0MZSEjuLDCZdMU76srR5VLAnaluK5QuXKcZUeKeFPEp8mMAgZwTMcAUz6T8oW61WTIh5ymg==;";
 	private static final String DB_NAME = "scc50415p";

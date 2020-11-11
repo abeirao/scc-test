@@ -1,5 +1,6 @@
 package scc.srv;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -9,9 +10,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import scc.data.Entity;
+import scc.data.Forum;
+import scc.data.ForumMessage;
 import scc.data.Reservation;
 import scc.redis.RedisCache;
 import scc.srv.api.services.EntityService;
+import scc.srv.api.services.ForumService;
 import scc.srv.api.services.ReservationService;
 import redis.clients.jedis.Jedis;
 
@@ -20,9 +24,8 @@ public class Test {
 	public static void main(String[] args) {
 		
 		try {
-			ObjectMapper mapper = new ObjectMapper();
 
-			String entityId = "0";
+			String entityId = "0" + System.currentTimeMillis();
 			Entity ent = new Entity();
 			ent.setId(entityId);
 			ent.setName("SCC " + entityId);
@@ -34,11 +37,18 @@ public class Test {
 			Reservation res = new Reservation();
 			res.setName("very nice reservation");
 			res.setDay("day 0");
-			res.setId("0");
+			res.setId("0" + System.currentTimeMillis());
 			res.setEntityId(entityId);
 			
+
+			Forum forum = new Forum();
+			forum.setId("0" + System.currentTimeMillis());
+			forum.setEntityId(ent.getId());
+			forum.setMessages(new ArrayList<ForumMessage>());
+			forum.setFrom("john");
+			
 			testRedis(ent, res);
-			testServices(ent, res);
+			testServices(ent, res, forum);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -46,20 +56,26 @@ public class Test {
 	}
 	
 	/* test services */
-	public static void testServices(Entity ent, Reservation res) {
+	public static void testServices(Entity ent, Reservation res, Forum forum) {
 		System.out.println(" TESTING SERVICES ");
-		EntityService entService = new EntityService();
-		ReservationService resService = new ReservationService();
+		EntityService entityService = new EntityService();
+		ReservationService reservationService = new ReservationService();
+		ForumService forumService = new ForumService();
 		
-		System.out.println(entService.create(ent).toString());
-		System.out.println(entService.get(ent.getId()).toString());
+
+		System.out.println("Entity");
+		System.out.println(entityService.create(ent).toString());
+		System.out.println(entityService.get(ent.getId()).toString());
+
+		System.out.println("Reservation");
+		System.out.println(reservationService.addReservation(res).toString());
+		System.out.println(reservationService.getReservation(res.getId()).toString());
 		
-		System.out.println(resService.addReservation(res).toString());
-		System.out.println(resService.getReservation(res.getId()).toString());
+		System.out.println("Forum");
+		System.out.println(forumService.create(forum).toString());
+		System.out.println(forumService.get(forum.getId()).toString());
+		System.out.println(forumService.getForumByEntity(ent.getId()).toString());
 		
-		
-		System.out.println(resService.deleteReservation("0"));
-		System.out.println("should print null: " + resService.getReservation(res.getId()).toString());
 	}
 	
 	/* test redis */

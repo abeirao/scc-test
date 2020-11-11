@@ -34,7 +34,7 @@ public class ForumService  {
 	public Forum get(String id) {
 		Forum forum = null;
 		try {
-			forum = mapper.readValue(jedis.get(FORUM_KEY_PREFIX + id), Forum.class);
+//			forum = mapper.readValue(jedis.get(FORUM_KEY_PREFIX + id), Forum.class);
 		
 			if (forum == null) {
 				forum = cosmosDB.getForum(id);
