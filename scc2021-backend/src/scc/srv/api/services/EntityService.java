@@ -87,15 +87,6 @@ public class EntityService   {
 		this.update(entity); // update entity 
 	}
 	
-	public void addCalendar(String id, String calendarId) {
-		Entity entity = cosmosDB.getEntity(id);
-		String[] calendarIds = entity.getMediaIds();
-		calendarIds = new String[calendarIds.length+1];
-		calendarIds[calendarIds.length-1] = calendarId;	
-		
-		this.update(entity);
-	}
-	
 
 	public void createReservation(String id, Reservation reservation) {
 		Entity entity = cosmosDB.getEntity(id);

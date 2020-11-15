@@ -32,7 +32,7 @@ public class Test {
 			ent.setDescription("The best hairdresser");
 			ent.setListed(true);
 			ent.setMediaIds(new String[] {"456"});
-			ent.setCalendarIds(new String[] {"456"});
+			ent.setCalendarId("4");
 
 			Reservation res = new Reservation();
 			res.setName("very nice reservation");

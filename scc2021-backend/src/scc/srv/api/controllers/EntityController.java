@@ -40,11 +40,6 @@ public class EntityController implements EntityAPI {
 	}
 
 	@Override
-	public void addCalendar(String id, String calendarId) {
-		entities.addCalendar(id, calendarId);
-	}
-
-	@Override
 	public void addMedia(String id, String mediaId) {
 		entities.addMedia(id, mediaId);
 	}

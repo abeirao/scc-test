@@ -8,7 +8,7 @@ public class Entity {
 	private String name;
 	private String description;
 	private String[] mediaIds;
-	private String[] calendarIds;
+	private String calendarId;
 	private boolean listed;
 
 	public String get_rid() {
@@ -41,11 +41,11 @@ public class Entity {
 	public void setMediaIds(String[] mediaIds) {
 		this.mediaIds = mediaIds;
 	}
-	public String[] getCalendarIds() {
-		return calendarIds;
+	public String getCalendarId() {
+		return calendarId;
 	}
-	public void setCalendarIds(String[] calendarIds) {
-		this.calendarIds = calendarIds;
+	public void setCalendarId(String calendarIds) {
+		this.calendarId = calendarIds;
 	}
 	public boolean isListed() {
 		return listed;
@@ -56,6 +56,6 @@ public class Entity {
 	@Override
 	public String toString() {
 		return "Entity [_rid=" + _rid + ", id=" + id + ", name=" + name + ", description=" + description + ", mediaID="
-				+ Arrays.toString(mediaIds) + ", calendarId=" + Arrays.toString(calendarIds) + ", listed=" + listed + "]";
+				+ Arrays.toString(mediaIds) + ", calendarId=" + calendarId + ", listed=" + listed + "]";
 	}
 }

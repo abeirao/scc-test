@@ -32,7 +32,7 @@ public class RedisTest {
 			ent.setDescription("The best hairdresser");
 			ent.setListed(true);
 			ent.setMediaIds(new String[] {"456"});
-			ent.setCalendarIds(new String[] {"456"});
+			ent.setCalendarId("456");
 			
 			String day = "Monday";
 			String resId = "1" + System.currentTimeMillis();

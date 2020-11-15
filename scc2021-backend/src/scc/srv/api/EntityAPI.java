@@ -66,16 +66,6 @@ public interface EntityAPI {
 	/**
 	 * 
 	 * @param id
-	 * @param calendarId
-	 */
-	@PUT
-	@Path("/{id}/calendar/{calendarId}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	void addCalendar(@PathParam("id") String id, @PathParam("calendarId") String calendarId);
-	
-	/**
-	 * 
-	 * @param id
 	 * @param mediaId
 	 */
 	@PUT
