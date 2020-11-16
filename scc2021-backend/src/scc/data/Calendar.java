@@ -11,7 +11,6 @@ public class Calendar {
     private String[] availableDays;
     private Map<String, Reservation> reservations;
     private Map <String, String> calendarEntry;
-
 	public String get_rid() {
 		return _rid;
 	}

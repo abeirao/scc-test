@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import redis.clients.jedis.Jedis;
+import scc.data.Calendar;
 import scc.data.CosmosDBLayer;
 import scc.data.Entity;
 import scc.data.Reservation;
@@ -31,7 +32,7 @@ public class EntityService   {
 	}
 	
 	public Entity get(String id) { 
-		Entity entity = null;
+		Entity entity;
 		try {
 			entity = mapper.readValue(jedis.get(ENTITY_KEY_PREFIX + id), Entity.class);
 	
@@ -83,13 +84,21 @@ public class EntityService   {
 		
 		this.update(entity); // update entity 
 	}
-	
+
 
 	public void createReservation(String id, Reservation reservation) {
-		Entity entity = cosmosDB.getEntity(id);
-		 
-		// TODO - create reservation for this entity
-		// should call other service's methods ???
+		Entity entity = this.get(id);
+		CalendarService cs = new CalendarService();
+		ReservationService rs = new ReservationService();
+		Calendar calendar = cs.get(entity.getCalendarId());
+		calendar.putReservation(id, reservation);
+		cs.update(calendar);
+		rs.addReservation(reservation);
+
+//é preciso checkar se esta merda pode ou nao adicionar e cenas dessas ?
+//isto so estar a chamar servicos
+		//TODO Testar isto
+
 	}
-	
+
 }

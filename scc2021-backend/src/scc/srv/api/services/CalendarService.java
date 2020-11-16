@@ -1,9 +1,9 @@
 package scc.srv.api.services;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,8 +11,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import redis.clients.jedis.Jedis;
 import scc.data.Calendar;
 import scc.data.CosmosDBLayer;
+import scc.data.Entity;
+import scc.data.Reservation;
 import scc.redis.RedisCache;
 import scc.srv.api.CalendarAPI;
+
+import javax.swing.text.html.HTMLDocument;
 
 public class CalendarService {
 	
@@ -29,7 +33,7 @@ public class CalendarService {
 	}
 
 	public Calendar get(String id) {
-		Calendar calendar = null;
+		Calendar calendar;
 		try {
 			calendar = mapper.readValue(jedis.get(CALENDAR_KEY_PREFIX + id), Calendar.class);
 		
@@ -47,7 +51,10 @@ public class CalendarService {
 
 
 	public Calendar create(Calendar calendar) {
-		cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
+		//CosmosItemResponse response = cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
+		//if(response.getStatusCode() != 201){
+			//rebentar isto tudo, faz sentido não ? adicionar isto em td o lado ?
+		//}
 		try {
 			jedis.set(CALENDAR_KEY_PREFIX + calendar.getId(), mapper.writeValueAsString(calendar));
 		} catch (JsonProcessingException e) {
@@ -61,11 +68,7 @@ public class CalendarService {
 		Calendar calendar = null;
 		try {
 			calendar = mapper.readValue(jedis.get(CALENDAR_KEY_PREFIX + id), Calendar.class);
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
+		}  catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
 		if (calendar == null)
@@ -76,10 +79,42 @@ public class CalendarService {
 		return (Calendar) cosmosDB.delete(CosmosDBLayer.CALENDARS, calendar).getItem();
 	}
 
+	public Calendar update(Calendar calendar) {
+		cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
+		try {
+			jedis.set(CALENDAR_KEY_PREFIX + calendar.getId(), mapper.writeValueAsString(calendar));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return calendar;
+	}
+
 	public Map<String, String> getCalendarEntry(String id, String date) {
-		// TODO Auto-generated method stub
+
 		
 		return null;
+	}
+
+
+	public Iterator<Pair<Date, Date>> getAvailablePeriods(String calendarId){
+		//ideia, e o stor fala "information about available periods", ou seja uma lista com periodos de datas ? que ele tem disponivel, pode ser uma valor default, tipo ves 30 dias do dia
+		//	da querie, ou com queries personalizadas mas isso ]e to much pa mim
+		Calendar calendar = this.get(calendarId);
+
+
+		//Isto só é possivel dps de perceber como é suposto date ser uma string e nao haver uma lista organizada por datas no calendar
+
+
+
+
+		return null;
+	}
+
+	public Iterator<Reservation> getReservations(String calendarId){
+		//" a list of reservations." ou seja as reservations de um calendar
+		Calendar calendar = this.get(calendarId);
+		Map<String, Reservation> reservation = calendar.getReservations();
+		return reservation.values().iterator();
 	}
 
 }
