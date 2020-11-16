@@ -51,15 +51,16 @@ public class CalendarService {
 
 
 	public Calendar create(Calendar calendar) {
-		CosmosItemResponse response = cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
-		//if(response.getStatusCode() != 201){
-			//rebentar isto tudo, faz sentido não ? adicionar isto em td o lado ?
-		//}
 		try {
+			CosmosItemResponse response = cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
+			//if(response.getStatusCode() != 201){
+				//rebentar isto tudo, faz sentido não ? adicionar isto em td o lado ?
+			//}
+		
 			jedis.set(CALENDAR_KEY_PREFIX + calendar.getId(), mapper.writeValueAsString(calendar));
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
 		return calendar;
 	}
