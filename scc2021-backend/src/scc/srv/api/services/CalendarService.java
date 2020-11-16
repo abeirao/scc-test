@@ -51,7 +51,7 @@ public class CalendarService {
 
 
 	public Calendar create(Calendar calendar) {
-		//CosmosItemResponse response = cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
+		CosmosItemResponse response = cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
 		//if(response.getStatusCode() != 201){
 			//rebentar isto tudo, faz sentido não ? adicionar isto em td o lado ?
 		//}

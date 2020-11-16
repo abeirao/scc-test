@@ -87,15 +87,17 @@ public class EntityService   {
 	}
 
 
-	public void createReservation(String id, Reservation reservation, Date day) {
+	public void createReservation(String id, Reservation reservation) {
 		Entity entity = this.get(id);
 		CalendarService cs = new CalendarService();
 		ReservationService rs = new ReservationService();
 		Calendar calendar = cs.get(entity.getCalendarId());
-		calendar.putReservation(id, reservation, day);
+		calendar.putReservation(id, reservation, new Date(reservation.getDay()));
 		cs.update(calendar);
 		rs.addReservation(reservation);
-
+		
+		this.update(entity);
+		
 //é preciso checkar se esta merda pode ou nao adicionar e cenas dessas ?
 //isto so estar a chamar servicos
 		//TODO Testar isto

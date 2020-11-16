@@ -4,6 +4,8 @@ import scc.data.Entity;
 import scc.data.Reservation;
 import scc.srv.api.EntityAPI;
 import scc.srv.api.services.EntityService;
+
+import java.util.Date;
 import java.util.Iterator;
 
 public class EntityController implements EntityAPI {
