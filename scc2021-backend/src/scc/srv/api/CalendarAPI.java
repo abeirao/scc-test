@@ -1,5 +1,6 @@
 package scc.srv.api;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -46,18 +47,12 @@ public interface CalendarAPI {
 	 */
 	@DELETE
 	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Calendar delete(@PathParam("id") String id);	
-	
-	/**
-	 * 
-	 * @param id
-	 * @param date
-	 * @return
-	 */
+	public Calendar delete(@PathParam("id") String id);
+
 	@GET
-	@Path("/{id}/date/{date}")
+	@Path("/days/{calendarId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Map<String, String> getCalendarEntry(@PathParam("id") String id, @PathParam("date") String date);
+	public Date[] getAvailablePeriods(String calendarId);	
+	
 }

@@ -1,5 +1,6 @@
 package scc.srv.api.controllers;
 
+import java.util.Date;
 import java.util.Map;
 
 import scc.data.Calendar;
@@ -30,10 +31,8 @@ public class CalendarController implements CalendarAPI {
 	}
 
 	@Override
-	public Map<String, String> getCalendarEntry(String id, String date) {
-		return calendars.getCalendarEntry(id, date);
+	public Date[] getAvailablePeriods(String calendarId){
+		return calendars.getAvailablePeriods(calendarId);
 	}
-	
-	
 
 }
