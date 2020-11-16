@@ -12,6 +12,8 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedIterable;
 
+import java.util.ArrayList;
+
 public class CosmosDBLayer {
 	
 	// TODO geo replication
@@ -20,7 +22,8 @@ public class CosmosDBLayer {
 	private static final String CONNECTION_URL = "https://scc-cosmos-50415.documents.azure.com:443/";
 	private static final String DB_KEY = "bbgF4Re4UQMuEsX0MZSEjuLDCZdMU76srR5VLAnaluK5QuXKcZUeKeFPEp8mMAgZwTMcAUz6T8oW61WTIh5ymg==";//primary connection string> "AccountEndpoint=https://scc-cosmos-50415.documents.azure.com:443/;AccountKey=bbgF4Re4UQMuEsX0MZSEjuLDCZdMU76srR5VLAnaluK5QuXKcZUeKeFPEp8mMAgZwTMcAUz6T8oW61WTIh5ymg==;";
 	private static final String DB_NAME = "scc50415p";
-	
+	//private static final String REGION = ""; Geo-Replication qual é a região ?
+
 	enum Containers {
 		ENTITIES, RESERVATIONS, CALENDARS, FORUMS
 	}
@@ -36,10 +39,19 @@ public class CosmosDBLayer {
 		if( instance != null)
 			return instance;
 
+
+		//GEO REPLICATION CODE
+		//ArrayList<String> preferredRegions = new ArrayList<String>();
+		//preferredRegions.add(REGION);
+
+
+
 		CosmosClient client = new CosmosClientBuilder()
 		         .endpoint(CONNECTION_URL)
 		         .key(DB_KEY)
 		         .directMode()		// comment this is not to use direct mode
+				 //.multipleWriteRegionsEnabled(true) Descomentar para testar geoReplication
+				 //.preferredRegions(preferredRegions)
 		         .consistencyLevel(ConsistencyLevel.SESSION)
 		         .connectionSharingAcrossClientsEnabled(true)
 		         .contentResponseOnWriteEnabled(true)
@@ -64,6 +76,7 @@ public class CosmosDBLayer {
 	private synchronized void init() {
 		if( db != null)
 			return;
+
 		db = client.getDatabase(DB_NAME);
 		createContainers();
 		entities = db.getContainer(Containers.ENTITIES.toString().toLowerCase());

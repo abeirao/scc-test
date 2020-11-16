@@ -44,8 +44,8 @@ public class Entity {
 	public String getCalendarId() {
 		return calendarId;
 	}
-	public void setCalendarId(String calendarIds) {
-		this.calendarId = calendarIds;
+	public void setCalendarId(String calendarId) {
+		this.calendarId = calendarId;
 	}
 	public boolean isListed() {
 		return listed;
