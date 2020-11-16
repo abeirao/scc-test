@@ -64,10 +64,9 @@ public class Calendar {
 		this.calendarEntry = calendarEntry;
 	}
 
-	public void putReservation(String entityId, Reservation reservation) { 
+	public void putReservation(String entityId, Reservation reservation, Date day) { 
 		reservations.put(entityId, reservation); 
-		Date d = new Date();
-		calendarEntry.put(d, reservation);
+		calendarEntry.put(day, reservation);
 		
 	}
 	

@@ -11,6 +11,7 @@ import scc.data.Entity;
 import scc.data.Reservation;
 import scc.redis.RedisCache;
 
+import java.util.Date;
 import java.util.Iterator;
 
 public class EntityService   {
@@ -86,12 +87,12 @@ public class EntityService   {
 	}
 
 
-	public void createReservation(String id, Reservation reservation) {
+	public void createReservation(String id, Reservation reservation, Date day) {
 		Entity entity = this.get(id);
 		CalendarService cs = new CalendarService();
 		ReservationService rs = new ReservationService();
 		Calendar calendar = cs.get(entity.getCalendarId());
-		calendar.putReservation(id, reservation);
+		calendar.putReservation(id, reservation, day);
 		cs.update(calendar);
 		rs.addReservation(reservation);
 
