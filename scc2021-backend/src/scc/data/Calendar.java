@@ -1,5 +1,6 @@
 package scc.data;
 
+import java.util.Date;
 import java.util.Map;
 
 public class Calendar {
@@ -8,9 +9,10 @@ public class Calendar {
     private String id;
     private String name;
     private String description;
-    private String[] availableDays;
-    private Map<String, Reservation> reservations;
-    private Map <String, String> calendarEntry;
+    private Date[] availableDays;
+    private Map <String, Reservation> reservations;
+    private Map <Date, Reservation> calendarEntry;
+    
 	public String get_rid() {
 		return _rid;
 	}
@@ -41,11 +43,12 @@ public class Calendar {
 		this.description = description;
 	}
 
-	public String[] getAvailableDays() {
+	public Date[] getAvailableDays() {
 		return availableDays;
+		//TODO
 	}
 
-	public void setAvailableDays(String[] availableDays) {
+	public void setAvailableDays(Date[] availableDays) {
 		this.availableDays = availableDays;
 	}
 
@@ -57,13 +60,18 @@ public class Calendar {
 		this.reservations = reservations;
 	}
 
-	public void setCalendarEntry(Map<String, String> calendarEntry) {
+	public void setCalendarEntry(Map<Date, Reservation> calendarEntry) {
 		this.calendarEntry = calendarEntry;
 	}
 
-	public void putReservation(String entityId, Reservation reservation) { reservations.put(entityId, reservation); }
+	public void putReservation(String entityId, Reservation reservation) { 
+		reservations.put(entityId, reservation); 
+		Date d = new Date();
+		calendarEntry.put(d, reservation);
+		
+	}
 	
 	public Reservation getReservationById(String entityId) { return reservations.get(entityId); }
 
-    public Map<String, String> getCalendarEntry() { return calendarEntry; }
+    public Map<Date, Reservation> getCalendarEntry() { return calendarEntry; }
 }
