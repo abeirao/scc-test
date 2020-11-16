@@ -31,6 +31,11 @@ public class CalendarController implements CalendarAPI {
 	public Calendar delete(String id) {
 		return calendars.delete(id);
 	}
+	
+	@Override
+	public Calendar update(Calendar calendar) {
+		return calendars.update(calendar);
+	}
 
 	@Override
 	public Date[] getAvailablePeriods(String calendarId){
