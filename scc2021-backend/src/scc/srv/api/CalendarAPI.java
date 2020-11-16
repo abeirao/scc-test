@@ -1,6 +1,7 @@
 package scc.srv.api;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 
 import scc.data.Calendar;
 import scc.data.Forum;
+import scc.data.Reservation;
 
 @Path("/calendar")
 public interface CalendarAPI {
@@ -51,8 +53,13 @@ public interface CalendarAPI {
 	public Calendar delete(@PathParam("id") String id);
 
 	@GET
-	@Path("/days/{calendarId}")
+	@Path("/available/{calendarId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Date[] getAvailablePeriods(String calendarId);	
+	public Date[] getAvailablePeriods(String calendarId);
+
+	@GET
+	@Path("/reservations/{calendarId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	Iterator<Reservation> getReservations(String calendarId);	
 	
 }

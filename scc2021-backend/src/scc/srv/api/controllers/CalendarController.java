@@ -1,9 +1,11 @@
 package scc.srv.api.controllers;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 
 import scc.data.Calendar;
+import scc.data.Reservation;
 import scc.srv.api.CalendarAPI;
 import scc.srv.api.services.CalendarService;
 
@@ -33,6 +35,11 @@ public class CalendarController implements CalendarAPI {
 	@Override
 	public Date[] getAvailablePeriods(String calendarId){
 		return calendars.getAvailablePeriods(calendarId);
+	}
+	
+	@Override 
+	public Iterator<Reservation> getReservations(String calendarId){
+		return calendars.getReservations(calendarId);
 	}
 
 }
