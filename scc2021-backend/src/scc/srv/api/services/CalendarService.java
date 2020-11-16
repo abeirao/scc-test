@@ -123,7 +123,7 @@ public class CalendarService {
 	}
 
 	public Iterator<Reservation> getReservations(String calendarId){
-		//" a list of reservations." ou seja as reservations de um calendar
+		// returns the reservations in a given calendar
 		Calendar calendar = this.get(calendarId);
 		Map<String, Reservation> reservation = calendar.getReservations();
 		return reservation.values().iterator();
