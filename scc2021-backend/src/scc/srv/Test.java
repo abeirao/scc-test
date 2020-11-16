@@ -9,11 +9,13 @@ import java.util.Set;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import scc.data.Calendar;
 import scc.data.Entity;
 import scc.data.Forum;
 import scc.data.ForumMessage;
 import scc.data.Reservation;
 import scc.redis.RedisCache;
+import scc.srv.api.services.CalendarService;
 import scc.srv.api.services.EntityService;
 import scc.srv.api.services.ForumService;
 import scc.srv.api.services.ReservationService;
@@ -24,6 +26,11 @@ public class Test {
 	public static void main(String[] args) {
 		
 		try {
+			Calendar calendar = new Calendar();
+			String calendarId = "0" + System.currentTimeMillis();
+			calendar.setId(calendarId);
+			calendar.setName("nice calendar");
+			
 
 			String entityId = "0" + System.currentTimeMillis();
 			Entity ent = new Entity();
@@ -32,11 +39,11 @@ public class Test {
 			ent.setDescription("The best hairdresser");
 			ent.setListed(true);
 			ent.setMediaIds(new String[] {"456"});
-			ent.setCalendarId("4");
+			ent.setCalendarId(calendarId);
 
 			Reservation res = new Reservation();
 			res.setName("very nice reservation");
-			res.setDay("day 0");
+			res.setDay("18/11/2020");
 			res.setId("0" + System.currentTimeMillis());
 			res.setEntityId(entityId);
 			
@@ -47,8 +54,8 @@ public class Test {
 			forum.setMessages(new ArrayList<ForumMessage>());
 			forum.setFrom("john");
 			
-			testRedis(ent, res);
-			testServices(ent, res, forum);
+			// testRedis(ent, res); TESTED, works
+			testServices(ent, res, forum, calendar);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,19 +63,23 @@ public class Test {
 	}
 	
 	/* test services */
-	public static void testServices(Entity ent, Reservation res, Forum forum) {
+	public static void testServices(Entity ent, Reservation res, Forum forum, Calendar calendar) {
 		System.out.println(" TESTING SERVICES ");
 		EntityService entityService = new EntityService();
 		ReservationService reservationService = new ReservationService();
 		ForumService forumService = new ForumService();
+		CalendarService calendarService = new CalendarService();
 		
+		System.out.println("Calendar");
+		System.out.println(calendarService.create(calendar));
 
 		System.out.println("Entity");
 		System.out.println(entityService.create(ent).toString());
 		System.out.println(entityService.get(ent.getId()).toString());
+		entityService.createReservation(ent.getId(), res);
 
 		System.out.println("Reservation");
-		System.out.println(reservationService.addReservation(res).toString());
+		//System.out.println(reservationService.addReservation(res).toString());
 		System.out.println(reservationService.getReservation(res.getId()).toString());
 		
 		System.out.println("Forum");
@@ -76,6 +87,8 @@ public class Test {
 		System.out.println(forumService.get(forum.getId()).toString());
 		System.out.println(forumService.getForumByEntity(ent.getId()).toString());
 		
+		
+	
 	}
 	
 	/* test redis */
