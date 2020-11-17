@@ -62,11 +62,11 @@ public interface CalendarAPI {
 	@GET
 	@Path("/available/{calendarId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	Iterator<Date> getAvailablePeriods(String calendarId);
+	Iterator<Date> getAvailablePeriods(@PathParam("calendarId") String calendarId);
 
 	@GET
 	@Path("/reservations/{calendarId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	Iterator<String> getReservations(String calendarId);
+	Iterator<String> getReservations(@PathParam("calendarId") String calendarId);
 	
 }
