@@ -38,12 +38,12 @@ public class CalendarController implements CalendarAPI {
 	}
 
 	@Override
-	public Date[] getAvailablePeriods(String calendarId){
+	public Iterator<Date> getAvailablePeriods(String calendarId){
 		return calendars.getAvailablePeriods(calendarId);
 	}
 	
 	@Override 
-	public Iterator<Reservation> getReservations(String calendarId){
+	public Iterator<String> getReservations(String calendarId){
 		return calendars.getReservations(calendarId);
 	}
 

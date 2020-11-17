@@ -110,7 +110,6 @@ function loadCalendars() {
     "name":"0",
     "description":"0",
     "availableDays":["21/10/2020"],
-    "reservations": []
     "calendarEntry": []
 
   }

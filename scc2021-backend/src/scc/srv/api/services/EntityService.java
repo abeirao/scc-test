@@ -14,6 +14,7 @@ import scc.redis.RedisCache;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 public class EntityService   {
 	
@@ -94,11 +95,20 @@ public class EntityService   {
 			CalendarService cs = new CalendarService();
 			ReservationService rs = new ReservationService();
 			Calendar calendar = cs.get(entity.getCalendarId());
-			calendar.putReservation(id, reservation, new SimpleDateFormat("dd/MM/yyyy").parse(reservation.getDay()));
-			cs.update(calendar);
+			List<Date> availableDays = calendar.getAvailableDays();
+			Date day = null;
+			if(availableDays.size() != 0) {
+				day = availableDays.get(availableDays.indexOf(reservation.getDay()));
+			}
+
+			if(day != null){
+			System.out.println("Day already occupied");
+			} else {
+			calendar.putReservation(reservation, reservation.getDay());
 			rs.addReservation(reservation);
-			
-			this.update(entity);
+			cs.update(calendar);
+			}
+
 		}
 		catch (Exception e) {
 			e.printStackTrace();

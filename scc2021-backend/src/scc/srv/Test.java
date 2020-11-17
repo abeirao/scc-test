@@ -1,10 +1,7 @@
 package scc.srv;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +27,9 @@ public class Test {
 			String calendarId = "0" + System.currentTimeMillis();
 			calendar.setId(calendarId);
 			calendar.setName("nice calendar");
-			
+
+			calendar.setCalendarEntry(new HashMap<Date, String>());
+			calendar.setAvailableDays(new ArrayList<Date>());
 
 			String entityId = "0" + System.currentTimeMillis();
 			Entity ent = new Entity();
@@ -43,9 +42,10 @@ public class Test {
 
 			Reservation res = new Reservation();
 			res.setName("very nice reservation");
-			res.setDay("18/11/2020");
+			res.setDay(new SimpleDateFormat("dd/MM/yyyy").parse("18/11/2020"));
 			res.setId("0" + System.currentTimeMillis());
 			res.setEntityId(entityId);
+
 			
 
 			Forum forum = new Forum();
@@ -71,7 +71,7 @@ public class Test {
 		CalendarService calendarService = new CalendarService();
 		
 		System.out.println("Calendar");
-		System.out.println(calendarService.create(calendar));
+		System.out.println(calendarService.create(calendar).toString());
 
 		System.out.println("Entity");
 		System.out.println(entityService.create(ent).toString());

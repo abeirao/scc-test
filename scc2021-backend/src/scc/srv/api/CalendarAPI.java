@@ -24,49 +24,49 @@ public interface CalendarAPI {
 
 	/**
 	 * 
-	 * @param id
-	 * @return
+	 * @param id calendarId
+	 * @return Calendar
 	 */
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Calendar get(@PathParam("id") String id);
+	Calendar get(@PathParam("id") String id);
 	
 	/**
 	 * 
-	 * @param entity
-	 * @return
+	 * @param calendar to be created
+	 * @return Calendar
 	 */
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Calendar create(Calendar calendar);	
+	Calendar create(Calendar calendar);
 
 	@PUT
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Calendar update(Calendar calendar);	
+	Calendar update(Calendar calendar);
 	
 	/**
 	 * 
-	 * @param id
-	 * @return
+	 * @param id calendar Id
+	 * @return calendar
 	 */
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Calendar delete(@PathParam("id") String id);
+	Calendar delete(@PathParam("id") String id);
 
 	@GET
 	@Path("/available/{calendarId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Date[] getAvailablePeriods(String calendarId);
+	Iterator<Date> getAvailablePeriods(String calendarId);
 
 	@GET
 	@Path("/reservations/{calendarId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Iterator<Reservation> getReservations(String calendarId);
+	Iterator<String> getReservations(String calendarId);
 	
 }

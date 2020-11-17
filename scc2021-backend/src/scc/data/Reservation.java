@@ -1,12 +1,13 @@
 package scc.data;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import scc.srv.api.services.MediaService;
 
 public class Reservation {
     private String name;
-    private String day;
+    private Date day;
     private String id;
     private String entityId;
 	private String _rid;
@@ -23,10 +24,10 @@ public class Reservation {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDay() {
+	public Date getDay() {
 		return day;
 	}
-	public void setDay(String day) {
+	public void setDay(Date day) {
 		this.day = day;
 	}
 	public String getId() {

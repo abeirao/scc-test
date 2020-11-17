@@ -1,5 +1,7 @@
 package scc.srv;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +36,7 @@ public class RedisTest {
 			ent.setMediaIds(new String[] {"456"});
 			ent.setCalendarId("456");
 			
-			String day = "Monday";
+			Date day = new SimpleDateFormat("\"dd/MM/yyyy\"").parse("18/11/2020");
 			String resId = "1" + System.currentTimeMillis();
 			Reservation reservation = new Reservation();
 			reservation.setId(resId);
