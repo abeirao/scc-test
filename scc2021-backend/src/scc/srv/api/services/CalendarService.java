@@ -78,7 +78,7 @@ public class CalendarService {
     }
 
     public Calendar update(Calendar calendar) {
-        cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
+        cosmosDB.update(CosmosDBLayer.CALENDARS, calendar);
         try {
             jedis.set(CALENDAR_KEY_PREFIX + calendar.getId(), mapper.writeValueAsString(calendar));
         } catch (JsonProcessingException e) {

@@ -150,6 +150,22 @@ public class CosmosDBLayer {
 		}
 	}
 	
+	public CosmosItemResponse<Object> update(String container, Object item) {
+		init();
+		switch (container) {
+			case RESERVATIONS:
+				return reservations.upsertItem(item);
+			case CALENDARS:
+				return calendars.upsertItem(item);
+			case ENTITIES: 
+				return entities.upsertItem(item);
+			case FORUMS:
+				return forums.upsertItem(item);
+			default:
+				return null;
+		}
+	}
+	
 	
 	public Reservation getReservation(String id){
 		return reservations.readItem(id, new PartitionKey(id), Reservation.class).getItem(); 
