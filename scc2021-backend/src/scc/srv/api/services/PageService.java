@@ -21,10 +21,11 @@ public class PageService {
 	
 	private CosmosDBLayer cosmosDB;
 	private Jedis jedis;
-
+	private EntityService entityService;
 	public PageService() {
 		cosmosDB =  CosmosDBLayer.getInstance();
 		jedis = RedisCache.getCachePool().getResource();
+		entityService = new EntityService();
 	}
 	
 	public Iterator<Entity> popularEntities() {
@@ -42,13 +43,13 @@ public class PageService {
 			return entities.iterator();
 		}
 		else  // if no entities are in cache, return all entities
-			return new EntityService().getAll();		
+			return entityService.getAll();
 	}
 
 	
-	public String listedEntity(String entityId) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean listedEntity(String entityId) {
+		return entityService.get(entityId).isListed();
+
 	}
 
 	
@@ -63,4 +64,14 @@ public class PageService {
 		return null;
 	}
 
+	public Entity listEntity(String entityId) {
+		Entity entity = entityService.get(entityId);
+
+		if(entity.isListed() == true){
+			entity.setListed(false);
+		} else {
+			entity.setListed(true);
+		}
+		return entityService.update(entity);
+	}
 }

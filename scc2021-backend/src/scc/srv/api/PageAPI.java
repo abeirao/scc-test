@@ -1,5 +1,6 @@
 package scc.srv.api;
 
+import com.azure.core.annotation.Get;
 import scc.data.*;
 
 import java.util.Iterator;
@@ -26,7 +27,12 @@ public interface PageAPI {
 	@GET
 	@Path("/entities/listed/{entityId}")
 	@Produces(MediaType.TEXT_PLAIN)
-	String listedEntity(@PathParam("entityId") String entityId);
+	boolean listedEntity(@PathParam("entityId") String entityId);
+
+	@GET
+	@Path("/entities/list/{entityId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	Entity listEntity(@PathParam("entityId") String entityId);
 
 	@GET
 	@Path("/like/{entityId}")

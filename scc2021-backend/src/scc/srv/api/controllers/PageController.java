@@ -21,8 +21,13 @@ public class PageController implements PageAPI {
 	}
 
 	@Override
-	public String listedEntity(String entityId) {
+	public boolean listedEntity(String entityId) {
 		return pages.listedEntity(entityId);
+	}
+
+	@Override
+	public Entity listEntity(String entityId) {
+		return pages.listEntity(entityId);
 	}
 
 	@Override
