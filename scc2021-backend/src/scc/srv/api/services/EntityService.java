@@ -24,10 +24,13 @@ public class EntityService   {
 	
 	private CosmosDBLayer cosmosDB;
 	private Jedis jedis;
-	
+	private CalendarService calendarService;
+	private ReservationService reservationService;
 	public EntityService() {
 		cosmosDB =  CosmosDBLayer.getInstance();
 		jedis = RedisCache.getCachePool().getResource();
+		calendarService = new CalendarService();
+		reservationService = new ReservationService();
 	}
 	
 	public Iterator<Entity> getAll() {
@@ -70,7 +73,7 @@ public class EntityService   {
 	}
 
 	public Entity update(Entity entity) {
-		cosmosDB.put(CosmosDBLayer.ENTITIES, entity);
+		cosmosDB.update(CosmosDBLayer.ENTITIES, entity);
 		try {
 			jedis.set(ENTITY_KEY_PREFIX + entity.getId(), mapper.writeValueAsString(entity));
 		} catch (JsonProcessingException e) {
@@ -92,9 +95,8 @@ public class EntityService   {
 	public void createReservation(String id, Reservation reservation) {
 		try {
 			Entity entity = this.get(id);
-			CalendarService cs = new CalendarService();
-			ReservationService rs = new ReservationService();
-			Calendar calendar = cs.get(entity.getCalendarId());
+
+			Calendar calendar = calendarService.get(entity.getCalendarId());
 			List<Date> availableDays = calendar.getAvailableDays();
 			Date day = null;
 			if(availableDays.size() != 0) {
@@ -105,8 +107,8 @@ public class EntityService   {
 			System.out.println("Day already occupied");
 			} else {
 			calendar.putReservation(reservation, reservation.getDay());
-			rs.addReservation(reservation);
-			cs.update(calendar);
+			reservationService.addReservation(reservation);
+			calendarService.update(calendar);
 			}
 
 		}

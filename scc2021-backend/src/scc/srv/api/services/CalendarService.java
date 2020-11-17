@@ -89,7 +89,7 @@ public class CalendarService {
 
 
     public Iterator<Date> getAvailablePeriods(String calendarId) {
-
+//TODO
         /*
          * Dei esta try -> mas agora damos update a lista de availableDays qdo criamos uma reservation
          */
