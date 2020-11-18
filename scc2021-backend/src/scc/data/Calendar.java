@@ -46,8 +46,6 @@ public class Calendar {
 	}
 
 	public void setAvailableDays(List<Date> availableDays) {
-
-		// Onde for feito esta função tem de ser ordenada no final
 		Collections.sort(availableDays, new Comparator<Date>() {
 			public int compare(Date o1, Date o2) {
 				if(o1.equals(o2)){

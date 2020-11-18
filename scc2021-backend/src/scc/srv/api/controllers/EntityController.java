@@ -9,6 +9,9 @@ import scc.srv.api.services.EntityService;
 import java.util.Date;
 import java.util.Iterator;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+
 public class EntityController implements EntityAPI {
 
 	private EntityService entities;
@@ -52,8 +55,8 @@ public class EntityController implements EntityAPI {
 		try {
 			entities.createReservation(id, reservation);
 		} catch (DayAlreadyOccupiedException e) {
-			System.out.println("Day already occupied");
-			// should give some conflict http code			
+			System.out.println("Day already occupied with a reservation");
+			throw new WebApplicationException(Response.Status.CONFLICT);
 		}
 	}
 }
