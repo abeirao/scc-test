@@ -18,6 +18,10 @@ import com.microsoft.azure.functions.*;
  * {Server_URL}/api/{route}
  */
 public class HttpFunction {
+	
+	// TODO available days in the calendar when a new reservation is created  ?
+	
+	
 	static int count = 0;
 
 	@FunctionName("http-info")

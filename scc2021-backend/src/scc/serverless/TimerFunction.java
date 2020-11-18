@@ -26,6 +26,8 @@ public class TimerFunction {
 	static int count = 0;
 	
 	// TODO function to process and update all listed entities in the cache
+	
+	// TODO function to process available days each 24hours 
     
     @FunctionName("periodic-compute")
     public void cosmosFunction( @TimerTrigger(name = "keepAliveTrigger", schedule = "0 0 */24 * * *") String timerInfo,
@@ -33,6 +35,7 @@ public class TimerFunction {
     	synchronized(HttpFunction.class) {
     		HttpFunction.count++;
     	}
+    	
 		try (Jedis jedis = RedisCache.getCachePool().getResource()) {
 			jedis.set("serverlesstime", new SimpleDateFormat().format(new Date()));
 			try {
@@ -49,5 +52,6 @@ public class TimerFunction {
 				jedis.set("serverless:cosmos", "[]");
 			}
 		}
+		
     }
 }

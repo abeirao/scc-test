@@ -72,7 +72,7 @@ public class Calendar {
 	public void putReservation(Reservation reservation, Date day) {
 		calendarEntry.put(day, reservation.getId());
 		int i = availableDays.indexOf(day);
-		if(i != -1){
+		if(i != -1) {
 			availableDays.remove(i);
 		}
 	}
