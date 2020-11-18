@@ -165,8 +165,23 @@ public class CosmosDBLayer {
 				return null;
 		}
 	}
-	
-	
+	public CosmosItemResponse<Object> replace(String container, Object item) {
+		init();
+		switch (container) {
+			case RESERVATIONS:
+				return reservations.createItem(item);
+			case CALENDARS:
+				return calendars.createItem(item);
+			case ENTITIES:
+				return entities.createItem(item);
+			case FORUMS:
+				return forums.createItem(item);
+			default:
+				return null;
+		}
+	}
+
+
 	public Reservation getReservation(String id){
 		return reservations.readItem(id, new PartitionKey(id), Reservation.class).getItem(); 
 	}

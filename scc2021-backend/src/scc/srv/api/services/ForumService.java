@@ -84,7 +84,7 @@ public class ForumService  {
 		forum.getMessages().add(newMessage);
 		
 		// update
-		cosmosDB.put(CosmosDBLayer.FORUMS, forum);
+		cosmosDB.update(CosmosDBLayer.FORUMS, forum);
 		try {
 			jedis.set(FORUM_KEY_PREFIX + forum.getId(), mapper.writeValueAsString(forum));
 		} catch (JsonProcessingException e) {
