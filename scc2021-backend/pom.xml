@@ -8,7 +8,7 @@
 	<artifactId>scc2021-backend</artifactId>
 	<version>0.1</version>
 	<packaging>war</packaging>
-	<name>Azure Java Functions</name>
+	<name>Reservations Management System</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>

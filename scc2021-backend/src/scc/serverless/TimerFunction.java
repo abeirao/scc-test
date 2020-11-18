@@ -1,4 +1,4 @@
-package scc.srv;
+package scc.serverless;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
