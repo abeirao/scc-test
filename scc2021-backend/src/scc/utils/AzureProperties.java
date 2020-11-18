@@ -26,4 +26,16 @@ public class AzureProperties
 		return props;
 	}
 
+	public static String getProperty( String key) {
+		try {
+			String val = System.getenv( key);
+			if( val != null)
+				return val;
+		} catch( Exception e) {
+			// do nothing
+		}
+		return getProperties().getProperty(key);		
+	}
+
+
 }
