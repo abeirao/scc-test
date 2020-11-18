@@ -57,7 +57,7 @@ function loadData() {
 	if( fs.existsSync('entities.data')) {
 		let str = fs.readFileSync('entities.data','utf8')
 		entityIds = JSON.parse(str)
-	} 
+	}
 	fs.readdirSync('images').forEach(file => {
 		if( file.endsWith('.jpg')) {
 			var img  = fs.readFileSync('images/' + file)
@@ -77,7 +77,7 @@ function reqPostMedia(requestParams, context, ee, next) {
 }
 
 /**
- * Process reply of the download of an image. 
+ * Process reply of the download of an image.
  * Update the next image to read.
  */
 function processUploadReply(requestParams, response, context, ee, next) {
@@ -106,13 +106,12 @@ function selectImageToDownload(context, events, done) {
  * name : name of the entity
  * description : text with small description
  * businessType : text with business type
- * listed : whether the entity should be listed or not 
+ * listed : whether the entity should be listed or not
  */
 function genNewEntity(context, events, done) {
 	loadData();
 	context.vars.name = `${Faker.company.companyName()}`
 	context.vars.description = `${Faker.company.catchPhrase()}`
-	context.vars.businessType = `${Faker.commerce.department()}`
 	context.vars.listed = Math.random() < 0.5
 	return done()
 }
@@ -133,7 +132,7 @@ function selectEntity(context, events, done) {
 }
 
 /**
- * Process reply of the post entity. 
+ * Process reply of the post entity.
  */
 function replyPostEntity(requestParams, response, context, ee, next) {
 	if( response.statusCode == 200) {
@@ -155,7 +154,7 @@ function replyPostEntity(requestParams, response, context, ee, next) {
 function genNewMessage(context, events, done) {
 	loadData();
 	if( entityIds.length > 0) {
-		context.vars.entityId = entityIds.sample()
+		context.vars.forumId = entityIds.sample()
 		context.vars.fromWho = `${Faker.name.firstName()} ${Faker.name.lastName()}`
 		context.vars.msg = `${Faker.lorem.paragraph()}`
 		delete context.vars.replyToId
@@ -202,4 +201,3 @@ function genNewMessageReply(context, events, done) {
 	}
 	return done()
 }
-

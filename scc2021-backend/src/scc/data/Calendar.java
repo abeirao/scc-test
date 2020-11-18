@@ -2,9 +2,6 @@ package scc.data;
 
 import java.util.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-//@JsonIgnoreProperties
 public class Calendar {
 	
 	private String _rid;

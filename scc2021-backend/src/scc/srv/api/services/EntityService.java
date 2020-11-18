@@ -8,6 +8,7 @@ import redis.clients.jedis.Jedis;
 import scc.data.Calendar;
 import scc.data.CosmosDBLayer;
 import scc.data.Entity;
+import scc.data.Forum;
 import scc.data.Reservation;
 import scc.exceptions.DayAlreadyOccupiedException;
 import scc.redis.RedisCache;
@@ -27,12 +28,14 @@ public class EntityService   {
 	private Jedis jedis;
 	private CalendarService calendarService;
 	private ReservationService reservationService;
+	private ForumService forums;
 	
 	public EntityService() {
 		cosmosDB =  CosmosDBLayer.getInstance();
 		jedis = RedisCache.getCachePool().getResource();
 		calendarService = new CalendarService();
 		reservationService = new ReservationService();
+		forums = new ForumService();
 	}
 	
 	public Iterator<Entity> getAll() {
@@ -118,5 +121,4 @@ public class EntityService   {
 			e.printStackTrace();
 		}
 	}
-
 }

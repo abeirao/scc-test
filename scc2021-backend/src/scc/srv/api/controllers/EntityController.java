@@ -26,7 +26,7 @@ public class EntityController implements EntityAPI {
 	public Entity get(String id) {
 		return entities.get(id);
 	}
-
+	
 	@Override
 	public Entity create(Entity entity) {
 		return entities.create(entity);
