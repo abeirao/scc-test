@@ -41,7 +41,6 @@ public interface MediaAPI {
 	 */
 	@DELETE
 	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String delete(@PathParam("id") String id);
 }

@@ -86,7 +86,6 @@ public class CosmosDBLayer {
 	}
 
 	private void createContainers() {
-// TODO
 		db.createContainerIfNotExists(new CosmosContainerProperties(Containers.ENTITIES.toString().toLowerCase(), "/id"));
 		db.createContainerIfNotExists(new CosmosContainerProperties(Containers.RESERVATIONS.toString().toLowerCase(), "/entityId"));
 		db.createContainerIfNotExists(new CosmosContainerProperties(Containers.CALENDARS.toString().toLowerCase(), "/id"));
@@ -165,22 +164,6 @@ public class CosmosDBLayer {
 				return null;
 		}
 	}
-	public CosmosItemResponse<Object> replace(String container, Object item) {
-		init();
-		switch (container) {
-			case RESERVATIONS:
-				return reservations.createItem(item);
-			case CALENDARS:
-				return calendars.createItem(item);
-			case ENTITIES:
-				return entities.createItem(item);
-			case FORUMS:
-				return forums.createItem(item);
-			default:
-				return null;
-		}
-	}
-
 
 	public Reservation getReservation(String id){
 		return reservations.readItem(id, new PartitionKey(id), Reservation.class).getItem(); 
