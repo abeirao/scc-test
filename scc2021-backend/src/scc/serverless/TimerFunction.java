@@ -42,7 +42,7 @@ public class TimerFunction {
 						new CosmosQueryRequestOptions(), Calendar.class);
 		
 		for (Calendar calendar: it) {
-			
+			// do work
 		}
 		
     }
