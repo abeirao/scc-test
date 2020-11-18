@@ -24,6 +24,8 @@ import com.microsoft.azure.functions.*;
  */
 public class TimerFunction {
 	static int count = 0;
+	
+	// TODO function to process and update all listed entities in the cache
     
     @FunctionName("periodic-compute")
     public void cosmosFunction( @TimerTrigger(name = "keepAliveTrigger", schedule = "0 0 */24 * * *") String timerInfo,
