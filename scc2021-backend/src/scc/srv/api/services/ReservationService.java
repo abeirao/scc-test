@@ -39,7 +39,8 @@ public class ReservationService {
 	            }
 	        });
 	        return reservations.iterator();
-        }				
+        }			
+        // if query not on cache
 		return cosmosDB.getReservationsByEntity(entityId).iterator();
 		
 	}
@@ -58,7 +59,20 @@ public class ReservationService {
 			cosmosDB.put(CosmosDBLayer.RESERVATIONS, reservation);
 			return reservation;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}		
+	}
+	
+	public Reservation update(Reservation reservation) {
+		try {
+			jedis.set(RESERVATION_KEY_PREFIX + reservation.getId(), mapper.writeValueAsString(reservation));	
+			// add reservation to entity reservations in cache
+			jedis.sadd(RESERVATION_ENTITY_KEY_PREFIX + reservation.getEntityId(), mapper.writeValueAsString(reservation)); 
+		
+			cosmosDB.update(CosmosDBLayer.RESERVATIONS, reservation);
+			return reservation;
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}

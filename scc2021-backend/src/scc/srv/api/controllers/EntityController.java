@@ -2,6 +2,7 @@ package scc.srv.api.controllers;
 
 import scc.data.Entity;
 import scc.data.Reservation;
+import scc.exceptions.DayAlreadyOccupiedException;
 import scc.srv.api.EntityAPI;
 import scc.srv.api.services.EntityService;
 
@@ -48,6 +49,11 @@ public class EntityController implements EntityAPI {
 
 	@Override
 	public void createReservation(String id, Reservation reservation) {
-		entities.createReservation(id, reservation);
+		try {
+			entities.createReservation(id, reservation);
+		} catch (DayAlreadyOccupiedException e) {
+			System.out.println("Day already occupied");
+			// should give some conflict http code			
+		}
 	}
 }

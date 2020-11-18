@@ -4,6 +4,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -27,6 +28,12 @@ public interface ReservationAPI {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Reservation addReservation(Reservation reservation);
+	
+	@PUT
+	@Path("")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Reservation updateReservation(Reservation reservation);
 	
 	/**
 	 * Return a reservation by its id
@@ -66,5 +73,6 @@ public interface ReservationAPI {
 	@Path("/entity/{entityId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	Iterator<Reservation> getReservationsFromEntity(@PathParam("entityId") String entityId);
+
 		
 }

@@ -34,7 +34,7 @@ public class ForumService  {
 	public Forum get(String id) {
 		Forum forum = null;
 		try {
-//			forum = mapper.readValue(jedis.get(FORUM_KEY_PREFIX + id), Forum.class);
+			forum = mapper.readValue(jedis.get(FORUM_KEY_PREFIX + id), Forum.class);
 		
 			if (forum == null) {
 				forum = cosmosDB.getForum(id);
@@ -42,7 +42,6 @@ public class ForumService  {
 			}
 			return forum;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -54,7 +53,6 @@ public class ForumService  {
 			jedis.set(FORUM_KEY_PREFIX + forum.getId(), mapper.writeValueAsString(forum));
 			jedis.sadd(FORUM_ENTITY_KEY_PREFIX + forum.getEntityId(), mapper.writeValueAsString(forum));
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return forum;
@@ -67,11 +65,10 @@ public class ForumService  {
 		messages.add(newMessage);
 		forum.setMessages(messages);
 		
-		cosmosDB.put(CosmosDBLayer.FORUMS, forum);
+		cosmosDB.update(CosmosDBLayer.FORUMS, forum);
 		try {
 			jedis.set(FORUM_KEY_PREFIX + forum.getId(), mapper.writeValueAsString(forum));
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

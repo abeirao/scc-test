@@ -18,6 +18,11 @@ public class ReservationController implements ReservationAPI {
 	public Reservation addReservation(Reservation reservation) {
 		return reservations.addReservation(reservation);
 	}
+	
+	@Override
+	public Reservation updateReservation(Reservation reservation) {
+		return reservations.update(reservation);
+	}
 
 	@Override
 	public Reservation getReservation(String id) {

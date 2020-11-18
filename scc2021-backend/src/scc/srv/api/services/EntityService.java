@@ -9,6 +9,7 @@ import scc.data.Calendar;
 import scc.data.CosmosDBLayer;
 import scc.data.Entity;
 import scc.data.Reservation;
+import scc.exceptions.DayAlreadyOccupiedException;
 import scc.redis.RedisCache;
 
 import java.text.SimpleDateFormat;
@@ -26,6 +27,7 @@ public class EntityService   {
 	private Jedis jedis;
 	private CalendarService calendarService;
 	private ReservationService reservationService;
+	
 	public EntityService() {
 		cosmosDB =  CosmosDBLayer.getInstance();
 		jedis = RedisCache.getCachePool().getResource();
@@ -92,7 +94,7 @@ public class EntityService   {
 	}
 
 
-	public void createReservation(String id, Reservation reservation) {
+	public void createReservation(String id, Reservation reservation) throws DayAlreadyOccupiedException{
 		try {
 			Entity entity = this.get(id);
 
@@ -103,12 +105,12 @@ public class EntityService   {
 				day = availableDays.get(availableDays.indexOf(reservation.getDay()));
 			}
 
-			if(day != null){
-			System.out.println("Day already occupied");
-			} else {
-			calendar.putReservation(reservation, reservation.getDay());
-			reservationService.addReservation(reservation);
-			calendarService.update(calendar);
+			if(day != null)
+				throw new DayAlreadyOccupiedException();
+			else {
+				calendar.putReservation(reservation, reservation.getDay());
+				reservationService.addReservation(reservation);
+				calendarService.update(calendar);
 			}
 
 		}

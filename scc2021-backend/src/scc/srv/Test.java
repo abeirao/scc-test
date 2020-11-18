@@ -11,10 +11,12 @@ import scc.data.Entity;
 import scc.data.Forum;
 import scc.data.ForumMessage;
 import scc.data.Reservation;
+import scc.exceptions.DayAlreadyOccupiedException;
 import scc.redis.RedisCache;
 import scc.srv.api.services.CalendarService;
 import scc.srv.api.services.EntityService;
 import scc.srv.api.services.ForumService;
+import scc.srv.api.services.MediaService;
 import scc.srv.api.services.ReservationService;
 import redis.clients.jedis.Jedis;
 
@@ -22,15 +24,16 @@ public class Test {
 	
 	public static void main(String[] args) {
 		
-		try {
+		try {	
+			// create data			
 			Calendar calendar = new Calendar();
 			String calendarId = "0" + System.currentTimeMillis();
 			calendar.setId(calendarId);
 			calendar.setName("nice calendar");
-
 			calendar.setCalendarEntry(new HashMap<Date, String>());
 			calendar.setAvailableDays(new ArrayList<Date>());
 
+			
 			String entityId = "0" + System.currentTimeMillis();
 			Entity ent = new Entity();
 			ent.setId(entityId);
@@ -40,13 +43,13 @@ public class Test {
 			ent.setMediaIds(new String[] {"456"});
 			ent.setCalendarId(calendarId);
 
+			
 			Reservation res = new Reservation();
 			res.setName("very nice reservation");
 			res.setDay(new SimpleDateFormat("dd/MM/yyyy").parse("18/11/2020"));
 			res.setId("0" + System.currentTimeMillis());
 			res.setEntityId(entityId);
-
-			
+	
 
 			Forum forum = new Forum();
 			forum.setId("0" + System.currentTimeMillis());
@@ -54,40 +57,109 @@ public class Test {
 			forum.setMessages(new ArrayList<ForumMessage>());
 			forum.setFrom("john");
 			
-			// testRedis(ent, res); TESTED, works
-			testServices(ent, res, forum, calendar);
+			/* TEST METHOD CALLS */
+			test2();			
+			// testRedis(ent, res); // TESTED, works
+			// testServices(ent, res, forum, calendar);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
+	private static void test2() {
+		try {
+			MediaService media = new MediaService();
+			ObjectMapper mapper = new ObjectMapper();			
+			
+			String id = "0" + System.currentTimeMillis();
+			Entity ent = new Entity();
+			ent.setId(id);
+			ent.setName("SCC " + id);
+			ent.setDescription("The best hairdresser");
+			ent.setListed(true);
+			ent.setMediaIds(new String[] {"456"});
+			ent.setCalendarId("456");
+			
+			Date day = new SimpleDateFormat("\"dd/MM/yyyy\"").parse("18/11/2020");
+			String resId = "1" + System.currentTimeMillis();
+			Reservation reservation = new Reservation();
+			reservation.setId(resId);
+			reservation.setName("Teste");
+			reservation.setEntityId(ent.getId());
+			reservation.setDay(day);
+			
+			EntityService entities = new EntityService();
+			
+			ReservationService reservations = new ReservationService();
+			
+			entities.create(ent);
+			reservations.addReservation(reservation);
+
+			try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+			    Long cnt = jedis.lpush("MostRecentEntities", mapper.writeValueAsString(ent));
+			    if (cnt > 5)
+			        jedis.ltrim("MostRecentEntities", 0, 4);
+			    
+			    List<String> lst = jedis.lrange("MostRecentEntities", 0, -1);
+			    for( String s : lst)
+			    	System.out.println(s);
+			    
+			    cnt = jedis.incr("NumEntities");
+			    System.out.println( "Num entities : " + cnt);
+			}
+			
+			try (Jedis jedis = RedisCache.getCachePool().getResource()) {
+			    Long cnt = jedis.lpush("MostRecentReservations", mapper.writeValueAsString(reservation));
+			    if (cnt > 5)
+			        jedis.ltrim("MostRecentReservations", 0, 4);
+			    
+			    List<String> lst = jedis.lrange("MostRecentReservations", 0, -1);
+			    for( String s : lst)
+			    	System.out.println(s);
+			    
+			    cnt = jedis.incr("NumReservations");
+			    System.out.println( "NumReservations : " + cnt);
+			}
+			
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 	/* test services */
 	public static void testServices(Entity ent, Reservation res, Forum forum, Calendar calendar) {
-		System.out.println(" TESTING SERVICES ");
-		EntityService entityService = new EntityService();
-		ReservationService reservationService = new ReservationService();
-		ForumService forumService = new ForumService();
-		CalendarService calendarService = new CalendarService();
+		try {
+			System.out.println(" TESTING SERVICES ");
+			
+			EntityService entityService = new EntityService();
+			ReservationService reservationService = new ReservationService();
+			ForumService forumService = new ForumService();
+			CalendarService calendarService = new CalendarService();
+			
+			System.out.println("Calendar");
+			System.out.println(calendarService.create(calendar).toString());
+	
+			System.out.println("Entity");
+			System.out.println(entityService.create(ent).toString());
+			System.out.println(entityService.get(ent.getId()).toString());
+			entityService.createReservation(ent.getId(), res);
 		
-		System.out.println("Calendar");
-		System.out.println(calendarService.create(calendar).toString());
-
-		System.out.println("Entity");
-		System.out.println(entityService.create(ent).toString());
-		System.out.println(entityService.get(ent.getId()).toString());
-		entityService.createReservation(ent.getId(), res);
-
-		System.out.println("Reservation");
-		//System.out.println(reservationService.addReservation(res).toString());
-		System.out.println(reservationService.getReservation(res.getId()).toString());
+			System.out.println("Reservation");
+			//System.out.println(reservationService.addReservation(res).toString());
+			System.out.println(reservationService.getReservation(res.getId()).toString());
+			
+			System.out.println("Forum");
+			System.out.println(forumService.create(forum).toString());
+			System.out.println(forumService.get(forum.getId()).toString());
+			System.out.println(forumService.getForumByEntity(ent.getId()).toString());
 		
-		System.out.println("Forum");
-		System.out.println(forumService.create(forum).toString());
-		System.out.println(forumService.get(forum.getId()).toString());
-		System.out.println(forumService.getForumByEntity(ent.getId()).toString());
-		
-		
+		} catch (DayAlreadyOccupiedException e) {
+			e.printStackTrace();
+		}
 	
 	}
 	
