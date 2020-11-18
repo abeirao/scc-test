@@ -12,6 +12,7 @@ import scc.data.ForumMessage;
 import scc.data.Forum;
 import scc.data.CosmosDBLayer;
 import scc.redis.RedisCache;
+import scc.srv.CosmosDBFactory;
 import scc.utils.AzureProperties;
 
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -35,22 +36,13 @@ public class TimerFunction {
     	synchronized(HttpFunction.class) {
     		HttpFunction.count++;
     	}
-    	
-		try (Jedis jedis = RedisCache.getCachePool().getResource()) {
-			jedis.set("serverlesstime", new SimpleDateFormat().format(new Date()));
-			try {
-				
-				CosmosPagedIterable<ForumMessage> it = CosmosDBLayer.getInstance().getDatabase(AzureProperties.getProperty(AzureProperties.COSMOSDB_DATABASE))
-						.getContainer("Forum").queryItems("SELECT * FROM Forum f ORDER BY f.creationTime DESC OFFSET 0 LIMIT 20",
-								new CosmosQueryRequestOptions(), ForumMessage.class);
-
-				List<ForumMessage> lst = new ArrayList<ForumMessage>();
-				it.stream().forEach( m -> lst.add(m));
-
-				jedis.set("serverless:cosmos", new ObjectMapper().writeValueAsString(lst));
-			} catch (Exception e) {
-				jedis.set("serverless:cosmos", "[]");
-			}
+    
+		CosmosPagedIterable<Calendar> it = CosmosDBFactory.getCosmosClient().getDatabase(AzureProperties.getProperty(AzureProperties.COSMOSDB_DATABASE))
+				.getContainer("calendars").queryItems("SELECT * FROM Calendar c",
+						new CosmosQueryRequestOptions(), Calendar.class);
+		
+		for (Calendar calendar: it) {
+			
 		}
 		
     }
