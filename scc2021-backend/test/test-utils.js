@@ -4,40 +4,36 @@
  * Exported functions to be used in the testing scripts.
  */
 module.exports = {
-  uploadImageBody,
-  processUploadReply,
-  selectImageToDownload,
-  postEntity,
-  processPostEntityReply,
   selectEntity,
-  postCalendar,
-  processPostCalendarReply,
-  selectCalendar,
-  postForum,
-  processPostForumReply,
-  selectForum,
-  postReservation,
-  processPostReservationReply,
-  selectReservation
+  genNewEntity,
+  replyPostEntity,
+  genNewReservation,
+  replyPostReservation,
+  genNewCalendar,
+  replyPostCalendar,
+  reqPostMedia,
+  genNewMessage,
+  genNewMessageReply,
+  selectMsgFromList,
+  processUploadReply,
+  selectImageToDownload
 }
 
 
 const fs = require('fs')
+const Faker = require('faker')
 const fetch = require('node-fetch')
 
-var imagesIds = []
-var images = []
-var entitiesIds = []
-var entities = []
-var forumIds = []
-var forums = []
-var calendarIds = []
-var calendars = []
-var reservationIds = []
-var reservations = []
+var imagesIds = [];
+var images = [];
+var entityIds = [];
+var reservationIds = [];
+var calendarIds = [];
+var loaded = false;
 
 // All endpoints starting with the following prefixes will be aggregated in the same for the statistics
-var statsPrefix = [ ["/media/","GET"]]
+var statsPrefix = [ ["/media/","GET"]
+	]
 
 // Function used to compress statistics
 global.myProcessEndpoint = function( str, method) {
@@ -60,88 +56,28 @@ function random( val){
 }
 
 // Loads data about images from disk
-function loadImage() {
-	var i
+function loadData() {
+	if( loaded)
+		return;
 	var basefile
-	if( fs.existsSync( '/images'))
-		basefile = '/images/cats.'
-	else
-		basefile =  'images/cats.'
-	for( i = 1; i <= 40 ; i++) {
-		var img  = fs.readFileSync(basefile + i + '.jpeg')
-		images.push( img)
+	if( fs.existsSync('entities.data')) {
+		let str = fs.readFileSync('entities.data','utf8')
+		entityIds = JSON.parse(str)
 	}
+	fs.readdirSync('images').forEach(file => {
+		if( file.endsWith('.jpg')) {
+			var img  = fs.readFileSync('images/' + file)
+			images.push( img)
+		}
+	});
 }
 
-function loadEntities() {
-	var entitie =
-  {
-    "_rid": "0",
-    "id": "0",
-    "name": "mcdonalds",
-    "description": "very nice",
-    "mediaIds": [],
-    "calendarIds": [],
-    "listed": "true",
-
-  }
-  entities.push(entity)
-  reservationIds.push(reservation.id)
-}
-
-function loadForums() {
-  var forum =
-  {
-    "_rid":"0",
-    "id":"0",
-    "messages": [],
-    "entityId":"0",
-
-  }
-  forums.push(forum)
-  forumIds.push(forum.id)
-}
-
-function loadCalendars() {
-  var calendar =
-  {
-    "_rid":"0",
-    "id":"0",
-    "name":"0",
-    "description":"0",
-    "availableDays":["21/10/2020"],
-    "calendarEntry": []
-
-  }
-  calendars.push(calendar)
-  calendarsIds.push(calendar.id)
-}
-
-function loadReservations() {
-  var reservation =
-  {
-    "_rid":"0",
-    "id":"0",
-    "name":"lunch",
-    "day":"monday",
-    "entityId":"0",
-    "media":"media",
-  }
-  reservations.push(reservation)
-  reservationIds.push(reservation.id)
-
-}
-
-loadImages();
-loadEntities();
-loadForums();
-loadCalendars();
-loadReservations();
+loadData();
 
 /**
  * Sets the body to an image, when using images.
  */
-function uploadImageBody(requestParams, context, ee, next) {
+function reqPostMedia(requestParams, context, ee, next) {
 	requestParams.body = images.sample()
 	return next()
 }
@@ -169,108 +105,140 @@ function selectImageToDownload(context, events, done) {
 	return done()
 }
 
-// entities
 
-function postEntity(requestParams, context) {
-	requestParams.body = entities.sample()
-	return next()
+/**
+ * Generate data for a new entity. Starts by loading data if it was not loaded yet.
+ * Stores in the variables:
+ * name : name of the entity
+ * description : text with small description
+ * businessType : text with business type
+ * listed : whether the entity should be listed or not
+ */
+function genNewEntity(context, events, done) {
+	loadData();
+	context.vars.name = `${Faker.company.companyName()}`
+	context.vars.description = `${Faker.company.catchPhrase()}`
+	context.vars.businessType = `${Faker.commerce.department()}`
+	context.vars.listed = Math.random() < 0.5
+	return done()
 }
 
 
-function processPostEntityReply(requestParams, response, context) {
-	if( typeof response.body !== 'undefined' && response.body.length > 0) {
-		entitiesIds.push(response.body)
-	}
-    return next()
-}
-
+/**
+ * Select an entity, if one exists.
+ * Stores in the variables:
+ * entityId : id of entity
+ */
 function selectEntity(context, events, done) {
-	if(entitiesIds.length > 0) {
-		context.vars.entityId = entitiesIds.sample()
-	}
-	else {
+	loadData();
+	if( entityIds.length > 0) {
+		context.vars.entityId = entityIds.sample()
+	} else {
 		delete context.vars.entityId
 	}
 	return done()
-
 }
 
-// forums
-
-function postForum(requestParams, context) {
-	requestParams.body = forums.sample()
-	return next()
-}
-
-function processPostForumReply(requestParams, response, context) {
-	if( typeof response.body !== 'undefined' && response.body.length > 0) {
-		forumIds.push(response.body)
+/**
+ * Process reply of the post entity.
+ */
+function replyPostEntity(requestParams, response, context, ee, next) {
+	if( response.statusCode == 200) {
+		let entity = response.toJSON().body
+		entityIds.push(entity.id)
+		fs.writeFileSync('entities.data', JSON.stringify(entityIds))
 	}
     return next()
 }
 
-
-function selectForum(context, events, done) {
-	if(forumIds.length > 0) {
-		context.vars.forumId = forumIds.sample()
-	}
-	else {
-		delete context.vars.forumId
-	}
-	return done()
-
+function genNewCalendar(context, events, done) {
+  loadData();
+  context.vars.name = `${Faker.company.companyName()}`
+  context.vars.availableDays = []
+  context.vars.calendarEntry = []
+  return done()
 }
 
-
-// Calendars
-
-function postCalendar(requestParams, context) {
-	requestParams.body = calendars.sample()
-	return next()
-}
-
-function processPostCalendarReply(requestParams, response, context) {
-	if( typeof response.body !== 'undefined' && response.body.length > 0) {
-		calendarIds.push(response.body)
+function replyPostCalendar(requestParams, response, context, ee, next) {
+  if( response.statusCode == 200) {
+		let calendar = response.toJSON().body
+		calendarIds.push(entity.id)
+		fs.writeFileSync('calendars.data', JSON.stringify(calendarIds))
 	}
     return next()
 }
 
-
-function selectCalendar(context, events, done) {
-	if(calendarIds.length > 0) {
-		context.vars.calendarId = calendarIds.sample()
-	}
-	else {
-		delete context.vars.calendarId
-	}
+function genNewReservation(context, events, done) {
+  loadData();
+	context.vars.name = `${Faker.name.findName()}`
+	context.vars.day = `${Faker.date.future()}`
+	context.vars.entityId = entityIds.sample()
 	return done()
-
 }
 
-
-// Reservations
-
-function postReservation(requestParams, context) {
-	requestParams.body = reservations.sample()
-	return next()
-}
-
-function processPostReservationReply(requestParams, response, context) {
-	if( typeof response.body !== 'undefined' && response.body.length > 0) {
-		reservationIds.push(response.body)
+function replyPostReservation(requestParams, response, context, ee, next) {
+	if( response.statusCode == 200) {
+		let reservation = response.toJSON().body
+		reservationIds.push(reservation.id)
+		fs.writeFileSync('reservations.data', JSON.stringify(reservationIds))
 	}
     return next()
 }
 
-
-function selectCalendar(context, events, done) {
-	if(reservationIds.length > 0) {
-		context.vars.reservationId = reservationIds.sample()
-	}
-	else {
-		delete context.vars.reservationId
+/**
+ * Generate data for a new message. Starts by loading data if it was not loaded yet.
+ * Stores in the variables:
+ * entityId : id of entity for the message
+ * fromWho : email
+ * msg : message
+ */
+function genNewMessage(context, events, done) {
+	loadData();
+	if( entityIds.length > 0) {
+		context.vars.entityId = entityIds.sample()
+		context.vars.fromWho = `${Faker.name.firstName()} ${Faker.name.lastName()}`
+		context.vars.msg = `${Faker.lorem.paragraph()}`
+		delete context.vars.replyToId
+	} else {
+		delete context.vars.entityId
 	}
 	return done()
+}
 
+/**
+ * Process reply to list of messages, selecting a message.
+ * Stores in the variables:
+ * msgId : id of message
+ */
+function selectMsgFromList(requestParams, response, context, ee, next) {
+	if( response.statusCode == 200) {
+		let msgs = JSON.parse( response.body)
+		if( msgs.length > 0) {
+			context.vars.msgJSON = msgs[random(msgs.length)]
+		} else {
+			delete context.vars.msgJSON
+		}
+	}
+    return next()
+}
+
+/**
+ * Generate data for a new message reply to message stored in variable msg. Starts by loading data if it was not loaded yet.
+ * Stores in the variables:
+ * entityId : id of entity for the message
+ * fromWho : email
+ * msg : message
+ * replyToId : id of message to reply to
+ */
+function genNewMessageReply(context, events, done) {
+	loadData();
+	if( typeof context.vars.msgJSON !== undefined) {
+		context.vars.entityId = context.vars.msgJSON.entityId
+		context.vars.fromWho = `${Faker.name.firstName()} ${Faker.name.lastName()}`
+		context.vars.msg = `${Faker.lorem.paragraph()}`
+		context.vars.replyToId = context.vars.msgJSON.id
+	} else {
+		delete context.vars.entityId
+	}
+	return done()
 }
