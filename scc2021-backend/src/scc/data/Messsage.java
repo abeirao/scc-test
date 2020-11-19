@@ -1,10 +1,11 @@
 package scc.data;
 
-public class ForumMessage {
+public class Messsage {
     private String id;
     private String forumId;
     private String msg;
 	private String _rid;
+	private String fromWho;
 
 	public String get_rid() {
 		return _rid;
@@ -29,6 +30,12 @@ public class ForumMessage {
 	}
 	public void setMsg(String msg) {
 		this.msg = msg;
+	}
+	public String getFromWho() {
+		return fromWho;
+	}
+	public void setFromWho(String fromWho) {
+		this.fromWho = fromWho;
 	}
 
     

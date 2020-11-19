@@ -3,7 +3,7 @@ package scc.srv.api.controllers;
 import java.util.Iterator;
 
 import scc.data.Forum;
-import scc.data.ForumMessage;
+import scc.data.Messsage;
 import scc.srv.api.ForumAPI;
 import scc.srv.api.services.ForumService;
 
@@ -26,12 +26,12 @@ public class ForumController implements ForumAPI {
 	}
 
 	@Override
-	public ForumMessage addMessage(String forumId, ForumMessage newMessage) {
+	public Messsage addMessage(String forumId, Messsage newMessage) {
 		return forums.addMessage(forumId, newMessage);
 	}
 
 	@Override
-	public String reply(String forumId, ForumMessage messageToReply, ForumMessage newMessage) {
+	public String reply(String forumId, Messsage messageToReply, Messsage newMessage) {
 		return forums.reply(forumId, messageToReply, newMessage);
 	}
 

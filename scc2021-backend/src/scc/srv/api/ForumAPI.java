@@ -12,7 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import scc.data.Forum;
-import scc.data.ForumMessage;
+import scc.data.Messsage;
 
 @Path("/forum")
 public interface ForumAPI {
@@ -48,7 +48,7 @@ public interface ForumAPI {
 	@Path("/new/{forumId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ForumMessage addMessage(@PathParam("forumId") String forumId, ForumMessage newMessage);
+	public Messsage addMessage(@PathParam("forumId") String forumId, Messsage newMessage);
 	
 	/**
 	 * 
@@ -61,7 +61,7 @@ public interface ForumAPI {
 	@Path("/reply/{forumId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String reply(@PathParam("forumId") String forumId, ForumMessage messageToReply, ForumMessage newMessage);
+	public String reply(@PathParam("forumId") String forumId, Messsage messageToReply, Messsage newMessage);
 	
 	/**
 	 * 

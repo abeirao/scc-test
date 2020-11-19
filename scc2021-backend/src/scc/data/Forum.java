@@ -6,7 +6,7 @@ public class Forum {
 
     private String id;
     private String entityId;
-    private List<ForumMessage> messages;
+    private List<Messsage> messages;
 	private String _rid;
 	private String from;
     
@@ -28,10 +28,10 @@ public class Forum {
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
 	}
-	public List<ForumMessage> getMessages() {
+	public List<Messsage> getMessages() {
 		return messages;
 	}
-	public void setMessages(List<ForumMessage> messages) {
+	public void setMessages(List<Messsage> messages) {
 		this.messages = messages;
 	}
 

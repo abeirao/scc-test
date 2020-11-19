@@ -12,7 +12,7 @@ import redis.clients.jedis.Jedis;
 import scc.data.Calendar;
 import scc.data.CosmosDBLayer;
 import scc.data.Forum;
-import scc.data.ForumMessage;
+import scc.data.Messsage;
 import scc.data.Reservation;
 import scc.redis.RedisCache;
 
@@ -58,10 +58,10 @@ public class ForumService  {
 		return forum;
 	}
 
-	public ForumMessage addMessage(String forumId, ForumMessage newMessage) {
+	public Messsage addMessage(String forumId, Messsage newMessage) {
 		Forum forum = cosmosDB.getForum(forumId);
 		
-		List<ForumMessage> messages = forum.getMessages();
+		List<Messsage> messages = forum.getMessages();
 		messages.add(newMessage);
 		forum.setMessages(messages);
 		
@@ -75,7 +75,7 @@ public class ForumService  {
 		return newMessage;
 	}
 
-	public String reply(String forumId, ForumMessage messageToReply, ForumMessage newMessage) {
+	public String reply(String forumId, Messsage messageToReply, Messsage newMessage) {
 		Forum forum = cosmosDB.getForum(forumId);
 		// TODO
 		forum.getMessages().add(newMessage);
