@@ -7,7 +7,6 @@ public class Calendar {
 	private String _rid;
     private String id;
     private String name;
-    private String description;
     private List<Date> availableDays;
     private Map <Date, String> calendarEntry;
     
@@ -31,14 +30,6 @@ public class Calendar {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public List<Date> getAvailableDays() {
@@ -81,7 +72,7 @@ public class Calendar {
 
 	@Override
 	public String toString() {
-		return "Calendar [_rid=" + _rid + ", id=" + id + ", name=" + name + ", description=" + description + ", availableDays=" + availableDays.toString() +
+		return "Calendar [_rid=" + _rid + ", id=" + id + ", name=" + name + ", availableDays=" + availableDays.toString() +
 				", calendarEntry=" + calendarEntry.toString()  + "]";
 	}
 }

@@ -1,5 +1,5 @@
 # Unit test using artillery
-# Test: post entity; get entity
+# Test: post calendar; get calendar
 config:
 #  target: 'http://localhost:8080/scc2021-backend-solved'
   target: 'https://scc-test-50415.azurewebsites.net'
@@ -15,29 +15,16 @@ config:
 
 
 scenarios:
-  - name: 'Upload entity'
+  - name: 'Upload calendar'
     weight: 1
     flow:
-      - function: "genNewEntity"
+      - function: "genNewCalendar"
       - post:
-          url: "/media"
-          headers:
-            Content-Type: application/octet-stream
-            Accept: application/json
-          beforeRequest: "reqPostMedia"
-          capture:
-            - regexp: '.*'
-              as: "imageId"
-          expect:
-            - statusCode: 200
-      - post:
-          url: "/entity"
+          url: "/calendar"
           headers:
             Accept: application/json
           json:
             name: "{{ name }}"
-            description: "{{ description }}"
-            businessType: "{{ businessType }}"
-            listed: "{{ listed }}"
-            mediaId: ["{{ imageId }}"]
-          afterResponse: "replyPostEntity"
+            availableDays: []
+            calendarEntry: []
+          afterResponse: "replyPostCalendar"

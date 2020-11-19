@@ -1,5 +1,5 @@
 # Unit test using artillery
-# Test: post resservation; get reservation
+# Test: post reservation; get reservation
 config:
 #  target: 'http://localhost:8080/scc2021-backend-solved'
   target: 'https://scc-test-50415.azurewebsites.net'
@@ -15,6 +15,19 @@ config:
 
 
 scenarios:
+  - name: 'Upload calendar'
+    weight: 1
+    flow:
+      - function: "genNewCalendar"
+      - post:
+          url: "/calendar"
+          headers:
+            Accept: application/json
+          json:
+            name: "{{ name }}"
+            availableDays: []
+            calendarEntry: []
+          afterResponse: "replyPostCalendar"
   - name: 'Upload entity'
     weight: 1
     flow:
@@ -46,7 +59,7 @@ scenarios:
     flow:
       - function: "genNewReservation"
       - post:
-          url: "/entity"
+          url: "/reservation"
           headers:
             Accept: application/json
           json:

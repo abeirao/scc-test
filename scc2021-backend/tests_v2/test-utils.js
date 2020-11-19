@@ -9,6 +9,8 @@ module.exports = {
   replyPostEntity,
   genNewReservation,
   replyPostReservation,
+  genNewCalendar,
+  replyPostCalendar,
   reqPostMedia,
   genNewMessage,
   genNewMessageReply,
@@ -26,6 +28,7 @@ var imagesIds = [];
 var images = [];
 var entityIds = [];
 var reservationIds = [];
+var calendarIds = [];
 var loaded = false;
 
 // All endpoints starting with the following prefixes will be aggregated in the same for the statistics
@@ -120,22 +123,6 @@ function genNewEntity(context, events, done) {
 	return done()
 }
 
-function genNewReservation(context, events, done) {
-  loadData();
-	context.vars.name = `${Faker.name.findName()}`
-	context.vars.day = `${Faker.date.future()}`
-	context.vars.entityId = entityIds.sample()
-	return done()
-}
-
-function replyPostReservation(requestParams, response, context, ee, next) {
-	if( response.statusCode == 200) {
-		let reservation = response.toJSON().body
-		reservationIds.push(reservation.id)
-		fs.writeFileSync('reservations.data', JSON.stringify(reservationIds))
-	}
-    return next()
-}
 
 /**
  * Select an entity, if one exists.
@@ -164,6 +151,39 @@ function replyPostEntity(requestParams, response, context, ee, next) {
     return next()
 }
 
+function genNewCalendar(context, events, done) {
+  loadData();
+  context.vars.name = `${Faker.company.companyName()}`
+  context.vars.availableDays = []
+  context.vars.calendarEntry = []
+  return done()
+}
+
+function replyPostCalendar(requestParams, response, context, ee, next) {
+  if( response.statusCode == 200) {
+		let calendar = response.toJSON().body
+		calendarIds.push(entity.id)
+		fs.writeFileSync('calendars.data', JSON.stringify(calendarIds))
+	}
+    return next()
+}
+
+function genNewReservation(context, events, done) {
+  loadData();
+	context.vars.name = `${Faker.name.findName()}`
+	context.vars.day = `${Faker.date.future()}`
+	context.vars.entityId = entityIds.sample()
+	return done()
+}
+
+function replyPostReservation(requestParams, response, context, ee, next) {
+	if( response.statusCode == 200) {
+		let reservation = response.toJSON().body
+		reservationIds.push(reservation.id)
+		fs.writeFileSync('reservations.data', JSON.stringify(reservationIds))
+	}
+    return next()
+}
 
 /**
  * Generate data for a new message. Starts by loading data if it was not loaded yet.
