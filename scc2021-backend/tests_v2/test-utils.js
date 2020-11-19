@@ -121,17 +121,22 @@ function genNewEntity(context, events, done) {
 }
 
 function genNewReservation(context, events, done) {
-
+  loadData();
+	context.vars.name = `${Faker.name.findName()}`
+	context.vars.day = `${Faker.date.future()}`
+	context.vars.entityId = entityIds.sample()
+	return done()
 }
 
 function replyPostReservation(requestParams, response, context, ee, next) {
 	if( response.statusCode == 200) {
 		let reservation = response.toJSON().body
 		reservationIds.push(reservation.id)
-		fs.writeFileSync('entities.data', JSON.stringify(entityIds))
+		fs.writeFileSync('reservations.data', JSON.stringify(reservationIds))
 	}
     return next()
 }
+
 /**
  * Select an entity, if one exists.
  * Stores in the variables:
