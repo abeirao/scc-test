@@ -11,7 +11,7 @@ public class AzureProperties
 	public static final String COSMOSDB_URL = "https://scc-cosmos-50415.documents.azure.com:443/";
 	public static final String COSMOSDB_DATABASE = "scc50415p";
 
-	public static final String PROPS_FILE = "azurekeys.props";
+	public static final String PROPS_FILE = "azurekeys-westeurope.props";
 	private static Properties props;
 	
 	public static synchronized Properties getProperties() {

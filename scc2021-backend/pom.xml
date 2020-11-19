@@ -16,17 +16,17 @@
         <java.version>11</java.version>
         <azure.functions.maven.plugin.version>1.9.0</azure.functions.maven.plugin.version>
         <azure.functions.java.library.version>1.4.0</azure.functions.java.library.version>
-        <functionAppName>sccfunwesteurope50816</functionAppName>
+        <functionAppName>sccfunwesteurope50415</functionAppName>
         <functionAppRegion>westeurope</functionAppRegion>
-        <functionPricingTier>F1</functionPricingTier>
-        <functionResourceGroup>scc2021-rg-westeurope-4204</functionResourceGroup>
+        <functionPricingTier>B1</functionPricingTier>
+        <functionResourceGroup>lab-50415</functionResourceGroup>
         <stagingDirectory>${project.build.directory}/azure-functions/${functionAppName}</stagingDirectory>
     </properties>
 	<dependencies>
 		<dependency>
-	            <groupId>com.microsoft.azure.functions</groupId>
-	            <artifactId>azure-functions-java-library</artifactId>
-	            <version>${azure.functions.java.library.version}</version>
+            <groupId>com.microsoft.azure.functions</groupId>
+            <artifactId>azure-functions-java-library</artifactId>
+            <version>${azure.functions.java.library.version}</version>
 	    </dependency>
 		<dependency>
 			<groupId>junit</groupId>
