@@ -42,6 +42,7 @@ public class TimerFunction {
     	CosmosContainer calendars = CosmosDBFactory.getCosmosClient()
     			.getDatabase(AzureProperties.getProperty(AzureProperties.COSMOSDB_DATABASE))
 				.getContainer("calendars");
+    	
     	// get all calendars in database
 		CosmosPagedIterable<Calendar> it = calendars.queryItems("SELECT * FROM Calendar c",
 						new CosmosQueryRequestOptions(), Calendar.class);
