@@ -11,10 +11,12 @@ import redis.clients.jedis.Jedis;
 import scc.data.Messsage;
 import scc.data.Forum;
 import scc.data.CosmosDBLayer;
+import scc.data.Calendar;
 import scc.redis.RedisCache;
 import scc.srv.CosmosDBFactory;
 import scc.utils.AzureProperties;
 
+import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,12 +39,20 @@ public class TimerFunction {
     		HttpFunction.count++;
     	}
     
-		CosmosPagedIterable<Calendar> it = CosmosDBFactory.getCosmosClient().getDatabase(AzureProperties.getProperty(AzureProperties.COSMOSDB_DATABASE))
-				.getContainer("calendars").queryItems("SELECT * FROM Calendar c",
+    	CosmosContainer calendars = CosmosDBFactory.getCosmosClient()
+    			.getDatabase(AzureProperties.getProperty(AzureProperties.COSMOSDB_DATABASE))
+				.getContainer("calendars");
+    	// get all calendars in database
+		CosmosPagedIterable<Calendar> it = calendars.queryItems("SELECT * FROM Calendar c",
 						new CosmosQueryRequestOptions(), Calendar.class);
 		
-		for (Calendar calendar: it) {
-			// do work
+		// update available days in each calendar
+		for (Calendar calendar: it) { 
+			List<Date> availableDays = calendar.getAvailableDays();
+			// subtract the day that passed
+			calendar.setAvailableDays(availableDays.subList(1, availableDays.size()-1));
+			// update calendar in database
+			calendars.upsertItem(calendar);
 		}		
     }
 }
