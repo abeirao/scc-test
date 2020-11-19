@@ -43,7 +43,6 @@ public class TimerFunction {
 		
 		for (Calendar calendar: it) {
 			// do work
-		}
-		
+		}		
     }
 }
