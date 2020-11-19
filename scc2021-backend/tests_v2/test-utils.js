@@ -7,6 +7,8 @@ module.exports = {
   selectEntity,
   genNewEntity,
   replyPostEntity,
+  genNewReservation,
+  replyPostReservation,
   reqPostMedia,
   genNewMessage,
   genNewMessageReply,
@@ -23,6 +25,7 @@ const fetch = require('node-fetch')
 var imagesIds = [];
 var images = [];
 var entityIds = [];
+var reservationIds = [];
 var loaded = false;
 
 // All endpoints starting with the following prefixes will be aggregated in the same for the statistics
@@ -57,7 +60,7 @@ function loadData() {
 	if( fs.existsSync('entities.data')) {
 		let str = fs.readFileSync('entities.data','utf8')
 		entityIds = JSON.parse(str)
-	} 
+	}
 	fs.readdirSync('images').forEach(file => {
 		if( file.endsWith('.jpg')) {
 			var img  = fs.readFileSync('images/' + file)
@@ -77,7 +80,7 @@ function reqPostMedia(requestParams, context, ee, next) {
 }
 
 /**
- * Process reply of the download of an image. 
+ * Process reply of the download of an image.
  * Update the next image to read.
  */
 function processUploadReply(requestParams, response, context, ee, next) {
@@ -106,7 +109,7 @@ function selectImageToDownload(context, events, done) {
  * name : name of the entity
  * description : text with small description
  * businessType : text with business type
- * listed : whether the entity should be listed or not 
+ * listed : whether the entity should be listed or not
  */
 function genNewEntity(context, events, done) {
 	loadData();
@@ -117,6 +120,18 @@ function genNewEntity(context, events, done) {
 	return done()
 }
 
+function genNewReservation(context, events, done) {
+
+}
+
+function replyPostReservation(requestParams, response, context, ee, next) {
+	if( response.statusCode == 200) {
+		let reservation = response.toJSON().body
+		reservationIds.push(reservation.id)
+		fs.writeFileSync('entities.data', JSON.stringify(entityIds))
+	}
+    return next()
+}
 /**
  * Select an entity, if one exists.
  * Stores in the variables:
@@ -133,7 +148,7 @@ function selectEntity(context, events, done) {
 }
 
 /**
- * Process reply of the post entity. 
+ * Process reply of the post entity.
  */
 function replyPostEntity(requestParams, response, context, ee, next) {
 	if( response.statusCode == 200) {
@@ -202,4 +217,3 @@ function genNewMessageReply(context, events, done) {
 	}
 	return done()
 }
-

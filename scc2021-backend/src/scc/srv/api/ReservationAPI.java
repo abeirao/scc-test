@@ -15,7 +15,7 @@ import scc.data.Reservation;
 import java.util.Iterator;
 import java.util.List;
 
-@Path("/reservations")
+@Path("/reservation")
 public interface ReservationAPI {
 
 	/**

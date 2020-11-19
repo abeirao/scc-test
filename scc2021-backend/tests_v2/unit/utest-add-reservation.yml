@@ -1,5 +1,5 @@
 # Unit test using artillery
-# Test: post entity; get entity
+# Test: post resservation; get reservation
 config:
 #  target: 'http://localhost:8080/scc2021-backend-solved'
   target: 'https://scc-test-50415.azurewebsites.net'
@@ -41,3 +41,17 @@ scenarios:
             listed: "{{ listed }}"
             mediaId: ["{{ imageId }}"]
           afterResponse: "replyPostEntity"
+  - name: 'Upload reservation'
+    weight: 1
+    flow:
+      - function: "genNewReservation"
+      - post:
+          url: "/entity"
+          headers:
+            Accept: application/json
+          json:
+            name: "{{ name }}"
+            day: "{{ day }}"
+            id: "{{ id }}"
+            entityId: "{{ entityId }}"
+          afterResponse: "replyPostReservation"
