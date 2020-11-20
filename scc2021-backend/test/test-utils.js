@@ -19,7 +19,6 @@ module.exports = {
   selectImageToDownload
 }
 
-
 const fs = require('fs')
 const Faker = require('faker')
 const fetch = require('node-fetch')
@@ -64,9 +63,9 @@ function loadData() {
 		let str = fs.readFileSync('entities.data','utf8')
 		entityIds = JSON.parse(str)
 	}
-	fs.readdirSync('images').forEach(file => {
+	fs.readdirSync('../images').forEach(file => {
 		if( file.endsWith('.jpg')) {
-			var img  = fs.readFileSync('images/' + file)
+			var img  = fs.readFileSync('../images/' + file)
 			images.push( img)
 		}
 	});
