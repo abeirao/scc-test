@@ -35,11 +35,6 @@ public class HttpFunction {
 			result.append(HttpFunction.count);
 		}
 		result.append(" times with the current container\n");
-		result.append("CosmosDB functions called ");
-		synchronized (CosmosDBFunction.class) {
-			result.append(CosmosDBFunction.count);
-		}
-		result.append(" times with the current container\n");
 		result.append("Timer functions called ");
 		synchronized (TimerFunction.class) {
 			result.append(TimerFunction.count);

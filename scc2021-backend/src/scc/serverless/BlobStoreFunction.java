@@ -14,7 +14,7 @@ public class BlobStoreFunction
 {
 	static int count = 0;
 
-    @FunctionName("blobtest")
+    @FunctionName("blobp")
 	public void run(
 			@BlobTrigger(name = "blob", dataType = "binary", path = "images/{name}", connection = "BlobStoreConnection") byte[] content,
 			@BindingName("name") String blobname, final ExecutionContext context) {
