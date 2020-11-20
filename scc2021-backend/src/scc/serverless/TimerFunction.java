@@ -33,7 +33,7 @@ public class TimerFunction {
 	// TODO function to process available days each 24hours 
     
     @FunctionName("periodic-compute")
-    public void cosmosFunction( @TimerTrigger(name = "keepAliveTrigger", schedule = "0 0 */24 * * *") String timerInfo,
+    public void updateAvailableDays( @TimerTrigger(name = "keepAliveTrigger", schedule = "0 0 */24 * * *") String timerInfo,
           ExecutionContext context) {
     	synchronized(HttpFunction.class) {
     		HttpFunction.count++;
