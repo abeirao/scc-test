@@ -20,8 +20,8 @@ module.exports = {
 }
 
 const fs = require('fs')
-//const Faker = require('faker')
-//const fetch = require('node-fetch')
+const Faker = require('faker')
+const fetch = require('node-fetch')
 
 var imagesIds = [];
 var images = [];
@@ -115,8 +115,9 @@ function selectImageToDownload(context, events, done) {
  */
 function genNewEntity(context, events, done) {
 	loadData();
-	context.vars.name = "BeautyCompany" //`${Faker.company.companyName()}`
-	context.vars.description = "we are beauty" //`${Faker.company.catchPhrase()}`
+	context.vars.name = `${Faker.company.companyName()}`
+	context.vars.description = `${Faker.company.catchPhrase()}`
+	context.vars.businessType = `${Faker.commerce.department()}`
 	context.vars.listed = Math.random() < 0.5
 	return done()
 }
@@ -151,7 +152,7 @@ function replyPostEntity(requestParams, response, context, ee, next) {
 
 function genNewCalendar(context, events, done) {
   loadData();
-  context.vars.name = "this calendar"//`${Faker.company.companyName()}`
+  context.vars.name = `${Faker.company.companyName()}`
   context.vars.availableDays = []
   context.vars.calendarEntry = []
   return done()
@@ -168,8 +169,8 @@ function replyPostCalendar(requestParams, response, context, ee, next) {
 
 function genNewReservation(context, events, done) {
   loadData();
-	context.vars.name = "Haircut"//`${Faker.name.findName()}`
-	context.vars.day = "25/12/2020"//`${Faker.date.future()}`
+	context.vars.name = `${Faker.name.findName()}`
+	context.vars.day = `${Faker.date.future()}`
 	context.vars.entityId = entityIds.sample()
 	return done()
 }
@@ -194,8 +195,8 @@ function genNewMessage(context, events, done) {
 	loadData();
 	if( entityIds.length > 0) {
 		context.vars.entityId = entityIds.sample()
-		context.vars.fromWho = "John Bonjovi" //`${Faker.name.firstName()} ${Faker.name.lastName()}`
-		context.vars.msg = "oh well"//`${Faker.lorem.paragraph()}`
+		context.vars.fromWho = `${Faker.name.firstName()} ${Faker.name.lastName()}`
+		context.vars.msg = `${Faker.lorem.paragraph()}`
 		delete context.vars.replyToId
 	} else {
 		delete context.vars.entityId
@@ -232,8 +233,8 @@ function genNewMessageReply(context, events, done) {
 	loadData();
 	if( typeof context.vars.msgJSON !== undefined) {
 		context.vars.entityId = context.vars.msgJSON.entityId
-		context.vars.fromWho = "Jao Felis"//`${Faker.name.firstName()} ${Faker.name.lastName()}`
-		context.vars.msg = "muito nice"//`${Faker.lorem.paragraph()}`
+		context.vars.fromWho = `${Faker.name.firstName()} ${Faker.name.lastName()}`
+		context.vars.msg = `${Faker.lorem.paragraph()}`
 		context.vars.replyToId = context.vars.msgJSON.id
 	} else {
 		delete context.vars.entityId
