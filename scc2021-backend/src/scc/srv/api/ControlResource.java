@@ -8,12 +8,10 @@ import javax.ws.rs.core.MediaType;
 @Path("/control")
 public class ControlResource
 {
-
 	@Path("/")
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String hello() {
 		return "OK";
 	}
-
 }
