@@ -21,7 +21,7 @@ module.exports = {
 
 const fs = require('fs')
 //const Faker = require('faker')
-//const fetch = require('node-fetch')
+const fetch = require('node-fetch')
 
 var imagesIds = [];
 var images = [];
