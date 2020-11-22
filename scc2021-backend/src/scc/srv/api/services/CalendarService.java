@@ -1,6 +1,11 @@
 package scc.srv.api.services;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -53,6 +58,9 @@ public class CalendarService {
 
     public Calendar create(Calendar calendar) {
         try {
+        	List<Date> availableDays = this.computeAvailableDays();        	
+        	calendar.setAvailableDays(availableDays);
+        	
             cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
             jedis.set(CALENDAR_KEY_PREFIX + calendar.getId(), mapper.writeValueAsString(calendar));
         } catch (Exception e) {
@@ -62,7 +70,27 @@ public class CalendarService {
         return calendar;
     }
 
-    public Calendar delete(String id) {
+    private List<Date> computeAvailableDays() {    	
+    	LocalDate today = LocalDate.now();
+    	LocalDate endDate = today.withDayOfMonth(today.lengthOfMonth());
+           
+		long numOfDays = ChronoUnit.DAYS.between(today, endDate);
+	    
+		List<LocalDate> listOfDates = LongStream.range(0, numOfDays)
+		                                .mapToObj(today::plusDays)
+		                                .collect(Collectors.toList());
+	
+		ZoneId defaultZoneId = ZoneId.systemDefault();
+
+		List<Date> availableDays = new LinkedList<Date>();
+		
+		for (LocalDate date: listOfDates) 
+			availableDays.add(Date.from(date.atStartOfDay(defaultZoneId).toInstant()));
+				
+		return availableDays;		
+	}
+
+	public Calendar delete(String id) {
         Calendar calendar = null;
         try {
             calendar = mapper.readValue(jedis.get(CALENDAR_KEY_PREFIX + id), Calendar.class);
