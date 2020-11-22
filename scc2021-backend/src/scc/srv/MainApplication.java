@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
+import scc.srv.api.ControlResource;
 import scc.srv.api.services.*;
 
 /**
@@ -19,6 +20,7 @@ public class MainApplication extends Application
 
 	// add resources to resources set
 	public MainApplication() { 
+		resources.add(ControlResource.class);
 		resources.add(MediaService.class);
 		resources.add(CalendarService.class);
 		resources.add(EntityService.class);
