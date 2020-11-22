@@ -17,21 +17,21 @@ import scc.data.Reservation;
 
 @Path("/entity")
 public interface EntityAPI {
-	
+
 	static final String ENDPOINT = "/entity";
 
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
 	@GET
 	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
 	public Entity get(@PathParam("id") String id);
-	
+
 	/**
-	 * 
+	 *
 	 * @param entity
 	 * @return
 	 */
@@ -39,10 +39,10 @@ public interface EntityAPI {
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Entity create(Entity entity);		
-	
+	public Entity create(Entity entity);
+
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
@@ -51,9 +51,9 @@ public interface EntityAPI {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Entity delete(@PathParam("id") String id);
-	
+
 	/**
-	 * 
+	 *
 	 * @param entity
 	 * @return
 	 */
@@ -64,7 +64,7 @@ public interface EntityAPI {
 	public Entity update(Entity entity);
 
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @param mediaId
 	 */
@@ -74,7 +74,7 @@ public interface EntityAPI {
 	void addMedia(@PathParam("id") String id, @PathParam("mediaId") String mediaId);
 
 	/**
-	 * 
+	 *
 	 * @param id
 	 * @param reservation
 	 */
@@ -86,5 +86,5 @@ public interface EntityAPI {
 	@GET
 	@Path("")
 	@Produces(MediaType.APPLICATION_JSON)
-	Iterator<Entity> getAll();	
+	Iterator<Entity> getAll();
 }

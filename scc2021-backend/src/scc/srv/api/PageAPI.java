@@ -17,6 +17,9 @@ import javax.ws.rs.core.MediaType;
 
 @Path("")
 public interface PageAPI {
+	
+	final String ENDPOINT = "";
+	
 	// API for page methods (frontpage...)
 	
 	@GET

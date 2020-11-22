@@ -4,11 +4,15 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.ws.rs.Path;
+
 import scc.data.Calendar;
 import scc.data.Reservation;
 import scc.srv.api.CalendarAPI;
 import scc.srv.api.services.CalendarService;
 
+
+@Path(CalendarAPI.ENDPOINT)
 public class CalendarController implements CalendarAPI {
 	
 	private CalendarService calendars;

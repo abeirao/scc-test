@@ -1,8 +1,11 @@
 package scc.srv.api.controllers;
 
+import javax.ws.rs.Path;
+
 import scc.srv.api.MediaAPI;
 import scc.srv.api.services.MediaService;
 
+@Path(MediaAPI.ENDPOINT)
 public class MediaController implements MediaAPI {
 
 	private MediaService media;

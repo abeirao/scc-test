@@ -2,11 +2,14 @@ package scc.srv.api.controllers;
 
 import java.util.Iterator;
 
+import javax.ws.rs.Path;
+
 import scc.data.Forum;
 import scc.data.Messsage;
 import scc.srv.api.ForumAPI;
 import scc.srv.api.services.ForumService;
 
+@Path(ForumAPI.ENDPOINT)
 public class ForumController implements ForumAPI {
 
 	private ForumService forums;

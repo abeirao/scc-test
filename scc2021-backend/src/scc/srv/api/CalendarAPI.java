@@ -17,6 +17,8 @@ import scc.data.Calendar;
 
 @Path("/calendar")
 public interface CalendarAPI {
+	
+	final String ENDPOINT = "/calendar";
 
 	/**
 	 * 

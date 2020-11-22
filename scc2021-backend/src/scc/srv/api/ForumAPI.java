@@ -17,6 +17,8 @@ import scc.data.Messsage;
 @Path("/forum")
 public interface ForumAPI {
 	
+	final String ENDPOINT = "/forum";
+	
 	/**
 	 * 
 	 * @param id

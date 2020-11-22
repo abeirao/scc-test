@@ -2,10 +2,13 @@ package scc.srv.api.controllers;
 
 import java.util.Iterator;
 
+import javax.ws.rs.Path;
+
 import scc.data.Reservation;
 import scc.srv.api.ReservationAPI;
 import scc.srv.api.services.ReservationService;
 
+@Path(ReservationAPI.ENDPOINT)
 public class ReservationController implements ReservationAPI {
 
 	private ReservationService reservations;

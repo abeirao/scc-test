@@ -17,6 +17,8 @@ import java.util.List;
 
 @Path("/reservation")
 public interface ReservationAPI {
+	
+	final String ENDPOINT = "/reservation";
 
 	/**
 	 * Create a new reservation

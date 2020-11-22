@@ -9,9 +9,11 @@ import scc.srv.api.services.EntityService;
 import java.util.Date;
 import java.util.Iterator;
 
+import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
+@Path(EntityAPI.ENDPOINT)
 public class EntityController implements EntityAPI {
 
 	private EntityService entities;
