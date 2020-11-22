@@ -19,8 +19,7 @@ import com.microsoft.azure.functions.*;
  */
 public class HttpFunction {
 	
-	// TODO available days in the calendar when a new reservation is created  ?
-	
+	// TODO available days in the calendar when a new reservation is created  ?	
 	
 	static int count = 0;
 
