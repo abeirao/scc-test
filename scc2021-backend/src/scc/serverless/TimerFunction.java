@@ -30,8 +30,6 @@ public class TimerFunction {
 	
 	// TODO function to process and update all listed entities in the cache
 	
-	// TODO function to process available days each 24hours 
-    
     @FunctionName("periodic-compute")
     public void updateAvailableDays( @TimerTrigger(name = "keepAliveTrigger", schedule = "0 0 */24 * * *") String timerInfo,
           ExecutionContext context) {
