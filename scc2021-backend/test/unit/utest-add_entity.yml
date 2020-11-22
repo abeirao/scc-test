@@ -1,7 +1,6 @@
 # Unit test using artillery
 # Test: post entity; get entity
 config:
-#  target: 'http://localhost:8080/scc2021-backend-solved'
   target: 'https://scc-test-50415.azurewebsites.net'
   plugins:
     metrics-by-endpoint: {}

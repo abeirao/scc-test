@@ -34,4 +34,3 @@ scenarios:
           Accept: application/json
 
         afterResponse: "replyAvailableDays"
-
