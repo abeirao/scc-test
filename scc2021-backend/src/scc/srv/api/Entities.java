@@ -40,8 +40,6 @@ import java.util.List;
 @Path("/entities")
 public class Entities {
 
-	static final String ENDPOINT = "/entity";
-
 	public static final String ENTITY_KEY_PREFIX = "entity: ";
 
 	ObjectMapper mapper = new ObjectMapper();
