@@ -3,13 +3,13 @@ package scc.data;
 import java.util.*;
 
 public class Calendar {
-	
+
 	private String _rid;
-    private String id;
-    private String name;
-    private List<Date> availableDays;
-    private Map <Date, String> calendarEntry;
-    
+  private String id;
+  private String name;
+  private List<Date> availableDays;
+  private Map <Date, String> calendarEntry;
+
 	public String get_rid() {
 		return _rid;
 	}
