@@ -150,6 +150,26 @@ function replyPostEntity(requestParams, response, context, ee, next) {
     return next()
 }
 
+function genNewAvailableDaysRequest(context, events, done){
+	loadData();
+	if(calendarIds.length > 0) {
+		context.vars.calendarId = calendarIds.sample()
+	} else {
+		delete context.vars.calendarId
+	}
+	return done()
+}
+//TODO nao sei o qe isto faz e se esta bem
+function replyAvailableDays(requestParams, response, context, ee, next){
+	if(response.statusCode == 200){
+		let dates = response.toJSON().body
+		fs.writeFileSync('available dates', JSON.stringify(dates))
+
+	}
+	return next();
+}
+
+
 function genNewCalendar(context, events, done) {
   loadData();
   context.vars.name = `${Faker.company.companyName()}`
