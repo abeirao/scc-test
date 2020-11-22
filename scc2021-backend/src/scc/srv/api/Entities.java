@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+/* MOCK ENTITY API, TESTING ONLY */
 
 @Path("/entities")
 public class Entities {
