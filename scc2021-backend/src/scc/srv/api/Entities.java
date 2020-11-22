@@ -209,9 +209,9 @@ public class Entities {
 
 	@GET
 	@Path("")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String getAll() {
-		return "you called get all";
+	@Produces(MediaType.APPLICATION_JSON)
+	public Iterator<Entity> getAll() {
+		return cosmosDB.getAllEntities().iterator(); //return "you called get all";
 	}
 	
 }
