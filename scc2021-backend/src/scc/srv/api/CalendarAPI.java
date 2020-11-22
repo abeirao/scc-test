@@ -2,8 +2,6 @@ package scc.srv.api;
 
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -16,8 +14,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import scc.data.Calendar;
-import scc.data.Forum;
-import scc.data.Reservation;
 
 @Path("/calendar")
 public interface CalendarAPI {
