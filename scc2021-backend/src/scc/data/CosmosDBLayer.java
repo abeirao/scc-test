@@ -87,7 +87,7 @@ public class CosmosDBLayer {
 
 	private void createContainers() {
 		db.createContainerIfNotExists(new CosmosContainerProperties(Containers.ENTITIES.toString().toLowerCase(), "/id"));
-		db.createContainerIfNotExists(new CosmosContainerProperties(Containers.RESERVATIONS.toString().toLowerCase(), "/entityId"));
+		db.createContainerIfNotExists(new CosmosContainerProperties(Containers.RESERVATIONS.toString().toLowerCase(), "/id"));
 		db.createContainerIfNotExists(new CosmosContainerProperties(Containers.CALENDARS.toString().toLowerCase(), "/id"));
 		db.createContainerIfNotExists(new CosmosContainerProperties(Containers.FORUMS.toString().toLowerCase(), "/id"));
 	}
