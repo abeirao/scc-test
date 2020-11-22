@@ -70,23 +70,22 @@ public class CalendarService {
         return calendar;
     }
 
+    /**
+     * calculates the number of available days, which will be the days until the end of the respective month
+     * @return a list of available dates
+     */
     private List<Date> computeAvailableDays() {    	
     	LocalDate today = LocalDate.now();
-    	LocalDate endDate = today.withDayOfMonth(today.lengthOfMonth());
-           
-		long numOfDays = ChronoUnit.DAYS.between(today, endDate);
-	    
+    	LocalDate endDate = today.withDayOfMonth(today.lengthOfMonth());           
+		long numOfDays = ChronoUnit.DAYS.between(today, endDate);	    
 		List<LocalDate> listOfDates = LongStream.range(0, numOfDays)
 		                                .mapToObj(today::plusDays)
-		                                .collect(Collectors.toList());
-	
+		                                .collect(Collectors.toList());	
 		ZoneId defaultZoneId = ZoneId.systemDefault();
-
-		List<Date> availableDays = new LinkedList<Date>();
-		
+		List<Date> availableDays = new LinkedList<Date>();		
 		for (LocalDate date: listOfDates) 
 			availableDays.add(Date.from(date.atStartOfDay(defaultZoneId).toInstant()));
-				
+		
 		return availableDays;		
 	}
 
