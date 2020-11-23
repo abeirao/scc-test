@@ -97,13 +97,17 @@ public class ForumService  {
 		return newMessage.getMsg();
 	}
 
-	public Forum delete(String id) {
+	public Forum delete(String id) throws NotFoundException {
 		try {
 			Forum forum = this.get(id);
+			// delete from cache
 			jedis.del(FORUM_KEY_PREFIX + forum.getId());
 			// delete forum from forums by entity on cache 
 			jedis.srem(FORUM_ENTITY_KEY_PREFIX + forum.getEntityId(), mapper.writeValueAsString(forum));
+			// delete from database
 			return (Forum) cosmosDB.delete(CosmosDBLayer.FORUMS, forum).getItem();
+		} catch (NotFoundException e) {
+			throw e;
 		} catch( Exception e) {
 			e.printStackTrace();
 			return null;

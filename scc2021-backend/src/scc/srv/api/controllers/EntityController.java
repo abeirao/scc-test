@@ -44,7 +44,11 @@ public class EntityController implements EntityAPI {
 
 	@Override
 	public Entity delete(String id) {
-		return entities.delete(id);
+		try {
+			return entities.delete(id);
+		} catch (NotFoundException e) {
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
 	}
 
 	@Override

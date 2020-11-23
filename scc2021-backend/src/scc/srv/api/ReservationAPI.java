@@ -45,7 +45,7 @@ public interface ReservationAPI {
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Reservation getReservation(@PathParam("id") String id);
+	public Reservation get(@PathParam("id") String id);
 	
 	/**
 	 * Delete a reservation by its id
@@ -55,7 +55,7 @@ public interface ReservationAPI {
 	@DELETE
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Reservation deleteReservation(@PathParam("id") String id);
+	public Reservation delete(@PathParam("id") String id);
 
 	/**
 	 * Return all reservations in the system

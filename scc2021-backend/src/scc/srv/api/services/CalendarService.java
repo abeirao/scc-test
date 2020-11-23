@@ -95,19 +95,23 @@ public class CalendarService {
 		return availableDays;		
 	}
 
-	public Calendar delete(String id) {
+	public Calendar delete(String id) throws NotFoundException {
         Calendar calendar = null;
         try {
             calendar = mapper.readValue(jedis.get(CALENDAR_KEY_PREFIX + id), Calendar.class);
-        } catch (JsonProcessingException e) {
+	        
+	        if (calendar == null)
+	            calendar = cosmosDB.getCalendar(id);
+	        else
+	            jedis.del(CALENDAR_KEY_PREFIX + id);
+	
+	        return (Calendar) cosmosDB.delete(CosmosDBLayer.CALENDARS, calendar).getItem();
+        } catch (NotFoundException e) {
+        	throw e;
+		} catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        if (calendar == null)
-            calendar = cosmosDB.getCalendar(id);
-        else
-            jedis.del(CALENDAR_KEY_PREFIX + id);
-
-        return (Calendar) cosmosDB.delete(CosmosDBLayer.CALENDARS, calendar).getItem();
     }
 
     public Calendar update(Calendar calendar) {

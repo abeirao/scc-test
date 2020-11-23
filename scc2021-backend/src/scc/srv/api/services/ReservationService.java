@@ -29,22 +29,47 @@ public class ReservationService {
 		cosmosDB =  CosmosDBLayer.getInstance();
 		jedis = RedisCache.getCachePool().getResource();
 	}
+	
+	public Reservation get(String id) throws NotFoundException {
+		Reservation reservation = null;
+		try {
+			reservation = mapper.readValue(jedis.get(RESERVATION_KEY_PREFIX + id), Reservation.class);		
+			if (reservation == null) {
+				reservation = cosmosDB.getReservation(id);				
+				jedis.set(RESERVATION_KEY_PREFIX + id, mapper.writeValueAsString(reservation));				
+			}
+			return reservation;	
+		} catch (NotFoundException e) {
+            throw e;		
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
-	public Iterator<Reservation> getReservationsFromEntity(String entityId) {
-		Set<Reservation> reservations = new HashSet<Reservation>();
-        Set<String> s = jedis.smembers(RESERVATION_ENTITY_KEY_PREFIX + entityId);
-        if (s != null) {
-	        s.forEach(x -> {
-	            try {
-	                reservations.add(mapper.readValue(x, Reservation.class));
-	            } catch (JsonProcessingException e) {
-	                e.printStackTrace();
-	            }
-	        });
-	        return reservations.iterator();
-        }			
-        // if query not on cache
-		return cosmosDB.getReservationsByEntity(entityId).iterator();
+	public Iterator<Reservation> getReservationsFromEntity(String entityId) throws NotFoundException {
+		try {
+			Set<Reservation> reservations = new HashSet<Reservation>();
+	        Set<String> s = jedis.smembers(RESERVATION_ENTITY_KEY_PREFIX + entityId);
+	        if (s != null) {
+		        s.forEach(x -> {
+		            try {
+		                reservations.add(mapper.readValue(x, Reservation.class));
+		            } catch (JsonProcessingException e) {
+		                e.printStackTrace();
+		            }
+		        });
+		        return reservations.iterator();
+	        }			
+	        // if query not on cache
+			return cosmosDB.getReservationsByEntity(entityId).iterator();
+		
+		} catch (NotFoundException e) {
+            throw e;		
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 		
 	}
 	
@@ -84,32 +109,17 @@ public class ReservationService {
 		
 	}
 	
-	public Reservation getReservation(String id) throws NotFoundException {
-		Reservation reservation = null;
+	public Reservation delete(String id) throws NotFoundException {
 		try {
-			reservation = mapper.readValue(jedis.get(RESERVATION_KEY_PREFIX + id), Reservation.class);		
-			if (reservation == null) {
-				reservation = cosmosDB.getReservation(id);				
-				jedis.set(RESERVATION_KEY_PREFIX + id, mapper.writeValueAsString(reservation));				
-			}
-			return reservation;	
-		} catch (NotFoundException e) {
-            throw e;		
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public Reservation deleteReservation(String id) {
-		try {
-			Reservation reservation = this.getReservation(id);
+			Reservation reservation = this.get(id);
 			// delete reservation from cache
 			jedis.del(RESERVATION_KEY_PREFIX + id);
 			// delete reservation from reservations by entity on cache 
 			jedis.srem(RESERVATION_ENTITY_KEY_PREFIX + reservation.getEntityId(), mapper.writeValueAsString(reservation));
 			// delete reservation from database
 			return (Reservation) cosmosDB.delete(CosmosDBLayer.RESERVATIONS, reservation).getItem();
+		} catch (NotFoundException e) {
+			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

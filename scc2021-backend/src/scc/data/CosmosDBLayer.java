@@ -231,11 +231,5 @@ public class CosmosDBLayer {
 		String query = "SELECT * FROM " + RESERVATIONS + " WHERE entityId=\"" + entityId + "\"";
 		return reservations.queryItems(query, new CosmosQueryRequestOptions(), Reservation.class);
 	}
-
-	public CosmosDatabase getDatabase(String property) {
-		// TODO Auto-generated method stub
-		return this.db;
-	}
-
 	
 }

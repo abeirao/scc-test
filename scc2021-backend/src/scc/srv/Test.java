@@ -150,7 +150,7 @@ public class Test {
 		
 			System.out.println("Reservation");
 			//System.out.println(reservationService.addReservation(res).toString());
-			System.out.println(reservationService.getReservation(res.getId()).toString());
+			System.out.println(reservationService.get(res.getId()).toString());
 			
 			System.out.println("Forum");
 			System.out.println(forumService.create(forum).toString());

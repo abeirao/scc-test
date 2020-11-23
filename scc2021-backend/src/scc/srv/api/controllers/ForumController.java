@@ -47,7 +47,11 @@ public class ForumController implements ForumAPI {
 
 	@Override
 	public Forum delete(String id) {
-		return forums.delete(id);
+		try {
+			return forums.delete(id);
+		} catch (NotFoundException e) {
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
 	}
 
 	@Override

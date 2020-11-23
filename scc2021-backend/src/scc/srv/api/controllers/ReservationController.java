@@ -31,17 +31,21 @@ public class ReservationController implements ReservationAPI {
 	}
 
 	@Override
-	public Reservation getReservation(String id) {
+	public Reservation get(String id) {
 		try {
-			return reservations.getReservation(id);
+			return reservations.get(id);
 		} catch (NotFoundException e) {
 			throw new WebApplicationException(Response.Status.NOT_FOUND);
 		}
 	}
 
 	@Override
-	public Reservation deleteReservation(String id) {
-		return reservations.deleteReservation(id);
+	public Reservation delete(String id) {
+		try {
+			return reservations.delete(id);
+		} catch (NotFoundException e) {
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
 	}
 
 	@Override
@@ -51,6 +55,10 @@ public class ReservationController implements ReservationAPI {
 
 	@Override
 	public Iterator<Reservation> getReservationsFromEntity(String entityId) {
-		return reservations.getReservationsFromEntity(entityId);
+		try {
+			return reservations.getReservationsFromEntity(entityId);
+		} catch (NotFoundException e) {
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
 	}
 }

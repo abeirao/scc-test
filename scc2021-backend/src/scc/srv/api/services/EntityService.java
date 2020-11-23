@@ -79,10 +79,19 @@ public class EntityService   {
 		}
 	}
 
-	public Entity delete(String id) {
-		Entity entity = this.get(id);
-		jedis.del(ENTITY_KEY_PREFIX + id);
-		return (Entity) cosmosDB.delete(CosmosDBLayer.ENTITIES, entity).getItem();
+	public Entity delete(String id) throws NotFoundException {
+		try {
+			Entity entity = this.get(id);
+			// delete from cache
+			jedis.del(ENTITY_KEY_PREFIX + id);
+			// delete from database
+			return (Entity) cosmosDB.delete(CosmosDBLayer.ENTITIES, entity).getItem();			
+		} catch (NotFoundException e) {
+	        throw e;
+	    } catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} 	
 	}
 
 	public Entity update(Entity entity) {
