@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.ws.rs.NotFoundException;
+
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -82,7 +84,7 @@ public class ReservationService {
 		
 	}
 	
-	public Reservation getReservation(String id) {
+	public Reservation getReservation(String id) throws NotFoundException {
 		Reservation reservation = null;
 		try {
 			reservation = mapper.readValue(jedis.get(RESERVATION_KEY_PREFIX + id), Reservation.class);		
@@ -90,7 +92,9 @@ public class ReservationService {
 				reservation = cosmosDB.getReservation(id);				
 				jedis.set(RESERVATION_KEY_PREFIX + id, mapper.writeValueAsString(reservation));				
 			}
-			return reservation;			
+			return reservation;	
+		} catch (NotFoundException e) {
+            throw e;		
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

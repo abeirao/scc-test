@@ -24,6 +24,7 @@ import scc.redis.RedisCache;
 import scc.srv.api.CalendarAPI;
 
 import javax.swing.text.html.HTMLDocument;
+import javax.ws.rs.NotFoundException;
 
 public class CalendarService {
 
@@ -40,7 +41,7 @@ public class CalendarService {
         jedis = RedisCache.getCachePool().getResource();
     }
 
-    public Calendar get(String id) {
+    public Calendar get(String id) throws NotFoundException {
         Calendar calendar;
         try {
             calendar = mapper.readValue(jedis.get(CALENDAR_KEY_PREFIX + id), Calendar.class);
@@ -50,6 +51,8 @@ public class CalendarService {
                 jedis.set(CALENDAR_KEY_PREFIX + id, mapper.writeValueAsString(calendar));
             }
             return calendar;
+        } catch (NotFoundException e) {
+            throw e;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

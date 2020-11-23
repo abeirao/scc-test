@@ -14,6 +14,8 @@ import com.azure.cosmos.util.CosmosPagedIterable;
 
 import java.util.ArrayList;
 
+import javax.ws.rs.NotFoundException;
+
 public class CosmosDBLayer {
 	
 	// TODO geo replication
@@ -165,20 +167,32 @@ public class CosmosDBLayer {
 		}
 	}
 
-	public Reservation getReservation(String id){
-		return reservations.readItem(id, new PartitionKey(id), Reservation.class).getItem(); 
+	public Reservation getReservation(String id) throws NotFoundException {
+		CosmosItemResponse<Reservation> res = calendars.readItem(id, new PartitionKey(id), Reservation.class);
+		if (res.getStatusCode() == 404)
+			throw new NotFoundException();
+		return res.getItem(); 
 	}
 	
-	public Calendar getCalendar(String id) {
-		return calendars.readItem(id, new PartitionKey(id), Calendar.class).getItem(); 
+	public Calendar getCalendar(String id) throws NotFoundException {
+		CosmosItemResponse<Calendar> res = calendars.readItem(id, new PartitionKey(id), Calendar.class);
+		if (res.getStatusCode() == 404)
+			throw new NotFoundException();
+		return res.getItem(); 
 	}
 	
-	public Forum getForum(String id) {
-		return forums.readItem(id, new PartitionKey(id), Forum.class).getItem(); 
+	public Forum getForum(String id) throws NotFoundException {
+		CosmosItemResponse<Forum> res = forums.readItem(id, new PartitionKey(id), Forum.class);
+		if (res.getStatusCode() == 404)
+			throw new NotFoundException();
+		return res.getItem(); 
 	}
 	
-	public Entity getEntity(String id) {
-		return entities.readItem(id, new PartitionKey(id), Entity.class).getItem();
+	public Entity getEntity(String id) throws NotFoundException {
+		CosmosItemResponse<Entity> res = entities.readItem(id, new PartitionKey(id), Entity.class);
+		if (res.getStatusCode() == 404)
+			throw new NotFoundException();
+		return res.getItem();
 	}
 	
 

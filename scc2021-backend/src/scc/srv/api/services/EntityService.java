@@ -19,6 +19,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.ws.rs.NotFoundException;
+
 public class EntityService   {
 	
 	public static final String ENTITY_KEY_PREFIX = "entity: ";
@@ -43,7 +45,7 @@ public class EntityService   {
 		return cosmosDB.getAllEntities().iterator(); 		
 	}
 	
-	public Entity get(String id) { 
+	public Entity get(String id) throws NotFoundException { 
 		Entity entity;
 		try {
 			entity = mapper.readValue(jedis.get(ENTITY_KEY_PREFIX + id), Entity.class);
@@ -53,7 +55,9 @@ public class EntityService   {
 				jedis.set(ENTITY_KEY_PREFIX + id, mapper.writeValueAsString(entity));				
 			}
 			return entity;
-		} catch (Exception e) {
+		} catch (NotFoundException e) {
+            throw e;
+        } catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		} 		
@@ -68,6 +72,7 @@ public class EntityService   {
 			jedis.set(ENTITY_KEY_PREFIX + entity.getId(), mapper.writeValueAsString(entity)); 
 			
 			return entity;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

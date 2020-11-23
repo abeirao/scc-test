@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.ws.rs.NotFoundException;
+
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +34,7 @@ public class ForumService  {
 		jedis = RedisCache.getCachePool().getResource();
 	}
 	
-	public Forum get(String id) {
+	public Forum get(String id) throws NotFoundException {
 		Forum forum = null;
 		try {
 			forum = mapper.readValue(jedis.get(FORUM_KEY_PREFIX + id), Forum.class);
@@ -42,6 +44,8 @@ public class ForumService  {
 				jedis.set(FORUM_KEY_PREFIX + id, mapper.writeValueAsString(forum));
 			}
 			return forum;
+		} catch (NotFoundException e) {
+            throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

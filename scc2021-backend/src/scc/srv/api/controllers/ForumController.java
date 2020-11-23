@@ -2,7 +2,10 @@ package scc.srv.api.controllers;
 
 import java.util.Iterator;
 
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
 import scc.data.Forum;
 import scc.data.Messsage;
@@ -20,7 +23,11 @@ public class ForumController implements ForumAPI {
 
 	@Override
 	public Forum get(String id) {
-		return forums.get(id);
+		try {
+			return forums.get(id);
+		} catch (NotFoundException e) {
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
 	}
 
 	@Override

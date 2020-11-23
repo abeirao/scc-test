@@ -9,6 +9,7 @@ import scc.srv.api.services.EntityService;
 import java.util.Date;
 import java.util.Iterator;
 
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -29,7 +30,11 @@ public class EntityController implements EntityAPI {
 	
 	@Override
 	public Entity get(String id) {
-		return entities.get(id);
+		try {
+			return entities.get(id);
+		} catch (NotFoundException e) {
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
 	}
 	
 	@Override

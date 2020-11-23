@@ -4,7 +4,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
 import scc.data.Calendar;
 import scc.data.Reservation;
@@ -23,7 +26,11 @@ public class CalendarController implements CalendarAPI {
 
 	@Override
 	public Calendar get(String id) {
-		return calendars.get(id);
+		try {
+			return calendars.get(id);
+		} catch (NotFoundException e) {
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
 	}
 
 	@Override
