@@ -83,9 +83,11 @@ public class ForumService  {
 
 	public String reply(String forumId, Messsage messageToReply, Messsage newMessage) {
 		Forum forum = cosmosDB.getForum(forumId);
-		// TODO
-		forum.getMessages().add(newMessage);
-		
+		newMessage.set_replyToId(messageToReply.getId());
+		List<Messsage> temp = forum.getMessages();
+		temp.add(newMessage);
+
+		forum.setMessages(temp);
 		// update
 		cosmosDB.update(CosmosDBLayer.FORUMS, forum);
 		try {
