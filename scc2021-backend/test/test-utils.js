@@ -174,7 +174,7 @@ function genNewCalendar(context, events, done) {
   loadData();
   context.vars.name = `${Faker.company.companyName()}`
   context.vars.availableDays = []
-  context.vars.calendarEntry = []
+  context.vars.calendarEntry = {}
   return done()
 }
 
