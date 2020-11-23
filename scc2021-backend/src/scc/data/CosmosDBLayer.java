@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 import javax.ws.rs.NotFoundException;
 
+
+// cosmos db is set to Session level consistency
 public class CosmosDBLayer {
 	
 	// TODO geo replication
@@ -24,7 +26,9 @@ public class CosmosDBLayer {
 	private static final String CONNECTION_URL = "https://scc-cosmos-50415.documents.azure.com:443/";
 	private static final String DB_KEY = "bbgF4Re4UQMuEsX0MZSEjuLDCZdMU76srR5VLAnaluK5QuXKcZUeKeFPEp8mMAgZwTMcAUz6T8oW61WTIh5ymg==";//primary connection string> "AccountEndpoint=https://scc-cosmos-50415.documents.azure.com:443/;AccountKey=bbgF4Re4UQMuEsX0MZSEjuLDCZdMU76srR5VLAnaluK5QuXKcZUeKeFPEp8mMAgZwTMcAUz6T8oW61WTIh5ymg==;";
 	private static final String DB_NAME = "scc50415p";
-	//private static final String REGION = ""; Geo-Replication qual é a região ?
+	private static final String REGION_1 = "West Europe";
+	private static final String REGION_2 = "North Europe";
+	private static final String REGION_3 = "East US";
 
 	enum Containers {
 		ENTITIES, RESERVATIONS, CALENDARS, FORUMS
@@ -41,18 +45,17 @@ public class CosmosDBLayer {
 		if( instance != null)
 			return instance;
 
-
 		//GEO REPLICATION CODE
-		//ArrayList<String> preferredRegions = new ArrayList<String>();
-		//preferredRegions.add(REGION);
-
-
+		ArrayList<String> preferredRegions = new ArrayList<String>();
+		preferredRegions.add(REGION_1);
+		preferredRegions.add(REGION_2);
+		preferredRegions.add(REGION_3);
 
 		CosmosClient client = new CosmosClientBuilder()
 		         .endpoint(CONNECTION_URL)
 		         .key(DB_KEY)
 		         .directMode()		// comment this is not to use direct mode
-				 //.multipleWriteRegionsEnabled(true) Descomentar para testar geoReplication
+				 //.multipleWriteRegionsEnabled(true)
 				 //.preferredRegions(preferredRegions)
 		         .consistencyLevel(ConsistencyLevel.SESSION)
 		         .connectionSharingAcrossClientsEnabled(true)
