@@ -2,5 +2,5 @@
 
 ## 
 
-authors:
+author:
 Henrique Realinho - nr 50415

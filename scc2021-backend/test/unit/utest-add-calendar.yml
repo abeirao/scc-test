@@ -25,5 +25,5 @@ scenarios:
           json:
             name: "{{ name }}"
             availableDays: []
-            calendarEntry: []
+            calendarEntry: {}
           afterResponse: "replyPostCalendar"

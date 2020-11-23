@@ -27,31 +27,31 @@ import com.microsoft.azure.functions.*;
  */
 public class TimerFunction {
 	static int count = 0;
-	
+
 	// TODO function to process and update all listed entities in the cache
-	
-    @FunctionName("periodic-compute")
-    public void updateAvailableDays( @TimerTrigger(name = "keepAliveTrigger", schedule = "0 0 */24 * * *") String timerInfo,
-          ExecutionContext context) {
-    	synchronized(HttpFunction.class) {
-    		HttpFunction.count++;
-    	}
-    
-    	CosmosContainer calendars = CosmosDBFactory.getCosmosClient()
-    			.getDatabase(AzureProperties.getProperty(AzureProperties.COSMOSDB_DATABASE))
-				.getContainer("calendars");
-    	
-    	// get all calendars in database
+
+	@FunctionName("periodic-compute")
+	public void updateAvailableDays(
+			@TimerTrigger(name = "keepAliveTrigger", schedule = "0 0 */24 * * *") String timerInfo,
+			ExecutionContext context) {
+		synchronized (HttpFunction.class) {
+			HttpFunction.count++;
+		}
+
+		CosmosContainer calendars = CosmosDBFactory.getCosmosClient()
+				.getDatabase(AzureProperties.getProperty(AzureProperties.COSMOSDB_DATABASE)).getContainer("calendars");
+
+		// get all calendars in database
 		CosmosPagedIterable<Calendar> it = calendars.queryItems("SELECT * FROM Calendar c",
-						new CosmosQueryRequestOptions(), Calendar.class);
-		
+				new CosmosQueryRequestOptions(), Calendar.class);
+
 		// update available days in each calendar
-		for (Calendar calendar: it) { 
+		for (Calendar calendar : it) {
 			List<Date> availableDays = calendar.getAvailableDays();
 			// subtract the day that passed
-			calendar.setAvailableDays(availableDays.subList(1, availableDays.size()-1));
+			calendar.setAvailableDays(availableDays.subList(1, availableDays.size() - 1));
 			// update calendar in database
 			calendars.upsertItem(calendar);
-		}		
-    }
+		}
+	}
 }

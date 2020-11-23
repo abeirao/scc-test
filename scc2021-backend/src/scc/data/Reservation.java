@@ -42,7 +42,6 @@ public class Reservation {
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
 	}
-
 	
 	@Override
 	public String toString() {

@@ -32,7 +32,6 @@ public class Test {
 			calendar.setName("nice calendar");
 			calendar.setCalendarEntry(new HashMap<Date, String>());
 			calendar.setAvailableDays(new ArrayList<Date>());
-
 			
 			String entityId = "0" + System.currentTimeMillis();
 			Entity ent = new Entity();
@@ -42,14 +41,12 @@ public class Test {
 			ent.setListed(true);
 			ent.setMediaIds(new String[] {"456"});
 			ent.setCalendarId(calendarId);
-
 			
 			Reservation res = new Reservation();
 			res.setName("very nice reservation");
 			res.setDay(new SimpleDateFormat("dd/MM/yyyy").parse("18/11/2020"));
 			res.setId("0" + System.currentTimeMillis());
-			res.setEntityId(entityId);
-	
+			res.setEntityId(entityId);	
 
 			Forum forum = new Forum();
 			forum.setId("0" + System.currentTimeMillis());
@@ -58,7 +55,7 @@ public class Test {
 			forum.setFrom("john");
 			
 			/* TEST METHOD CALLS */
-			//test2();			
+			// test2();			
 			// testRedis(ent, res); 
 			// testServices(ent, res, forum, calendar);
 			

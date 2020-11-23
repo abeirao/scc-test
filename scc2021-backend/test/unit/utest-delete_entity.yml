@@ -1,5 +1,3 @@
-# Unit test using artillery
-# Test: get entities;
 config:
   target: 'https://scc-test-50415.azurewebsites.net'
   plugins:
@@ -11,12 +9,3 @@ config:
   phases:
   - duration: 1
     arrivalCount: 1
-
-scenarios:
-  - name: 'Get entities'
-    weight: 1
-    flow:
-      - get:
-          url: "/entity"
-          expect:
-            - statusCode: 200

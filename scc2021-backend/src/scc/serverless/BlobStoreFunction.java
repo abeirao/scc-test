@@ -23,5 +23,5 @@ public class BlobStoreFunction
 					"Blob name : " + blobname + " ; size = " + (content == null ? "0" : content.length));
 		}
 	}
-
+    
 }
