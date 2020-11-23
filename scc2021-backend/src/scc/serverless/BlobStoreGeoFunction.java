@@ -13,7 +13,7 @@ import scc.utils.Hash;
 import com.microsoft.azure.functions.*;
 
 /**
- * Azure Functions with Timer Trigger.
+ * Azure Functions.
  */
 public class BlobStoreGeoFunction {
 	
