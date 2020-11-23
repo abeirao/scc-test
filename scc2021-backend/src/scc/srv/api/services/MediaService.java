@@ -17,8 +17,7 @@ import scc.utils.Hash;
 public class MediaService {
 	
 	// azure cloud storage account connection string
-	private static final String STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=scc50415;AccountKey=fR4+F2fg/uozoauqf2iWJRPvyyqMj1wqjGB/52N07mkOQx0btUy90EGt1CL5luMAIrZn0p/CTvMCIc5eNoB7/w==;EndpointSuffix=core.windows.net";
-
+	private static final String STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=scc50415;AccountKey=VRcAElcwZSp03PZbo1bfDmQpLuqJK2Ukrsa7rR2bkADZTTDsuYiO1NRsM987oYLYy6DisVVK2cD5PsGStDQGqg==;EndpointSuffix=core.windows.net";
 	
 	private CloudBlobContainer container = null;
 		
@@ -29,6 +28,7 @@ public class MediaService {
 				CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
 				container = blobClient.getContainerReference("images");
 			}
+			
 			return container;
 		}
 		catch (Exception e) {
