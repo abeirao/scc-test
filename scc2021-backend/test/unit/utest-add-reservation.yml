@@ -25,7 +25,7 @@ scenarios:
           json:
             name: "{{ name }}"
             availableDays: []
-            calendarEntry: []
+            calendarEntry: {}
           afterResponse: "replyPostCalendar"
   - name: 'Upload entity'
     weight: 1
