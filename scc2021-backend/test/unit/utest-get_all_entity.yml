@@ -12,7 +12,6 @@ config:
   - duration: 1
     arrivalCount: 1
 
-
 scenarios:
   - name: 'Get entities'
     weight: 1
