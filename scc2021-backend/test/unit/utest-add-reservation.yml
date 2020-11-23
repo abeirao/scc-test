@@ -51,7 +51,7 @@ scenarios:
             description: "{{ description }}"
             businessType: "{{ businessType }}"
             listed: "{{ listed }}"
-            mediaId: ["{{ imageId }}"]
+            mediaIds: ["{{ imageId }}"]
           afterResponse: "replyPostEntity"
   - name: 'Upload reservation'
     weight: 1
