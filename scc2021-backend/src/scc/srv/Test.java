@@ -58,8 +58,8 @@ public class Test {
 			forum.setFrom("john");
 			
 			/* TEST METHOD CALLS */
-			test2();			
-			// testRedis(ent, res); // TESTED, works
+			//test2();			
+			// testRedis(ent, res); 
 			// testServices(ent, res, forum, calendar);
 			
 		} catch (Exception e) {

@@ -71,8 +71,7 @@ public class EntityService   {
 			// add to cache
 			jedis.set(ENTITY_KEY_PREFIX + entity.getId(), mapper.writeValueAsString(entity)); 
 			
-			return entity;
-			
+			return entity;			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
