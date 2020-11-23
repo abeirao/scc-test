@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -48,6 +49,7 @@ public class ForumService  {
 	}
 
 	public Forum create(Forum forum) {
+    	forum.setId(Utils.randomUUID().toString());
 		cosmosDB.put(CosmosDBLayer.FORUMS, forum);
 		try {
 			jedis.set(FORUM_KEY_PREFIX + forum.getId(), mapper.writeValueAsString(forum));

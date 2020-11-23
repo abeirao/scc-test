@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -60,6 +61,7 @@ public class CalendarService {
         try {
         	List<Date> availableDays = this.computeAvailableDays();        	
         	calendar.setAvailableDays(availableDays);
+        	calendar.setId(Utils.randomUUID().toString());
         	
             cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
             jedis.set(CALENDAR_KEY_PREFIX + calendar.getId(), mapper.writeValueAsString(calendar));

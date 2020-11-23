@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -50,13 +51,15 @@ public class ReservationService {
 	}
 	
 	public Reservation addReservation(Reservation reservation) {
-		// add reservation to cache
+    	reservation.setId(Utils.randomUUID().toString());
+    	
+		cosmosDB.put(CosmosDBLayer.RESERVATIONS, reservation);		
 		try {
+			// add reservation to cache
 			jedis.set(RESERVATION_KEY_PREFIX + reservation.getId(), mapper.writeValueAsString(reservation));	
 			// add reservation to entity reservations in cache
 			jedis.sadd(RESERVATION_ENTITY_KEY_PREFIX + reservation.getEntityId(), mapper.writeValueAsString(reservation)); 
 		
-			cosmosDB.put(CosmosDBLayer.RESERVATIONS, reservation);
 			return reservation;
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,6 +1,7 @@
 package scc.srv.api.services;
 
 
+import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -60,6 +61,7 @@ public class EntityService   {
 	
 	public Entity create(Entity entity) {
 		try {
+        	entity.setId(Utils.randomUUID().toString());
 			 // add to db
 			cosmosDB.put(CosmosDBLayer.ENTITIES, entity);
 			// add to cache
