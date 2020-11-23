@@ -36,7 +36,7 @@ scenarios:
           json:
             name: "{{ name }}"
             description: "{{ description }}"
+            businessType: "{{ businessType }}"
             listed: "{{ listed }}"
             mediaIds: ["{{ imageId }}"]
-            calendarId: "{{calendarId}}"
           afterResponse: "replyPostEntity"
