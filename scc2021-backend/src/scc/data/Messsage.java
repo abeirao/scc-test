@@ -6,7 +6,10 @@ public class Messsage {
     private String msg;
 	private String _rid;
 	private String fromWho;
+	private String idReply;
 
+	public String getIdReply(){ return idReply; }
+	public void set_idReply(String idReply){ this.idReply = idReply; }
 	public String get_rid() {
 		return _rid;
 	}
