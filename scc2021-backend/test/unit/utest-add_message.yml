@@ -17,13 +17,14 @@ scenarios:
   - flow:
       - function: "genNewMessage"
       - post:
-          url: "/forum"
+          url: "/forum/{{ forumId }}"
           headers:
             Accept: application/json
           json:
             entityId: "{{ entityId }}"
             fromWho: "{{ fromWho }}"
             msg: "{{ msg }}"
+            replyToId: "{{ replyToId }}"
           capture:
             - json: '$.id'
               as: "msgId"

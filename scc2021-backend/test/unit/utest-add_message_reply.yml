@@ -17,7 +17,7 @@ scenarios:
   - flow:
       - function: "selectEntity"
       - get:
-          url: "/forum/{{ entityId }}?start=0&count=10" # List last 10 messages for the given entity
+          url: "/forum/{{ entityId }}?" # List last 10 messages for the given entity
           headers:
             Accept: application/json
           afterResponse: "selectMsgFromList"

@@ -1,0 +1,27 @@
+# Unit test using artillery
+# Test: post message to entity; get message
+config:
+  target: 'https://scc-test-50415.azurewebsites.net'
+  plugins:
+    metrics-by-endpoint: {}
+    expect: {}
+  processor: "../test-utils.js"
+  variables:
+    metricsProcessEndpoint : "myProcessEndpoint"  # function used to aggregate endpoints for statistics
+  phases:
+    - duration: 1
+      arrivalCount: 1
+
+
+scenarios:
+  - flow:
+      - function: "createForum"
+      - funtion: ""
+          - post:
+              url: "/forum/"
+              headers:
+                Accept: application/json
+              json:
+                entityId: "{{ entityId }}"
+                messages: ["{{ message }}"]
+               afterResponse: "replyPostForum"

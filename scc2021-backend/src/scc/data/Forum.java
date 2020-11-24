@@ -8,8 +8,7 @@ public class Forum {
     private String entityId;
     private List<Messsage> messages;
 	private String _rid;
-	private String from;
-    
+
 	public String get_rid() {
 		return _rid;
 	}
@@ -38,12 +37,6 @@ public class Forum {
 	@Override
 	public String toString() {
 		return "Forum: " + id + " by entity: " + entityId;
-	}
-	public String getFrom() {
-		return from;
-	}
-	public void setFrom(String from) {
-		this.from = from;
 	}
 
 }
