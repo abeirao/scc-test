@@ -228,7 +228,7 @@ function replyPostCalendar(requestParams, response, context, ee, next) {
 function genNewReservation(context, events, done) {
   loadData();
 	context.vars.name = `${Faker.name.findName()}`
-	context.vars.day = `${Faker.date.future()}`
+	context.vars.day = "2021-01-23"
 	context.vars.entityId = entityIds.sample()
 	return done()
 }

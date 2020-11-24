@@ -14,45 +14,7 @@ config:
 
 
 scenarios:
-  - name: 'Upload calendar'
-    weight: 1
-    flow:
-      - function: "genNewCalendar"
-      - post:
-          url: "/calendar"
-          headers:
-            Accept: application/json
-          json:
-            name: "{{ name }}"
-            availableDays: []
-            calendarEntry: {}
-          afterResponse: "replyPostCalendar"
-  - name: 'Upload entity'
-    weight: 1
-    flow:
-      - function: "genNewEntity"
-      - post:
-          url: "/media"
-          headers:
-            Content-Type: application/octet-stream
-            Accept: application/json
-          beforeRequest: "reqPostMedia"
-          capture:
-            - regexp: '.*'
-              as: "imageId"
-          expect:
-            - statusCode: 200
-      - post:
-          url: "/entity"
-          headers:
-            Accept: application/json
-          json:
-            name: "{{ name }}"
-            description: "{{ description }}"
-            businessType: "{{ businessType }}"
-            listed: "{{ listed }}"
-            mediaIds: ["{{ imageId }}"]
-          afterResponse: "replyPostEntity"
+
   - name: 'Upload reservation'
     weight: 1
     flow:
@@ -66,4 +28,6 @@ scenarios:
             day: "{{ day }}"
             id: "{{ id }}"
             entityId: "{{ entityId }}"
+          expect:
+            - statusCode: 200
           afterResponse: "replyPostReservation"
