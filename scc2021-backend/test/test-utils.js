@@ -85,6 +85,14 @@ function reqPostMedia(requestParams, context, ee, next) {
 }
 
 /**
+ * Sets the body to an image, when using images.
+ */
+function uploadImageBody(requestParams, context, ee, next) {
+	requestParams.body = images.sample()
+	return next()
+}
+
+/**
  * Process reply of the download of an image.
  * Update the next image to read.
  */
@@ -289,6 +297,3 @@ function genNewMessageReply(context, events, done) {
 	}
 	return done()
 }
-
-
-
