@@ -18,7 +18,8 @@ module.exports = {
   processUploadReply,
   selectImageToDownload,
 	replyPostForum,
-	replyDeleteEntity
+	replyDeleteEntity,
+	genNewForum
 }
 
 const fs = require('fs')
@@ -183,7 +184,7 @@ function genNewAvailableDaysRequest(context, events, done){
 function replyAvailableDays(requestParams, response, context, ee, next){
 	if(response.statusCode == 200){
 		let dates = response.toJSON().body
-		fs.writeFileSync('available dates', JSON.stringify(dates))
+		fs.writeFileSync('available.dates', JSON.stringify(dates))
 
 	}
 	return next();
@@ -191,6 +192,13 @@ function replyAvailableDays(requestParams, response, context, ee, next){
 
 function genNewForum(context, events, done){
 	loadData();
+	/**if( entityIds.length > 0) {
+		context.vars.entityId = entityIds.sample()
+	} else {
+		delete context.vars.entityId
+	}*/
+	context.vars.entityId = "d9b88365-2d9f-11eb-8568-294e9fef6285"
+	context.vars.messages = null;
 
 }
 

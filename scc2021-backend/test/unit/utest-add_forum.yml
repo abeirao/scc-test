@@ -1,5 +1,5 @@
 # Unit test using artillery
-# Test: post message to entity; get message
+# Test: post forum;
 config:
   target: 'https://scc-test-50415.azurewebsites.net'
   plugins:
@@ -14,14 +14,15 @@ config:
 
 
 scenarios:
-  - flow:
-      - function: "createForum"
-      - funtion: ""
-          - post:
-              url: "/forum/"
-              headers:
-                Accept: application/json
-              json:
-                entityId: "{{ entityId }}"
-                messages: ["{{ message }}"]
-               afterResponse: "replyPostForum"
+  - name: "Add new Forum"
+    weight: 1
+    flow:
+      - function: "genNewForum"
+      - post:
+        url: "/forum/"
+        headers:
+          Accept: application/json
+        json:
+          entityId: "{{ entityId }}"
+          messages: []
+        afterResponse: "replyPostForum"
