@@ -1,3 +1,5 @@
+# Unit test using artillery
+# Test: post entity; get entity
 config:
   target: 'https://scc-test-50415.azurewebsites.net'
   plugins:
@@ -9,3 +11,16 @@ config:
   phases:
   - duration: 1
     arrivalCount: 1
+
+
+scenarios:
+  - name: 'Delete entity'
+    weight: 1
+    flow:
+      - function: "selectEntity"
+      - delete:
+          url: "/entity/{{ entityId }}"
+          headers:
+            Accept: application/json
+          afterResponse: "replyDeleteEntity"
+	  
