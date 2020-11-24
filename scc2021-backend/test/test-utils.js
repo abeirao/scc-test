@@ -16,7 +16,9 @@ module.exports = {
   genNewMessageReply,
   selectMsgFromList,
   processUploadReply,
-  selectImageToDownload
+  selectImageToDownload,
+	replyPostForum,
+	replyDeleteEntity
 }
 
 const fs = require('fs')
@@ -28,6 +30,7 @@ var images = [];
 var entityIds = [];
 var reservationIds = [];
 var calendarIds = [];
+var forumIds = [];
 var loaded = false;
 
 // All endpoints starting with the following prefixes will be aggregated in the same for the statistics
@@ -178,6 +181,10 @@ function replyAvailableDays(requestParams, response, context, ee, next){
 	return next();
 }
 
+function genNewForum(context, events, done){
+	loadData();
+
+}
 
 function genNewCalendar(context, events, done) {
   loadData();
@@ -188,9 +195,9 @@ function genNewCalendar(context, events, done) {
 }
 
 function replyPostCalendar(requestParams, response, context, ee, next) {
-  if( response.statusCode == 200) {
+ if( response.statusCode == 200) {
 		let calendar = response.toJSON().body
-		calendarIds.push(entity.id)
+		calendarIds.push(calendar.id)
 		fs.writeFileSync('calendars.data', JSON.stringify(calendarIds))
 	}
     return next()
@@ -213,6 +220,16 @@ function replyPostReservation(requestParams, response, context, ee, next) {
     return next()
 }
 
+
+function replyPostForum(requestParams, response, context, ee, next) {
+	if( response.statusCode == 200) {
+		let forum = response.toJSON().body
+		forumIds.push(forum.id)
+		fs.writeFileSync('forum.data', JSON.stringify(forumIds))
+	}
+	return next()
+}
+
 /**
  * Generate data for a new message. Starts by loading data if it was not loaded yet.
  * Stores in the variables:
@@ -226,6 +243,8 @@ function genNewMessage(context, events, done) {
 		context.vars.entityId = entityIds.sample()
 		context.vars.fromWho = `${Faker.name.firstName()} ${Faker.name.lastName()}`
 		context.vars.msg = `${Faker.lorem.paragraph()}`
+		context.vars.forumId =
+		context.vars.replyToId = null
 		delete context.vars.replyToId
 	} else {
 		delete context.vars.entityId
