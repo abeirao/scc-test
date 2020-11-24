@@ -192,14 +192,8 @@ function replyAvailableDays(requestParams, response, context, ee, next){
 
 function genNewForum(context, events, done){
 	loadData();
-	/**if( entityIds.length > 0) {
-		context.vars.entityId = entityIds.sample()
-	} else {
-		delete context.vars.entityId
-	}*/
-	context.vars.entityId = "d9b88365-2d9f-11eb-8568-294e9fef6285"
-	context.vars.messages = null;
-
+	context.vars.entityId = entityIds.sample()
+	context.vars.messages = [];
 }
 
 function genNewCalendar(context, events, done) {
@@ -259,7 +253,7 @@ function genNewMessage(context, events, done) {
 		context.vars.entityId = entityIds.sample()
 		context.vars.fromWho = `${Faker.name.firstName()} ${Faker.name.lastName()}`
 		context.vars.msg = `${Faker.lorem.paragraph()}`
-		context.vars.forumId =
+		context.vars.forumId = forumIds.sample()
 		context.vars.replyToId = null
 		delete context.vars.replyToId
 	} else {
