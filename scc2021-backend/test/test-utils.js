@@ -23,8 +23,8 @@ module.exports = {
 }
 
 const fs = require('fs')
-const Faker = require('faker')
-const fetch = require('node-fetch')
+const Faker = require('C:/Users/henri/AppData/Roaming/npm/node_modules/faker')
+const fetch = require('C:/Users/henri/AppData/Roaming/npm/node_modules/node-fetch')
 
 var imagesIds = [];
 var images = [];
@@ -67,6 +67,18 @@ function loadData() {
 		let str = fs.readFileSync('entities.data','utf8')
 		entityIds = JSON.parse(str)
 	}
+  if( fs.existsSync('calendars.data')) {
+    let str = fs.readFileSync('calendars.data','utf8')
+    calendarIds = JSON.parse(str)
+  }
+  if( fs.existsSync('reservations.data')) {
+    let str = fs.readFileSync('reservations.data','utf8')
+    reservationIds = JSON.parse(str)
+  }
+  if( fs.existsSync('forum.data')) {
+    let str = fs.readFileSync('forum.data','utf8')
+    forumIds = JSON.parse(str)
+  }
 	fs.readdirSync('../images').forEach(file => {
 		if( file.endsWith('.jpg')) {
 			var img  = fs.readFileSync('../images/' + file)
