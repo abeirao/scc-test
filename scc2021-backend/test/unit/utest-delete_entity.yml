@@ -22,5 +22,6 @@ scenarios:
           url: "/entity/{{ entityId }}"
           headers:
             Accept: application/json
+          expect:
+            - statusCode: 200
           afterResponse: "replyDeleteEntity"
-	  
