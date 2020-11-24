@@ -1,15 +1,20 @@
 package scc.data;
 
 public class Messsage {
-    private String id;
-    private String forumId;
-    private String msg;
 	private String _rid;
+	private String id;
+	private String forumId;
+	private String msg;
 	private String fromWho;
 	private String replyToId;
 
-	public String getReplyToId(){ return replyToId; }
-	public void set_replyToId(String replyToId){ this.replyToId = replyToId; }
+	public String getReplyToId(){
+		return replyToId;
+	}
+
+	public void setReplyToId(String replyToId){
+		this.replyToId = replyToId;
+	}
 	public String get_rid() {
 		return _rid;
 	}
@@ -39,8 +44,5 @@ public class Messsage {
 	}
 	public void setFromWho(String fromWho) {
 		this.fromWho = fromWho;
-	}
-
-    
-
+	}	
 }
