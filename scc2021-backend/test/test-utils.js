@@ -302,7 +302,7 @@ function selectMsgFromList(requestParams, response, context, ee, next) {
 function genNewMessageReply(context, events, done) {
 	loadData();
 	if( typeof context.vars.msgJSON !== undefined) {
-		context.vars.entityId = context.vars.msgJSON.entityId
+		context.vars.forumId = context.vars.msgJSON.forumId
 		context.vars.fromWho = `${Faker.name.firstName()} ${Faker.name.lastName()}`
 		context.vars.msg = `${Faker.lorem.paragraph()}`
 		context.vars.replyToId = context.vars.msgJSON.id
