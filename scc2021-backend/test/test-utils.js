@@ -122,7 +122,6 @@ function genNewEntity(context, events, done) {
 	return done()
 }
 
-
 /**
  * Select an entity, if one exists.
  * Stores in the variables:
@@ -145,6 +144,16 @@ function replyPostEntity(requestParams, response, context, ee, next) {
 	if( response.statusCode == 200) {
 		let entity = response.toJSON().body
 		entityIds.push(entity.id)
+		fs.writeFileSync('entities.data', JSON.stringify(entityIds))
+	}
+    return next()
+}
+
+function replyDeleteEntity(requestParams, response, context, ee, next) {
+	if( response.statusCode == 200) {
+		let entity = response.toJSON().body
+		const index = array.indexOf(entity)
+		entityIds.splice(index, 1)
 		fs.writeFileSync('entities.data', JSON.stringify(entityIds))
 	}
     return next()
@@ -261,3 +270,6 @@ function genNewMessageReply(context, events, done) {
 	}
 	return done()
 }
+
+
+
