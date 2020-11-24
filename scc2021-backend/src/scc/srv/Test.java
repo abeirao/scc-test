@@ -52,7 +52,6 @@ public class Test {
 			forum.setId("0" + System.currentTimeMillis());
 			forum.setEntityId(ent.getId());
 			forum.setMessages(new ArrayList<Messsage>());
-			forum.setFrom("john");
 			
 			/* TEST METHOD CALLS */
 			// test2();			
