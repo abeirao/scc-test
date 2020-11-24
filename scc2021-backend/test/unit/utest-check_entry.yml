@@ -24,12 +24,11 @@ scenarios:
           json:
             name: "{{ name }}"
               availableDays: []
-              calendarEntry: []
-              afterResponse: "replyPostCalendar"
+              calendarEntry: {}
+          afterResponse: "replyPostCalendar"
       - function: "genNewAvailableDaysRequest"
       - get:
-      url: "/reservations/{{calendarId}}"
-        headers:
-          Accept: application/json
-
-        afterResponse: "replyAvailableDays"
+          url: "/reservations/{{calendarId}}"
+            headers:
+              Accept: application/json
+            afterResponse: "replyAvailableDays"
