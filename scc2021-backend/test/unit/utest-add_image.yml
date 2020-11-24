@@ -22,20 +22,14 @@ scenarios:
             Content-Type: application/octet-stream
             Accept: application/json
           beforeRequest: "reqPostMedia"
-          afterResponse: "processUploadReply"
           capture:
             - regexp: '.*'
               as: "imageId"
           expect:
             - statusCode: 200
-  - name: 'Download image'
-    weight: 1
-    flow:
-      - function: "selectImageToDownload"
       - get:
           url: "/media/{{ imageId }}"
           headers:
             Accept: application/octet-stream
           expect:
             - statusCode: 200
-          ifTrue: "imageId"
