@@ -23,5 +23,5 @@ scenarios:
           headers:
             Accept: application/json
           expect:
-            - statusCode: 200
+            - statusCode: 204
           afterResponse: "replyDeleteEntity"
