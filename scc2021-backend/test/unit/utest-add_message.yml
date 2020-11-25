@@ -17,11 +17,11 @@ scenarios:
   - flow:
       - function: "genNewMessage"
       - post:
-          url: "/forum/{{ forumId }}"
+          url: "/forum/new/{{ forumId }}"
           headers:
             Accept: application/json
           json:
-            entityId: "{{ entityId }}"
+            entityId: "{{ forumId }}"
             fromWho: "{{ fromWho }}"
             msg: "{{ msg }}"
             replyToId: "{{ replyToId }}"
@@ -30,11 +30,11 @@ scenarios:
               as: "msgId"
           expect:
             - statusCode: 200
-          ifTrue: "entityId"
+          ifTrue: "forumId"
       - get:
-          url: "/forum/msg/{{ msgId }}"
+          url: "/forum/{{ forumId }}"
           headers:
             Accept: application/json
           expect:
             - statusCode: 200
-          ifTrue: "entityId"
+          ifTrue: "forumId"

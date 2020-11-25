@@ -19,7 +19,8 @@ module.exports = {
   selectImageToDownload,
 	replyPostForum,
 	replyDeleteEntity,
-	genNewForum
+	genNewForum,
+  selectForum
 }
 
 const fs = require('fs')
@@ -161,6 +162,16 @@ function selectEntity(context, events, done) {
 	return done()
 }
 
+function selectForum(context, events, done) {
+	loadData();
+	if( entityIds.length > 0) {
+		context.vars.forumId = forumIds.sample()
+	} else {
+		delete context.vars.forumId
+	}
+	return done()
+}
+
 /**
  * Process reply of the post entity.
  */
@@ -262,14 +273,13 @@ function replyPostForum(requestParams, response, context, ee, next) {
 function genNewMessage(context, events, done) {
 	loadData();
 	if( entityIds.length > 0) {
-		context.vars.entityId = entityIds.sample()
 		context.vars.fromWho = `${Faker.name.firstName()} ${Faker.name.lastName()}`
 		context.vars.msg = `${Faker.lorem.paragraph()}`
 		context.vars.forumId = forumIds.sample()
 		context.vars.replyToId = null
 		delete context.vars.replyToId
 	} else {
-		delete context.vars.entityId
+		delete context.vars.forumId
 	}
 	return done()
 }
@@ -307,7 +317,7 @@ function genNewMessageReply(context, events, done) {
 		context.vars.msg = `${Faker.lorem.paragraph()}`
 		context.vars.replyToId = context.vars.msgJSON.id
 	} else {
-		delete context.vars.entityId
+		delete context.vars.forumId
 	}
 	return done()
 }

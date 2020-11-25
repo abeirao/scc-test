@@ -15,22 +15,22 @@ config:
 
 scenarios:
   - flow:
-      - function: "selectEntity"
+      - function: "selectForum"
       - get:
-          url: "/forum/{{ entityId }}?" # List last 10 messages for the given entity
+          url: "/forum/{{ forumId }}"
           headers:
             Accept: application/json
           afterResponse: "selectMsgFromList"
           expect:
             - statusCode: 200
-          ifTrue: "entityId"
+          ifTrue: "forumId"
       - function: "genNewMessageReply"
       - post:
-          url: "/forum"
+          url: "/forum/reply/{{forumId}}"
           headers:
             Accept: application/json
           json:
-            entityId: "{{ entityId }}"
+            forumId: "{{ forumId }}"
             fromWho: "{{ fromWho }}"
             msg: "{{ msg }}"
             replyToId: "{{ replyToId }}"
