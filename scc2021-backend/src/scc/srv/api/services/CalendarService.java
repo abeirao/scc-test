@@ -34,11 +34,12 @@ public class CalendarService {
 
     private CosmosDBLayer cosmosDB;
     private Jedis jedis;
-
+    private EntityService entityService;
     public CalendarService() {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         cosmosDB = CosmosDBLayer.getInstance();
         jedis = RedisCache.getCachePool().getResource();
+        entityService = new EntityService();
     }
 
     public Calendar get(String id) throws NotFoundException {
@@ -61,12 +62,14 @@ public class CalendarService {
     }
 
 
-    public Calendar create(Calendar calendar) {
+    public Calendar create(Calendar calendar, String entityId) {
         try {
         	List<Date> availableDays = this.computeAvailableDays();        	
         	calendar.setAvailableDays(availableDays);
         	calendar.setId(Utils.randomUUID().toString());
-        	
+        	Entity entity = entityService.get(entityId);
+        	entity.setCalendarId(calendar.getId());
+        	entityService.update(entity);
             cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
             jedis.set(CALENDAR_KEY_PREFIX + calendar.getId(), mapper.writeValueAsString(calendar));
         } catch (Exception e) {

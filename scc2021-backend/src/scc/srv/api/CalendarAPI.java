@@ -37,10 +37,10 @@ public interface CalendarAPI {
 	 * @return Calendar
 	 */
 	@POST
-	@Path("/")
+	@Path("/{entityId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	Calendar create(Calendar calendar);
+	Calendar create(Calendar calendar, @PathParam("entityId") String entityId);
 
 	@PUT
 	@Path("/")
