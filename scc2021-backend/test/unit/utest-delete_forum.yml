@@ -19,7 +19,7 @@ scenarios:
     flow:
       - function: "selectForum"
       - delete:
-          url: "/forum/{{ id }}"
+          url: "/forum/{{ forumId }}"
           headers:
             Accept: application/json
           expect:
