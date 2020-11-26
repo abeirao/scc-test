@@ -25,8 +25,8 @@ module.exports = {
 }
 
 const fs = require('fs')
-const Faker = require('C:\\Users\\António Beirão\\AppData\\Roaming\\npm\\node_modules\\faker')
-const fetch = require('C:\\Users\\António Beirão\\AppData\\Roaming\\npm\\node_modules\\node-fetch')
+const Faker = require('faker')
+const fetch = require('node-fetch')
 
 var imagesIds = [];
 var images = [];

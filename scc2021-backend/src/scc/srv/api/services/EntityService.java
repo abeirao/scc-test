@@ -48,19 +48,16 @@ public class EntityService   {
 	public Entity get(String id) throws NotFoundException {
 		Entity entity;
 		try {
-			String object = jedis.get(ENTITY_KEY_PREFIX + id);
-			if(object != null ) {
-				entity = mapper.readValue(object, Entity.class);
+			entity = mapper.readValue(jedis.get(ENTITY_KEY_PREFIX + id), Entity.class);
 
-			} else {
-
+			if (entity == null) {
 				entity = cosmosDB.getEntity(id);
 				jedis.set(ENTITY_KEY_PREFIX + id, mapper.writeValueAsString(entity));
 			}
 			return entity;
 		} catch (NotFoundException e) {
-            throw e;
-        } catch (Exception e) {
+			throw e;
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
