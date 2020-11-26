@@ -46,7 +46,7 @@ public class ForumController implements ForumAPI {
 	}
 
 	@Override
-	public Forum delete(String id)  throws WebApplicationException{
+	public Forum delete(String id) throws WebApplicationException {
 		try {
 			return forums.delete(id);
 		} catch (NotFoundException e) {
