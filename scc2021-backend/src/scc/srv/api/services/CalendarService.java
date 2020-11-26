@@ -62,14 +62,13 @@ public class CalendarService {
     }
 
 
-    public Calendar create(Calendar calendar, String entityId) {
+
+    public Calendar create(Calendar calendar) {
         try {
-        	List<Date> availableDays = this.computeAvailableDays();        	
-        	calendar.setAvailableDays(availableDays);
-        	calendar.setId(Utils.randomUUID().toString());
-        	Entity entity = entityService.get(entityId);
-        	entity.setCalendarId(calendar.getId());
-        	entityService.update(entity);
+            List<Date> availableDays = this.computeAvailableDays();
+            calendar.setAvailableDays(availableDays);
+            calendar.setId(Utils.randomUUID().toString());
+
             cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
             jedis.set(CALENDAR_KEY_PREFIX + calendar.getId(), mapper.writeValueAsString(calendar));
         } catch (Exception e) {
