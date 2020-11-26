@@ -22,7 +22,7 @@ public class ForumController implements ForumAPI {
 	}
 
 	@Override
-	public Forum get(String id)  throws WebApplicationException {
+	public Forum get(String id) {
 		try {
 			return forums.get(id);
 		} catch (NotFoundException e) {
@@ -46,7 +46,7 @@ public class ForumController implements ForumAPI {
 	}
 
 	@Override
-	public Forum delete(String id) throws WebApplicationException {
+	public Forum delete(String id) {
 		try {
 			return forums.delete(id);
 		} catch (NotFoundException e) {

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import redis.clients.jedis.Jedis;
+import scc.data.Calendar;
 import scc.data.CosmosDBLayer;
 import scc.data.Entity;
 import scc.data.Reservation;
@@ -84,7 +85,7 @@ public class ReservationService {
 	
 	public Reservation addReservation(Reservation reservation) {
     	reservation.setId(Utils.randomUUID().toString());
-    	
+    	    	
 		cosmosDB.put(CosmosDBLayer.RESERVATIONS, reservation);		
 		try {
 			// add reservation to cache
