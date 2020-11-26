@@ -184,11 +184,14 @@ function replyPostEntity(requestParams, response, context, ee, next) {
 }
 
 function replyDeleteEntity(requestParams, response, context, ee, next) {
-	if( response.statusCode == 200) {
-		let entity = response.toJSON().body
-		const index = array.indexOf(entity)
-		entityIds.splice(index, 1)
-		fs.writeFileSync('entities.data', JSON.stringify(entityIds))
+	if( response.statusCode == 204) {
+		let entity = context.entityId
+		const index = entityIds.indexOf(entity)
+		let ids = []
+		if(entityIds.length != 1){
+		ids = entityIds.splice(index, 1)
+		}
+		fs.writeFileSync('entities.data', JSON.stringify(ids))
 	}
     return next()
 }
