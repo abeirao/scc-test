@@ -55,8 +55,8 @@ public class CosmosDBLayer {
 		         .endpoint(CONNECTION_URL)
 		         .key(DB_KEY)
 		         .directMode()		// comment this is not to use direct mode
-				 .multipleWriteRegionsEnabled(true)
-				 .preferredRegions(preferredRegions)
+				 //.multipleWriteRegionsEnabled(true)
+				 //.preferredRegions(preferredRegions)
 		         .consistencyLevel(ConsistencyLevel.SESSION)
 		         .connectionSharingAcrossClientsEnabled(true)
 		         .contentResponseOnWriteEnabled(true)
