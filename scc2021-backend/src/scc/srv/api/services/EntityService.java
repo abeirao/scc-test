@@ -65,7 +65,7 @@ public class EntityService   {
 
 	public Entity create(Entity entity) {
 		try {
-      entity.setId(Utils.randomUUID().toString());
+			entity.setId(Utils.randomUUID().toString());
 			 // add to db
 			cosmosDB.put(CosmosDBLayer.ENTITIES, entity);
 			// add to cache
