@@ -11,6 +11,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
 import scc.data.Calendar;
@@ -28,7 +29,7 @@ public interface CalendarAPI {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	Calendar get(@PathParam("id") String id);
+	Calendar get(@PathParam("id") String id) throws WebApplicationException ;
 	
 	/**
 	 * 
@@ -55,16 +56,16 @@ public interface CalendarAPI {
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	Calendar delete(@PathParam("id") String id);
+	Calendar delete(@PathParam("id") String id) throws WebApplicationException;
 
 	@GET
 	@Path("/available/{calendarId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	Iterator<Date> getAvailablePeriods(@PathParam("calendarId") String calendarId);
+	Iterator<Date> getAvailablePeriods(@PathParam("calendarId") String calendarId) throws WebApplicationException;
 
 	@GET
 	@Path("/reservations/{calendarId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	Iterator<String> getReservations(@PathParam("calendarId") String calendarId);
+	Iterator<String> getReservations(@PathParam("calendarId") String calendarId) throws WebApplicationException;
 	
 }
