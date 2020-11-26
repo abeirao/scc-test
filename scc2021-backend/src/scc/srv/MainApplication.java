@@ -24,10 +24,8 @@ public class MainApplication extends Application
 
 	// add resources to resources set
 	public MainApplication() { 
-		resources.add(ControlResource.class);
 		resources.add(MediaController.class);
 		resources.add(CalendarController.class);
-		resources.add(Entities.class);
 		resources.add(EntityController.class);
 		resources.add(ForumController.class);
 		resources.add(ReservationController.class);
