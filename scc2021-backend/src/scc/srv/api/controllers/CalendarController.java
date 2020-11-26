@@ -33,9 +33,10 @@ public class CalendarController implements CalendarAPI {
 		}
 	}
 
+
 	@Override
-	public Calendar create(Calendar calendar, String entityId) {
-		return calendars.create(calendar, entityId);
+	public Calendar create(Calendar calendar) {
+		return calendars.create(calendar);
 	}
 
 	@Override
