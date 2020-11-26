@@ -9,6 +9,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
 import scc.data.Forum;
@@ -27,7 +28,7 @@ public interface ForumAPI {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Forum get(@PathParam("id") String id);
+	public Forum get(@PathParam("id") String id) throws WebApplicationException;
 	
 	/**
 	 * 
@@ -50,7 +51,7 @@ public interface ForumAPI {
 	@Path("/new/{forumId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Messsage addMessage(@PathParam("forumId") String forumId, Messsage newMessage);
+	public Messsage addMessage(@PathParam("forumId") String forumId, Messsage newMessage) throws WebApplicationException;
 	
 	/**
 	 * 
@@ -63,7 +64,7 @@ public interface ForumAPI {
 	@Path("/reply/{forumId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String reply(@PathParam("forumId") String forumId, Messsage messageToReply, Messsage newMessage);
+	public String reply(@PathParam("forumId") String forumId, Messsage messageToReply, Messsage newMessage) throws WebApplicationException;
 	
 	/**
 	 * 
@@ -73,7 +74,7 @@ public interface ForumAPI {
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Forum delete(@PathParam("id") String id);
+	public Forum delete(@PathParam("id") String id) throws WebApplicationException;
 
 	/**
 	 * 
@@ -83,5 +84,5 @@ public interface ForumAPI {
 	@GET
 	@Path("/{id}/forums")
 	@Produces(MediaType.APPLICATION_JSON)
-	Iterator<Forum> getForumByEntity(@PathParam("entityId") String entityId);
+	Iterator<Forum> getForumByEntity(@PathParam("entityId") String entityId) throws WebApplicationException;
 }
