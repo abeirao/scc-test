@@ -17,15 +17,15 @@ module.exports = {
   selectMsgFromList,
   processUploadReply,
   selectImageToDownload,
-	replyPostForum,
-	replyDeleteEntity,
-	genNewForum,
+  replyPostForum,
+  replyDeleteEntity,
+  genNewForum,
   selectForum
 }
 
 const fs = require('fs')
-const Faker = require('faker')
-const fetch = require('node-fetch')
+const Faker = require('C:\\Users\\António Beirão\\AppData\\Roaming\\npm\\node_modules\\faker')
+const fetch = require('C:\\Users\\António Beirão\\AppData\\Roaming\\npm\\node_modules\\node-fetch')
 
 var imagesIds = [];
 var images = [];
@@ -219,6 +219,7 @@ function genNewForum(context, events, done){
 	loadData();
 	context.vars.entityId = entityIds.sample()
 	context.vars.messages = [];
+	return done();
 }
 
 function genNewCalendar(context, events, done) {

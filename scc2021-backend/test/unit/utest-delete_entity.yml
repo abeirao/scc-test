@@ -1,5 +1,5 @@
 # Unit test using artillery
-# Test: post entity; get entity
+# Test: delete entity;
 config:
   target: 'https://scc-test-50415.azurewebsites.net'
   plugins:
