@@ -20,12 +20,13 @@ module.exports = {
 	replyPostForum,
 	replyDeleteEntity,
 	genNewForum,
-  selectForum
+  selectForum,
+  replyDeleteForum
 }
 
 const fs = require('fs')
-const Faker = require('faker')
-const fetch = require('node-fetch')
+const Faker = require('C:\\Users\\António Beirão\\AppData\\Roaming\\npm\\node_modules\\faker')
+const fetch = require('C:\\Users\\António Beirão\\AppData\\Roaming\\npm\\node_modules\\node-fetch')
 
 var imagesIds = [];
 var images = [];
@@ -187,11 +188,22 @@ function replyDeleteEntity(requestParams, response, context, ee, next) {
 	if( response.statusCode == 204) {
 		let entity = context.entityId
 		const index = entityIds.indexOf(entity)
-		let ids = []
-		if(entityIds.length != 1){
-		ids = entityIds.splice(index, 1)
+		if(entityIds.length > 0){
+			entityIds.splice(index, 1)
 		}
-		fs.writeFileSync('entities.data', JSON.stringify(ids))
+		fs.writeFileSync('entities.data', JSON.stringify(entityIds))
+	}
+    return next()
+}
+
+function replyDeleteForum(requestParams, response, context, ee, next) {
+	if( response.statusCode == 204) {
+		let forum = context.forumId
+		const index = forumIds.indexOf(forum)
+		if(entityIds.length > 0){
+			forumIds.splice(index, 1)
+		}
+		fs.writeFileSync('forum.data', JSON.stringify(forumIds))
 	}
     return next()
 }
