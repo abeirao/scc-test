@@ -114,16 +114,16 @@ public class EntityService   {
 	}
 
 
-	public void createReservation(String id, Reservation reservation) throws DayAlreadyOccupiedException{
+	public void createReservation(String id, Reservation reservation) throws DayAlreadyOccupiedException, NotFoundException{
 		try {
 			Entity entity = this.get(id);
 
 			Calendar calendar = calendarService.get(entity.getCalendarId());
 			List<Date> availableDays = calendar.getAvailableDays();
 			Date day = null;
-			if(availableDays.size() != 0) {
+			if(availableDays.size() != 0) 
 				day = availableDays.get(availableDays.indexOf(reservation.getDay()));
-			}
+			
 
 			if(day != null)
 				throw new DayAlreadyOccupiedException();
@@ -132,9 +132,9 @@ public class EntityService   {
 				reservationService.addReservation(reservation);
 				calendarService.update(calendar);
 			}
-
-		}
-		catch (Exception e) {
+		} catch (NotFoundException e) {
+			throw e;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
