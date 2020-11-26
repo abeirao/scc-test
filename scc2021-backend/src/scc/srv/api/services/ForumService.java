@@ -12,11 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import redis.clients.jedis.Jedis;
-import scc.data.Calendar;
-import scc.data.CosmosDBLayer;
-import scc.data.Forum;
-import scc.data.Messsage;
-import scc.data.Reservation;
+import scc.data.*;
 import scc.redis.RedisCache;
 
 public class ForumService  {
@@ -36,10 +32,13 @@ public class ForumService  {
 	
 	public Forum get(String id) throws NotFoundException {
 		Forum forum = null;
+
 		try {
-			forum = mapper.readValue(jedis.get(FORUM_KEY_PREFIX + id), Forum.class);
-		
-			if (forum == null) {
+			String object = jedis.get(FORUM_KEY_PREFIX + id);
+			if(object != null ) {
+				forum = mapper.readValue(object, Forum.class);
+
+			} else {
 				forum = cosmosDB.getForum(id);
 				jedis.set(FORUM_KEY_PREFIX + id, mapper.writeValueAsString(forum));
 			}

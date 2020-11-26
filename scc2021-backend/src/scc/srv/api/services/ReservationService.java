@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import redis.clients.jedis.Jedis;
 import scc.data.CosmosDBLayer;
+import scc.data.Entity;
 import scc.data.Reservation;
 import scc.redis.RedisCache;
 
@@ -32,10 +33,14 @@ public class ReservationService {
 	
 	public Reservation get(String id) throws NotFoundException {
 		Reservation reservation = null;
+
 		try {
-			reservation = mapper.readValue(jedis.get(RESERVATION_KEY_PREFIX + id), Reservation.class);		
-			if (reservation == null) {
-				reservation = cosmosDB.getReservation(id);				
+			String object = jedis.get(RESERVATION_KEY_PREFIX + id);
+			if(object != null ) {
+				reservation = mapper.readValue(object, Reservation.class);
+
+			} else {
+				reservation = cosmosDB.getReservation(id);
 				jedis.set(RESERVATION_KEY_PREFIX + id, mapper.writeValueAsString(reservation));				
 			}
 			return reservation;	

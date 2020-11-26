@@ -142,7 +142,6 @@ function genNewEntity(context, events, done) {
 	loadData();
 	context.vars.name = `${Faker.company.companyName()}`
 	context.vars.description = `${Faker.company.catchPhrase()}`
-	context.vars.businessType = `${Faker.commerce.department()}`
 	context.vars.listed = Math.random() < 0.5
 	return done()
 }

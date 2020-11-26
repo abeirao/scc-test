@@ -48,9 +48,12 @@ public class EntityService   {
 	public Entity get(String id) throws NotFoundException {
 		Entity entity;
 		try {
-			entity = mapper.readValue(jedis.get(ENTITY_KEY_PREFIX + id), Entity.class);
+			String object = jedis.get(ENTITY_KEY_PREFIX + id);
+			if(object != null ) {
+				entity = mapper.readValue(object, Entity.class);
 
-			if (entity == null) {
+			} else {
+
 				entity = cosmosDB.getEntity(id);
 				jedis.set(ENTITY_KEY_PREFIX + id, mapper.writeValueAsString(entity));
 			}
@@ -84,8 +87,7 @@ public class EntityService   {
 			// delete from cache
 			jedis.del(ENTITY_KEY_PREFIX + id);
 			// delete from database
-			cosmosDB.delete(CosmosDBLayer.ENTITIES, entity).getItem();
-			return entity;
+			return (Entity) cosmosDB.delete(CosmosDBLayer.ENTITIES, entity).getItem();
 		} catch (NotFoundException e) {
 	        throw e;
 	    } catch (Exception e) {
