@@ -29,7 +29,7 @@ public class EntityController implements EntityAPI {
 	}
 	
 	@Override
-	public Entity get(String id)  throws WebApplicationException {
+	public Entity get(String id) {
 		try {
 			return entities.get(id);
 		} catch (NotFoundException e) {
@@ -43,7 +43,7 @@ public class EntityController implements EntityAPI {
 	}
 
 	@Override
-	public Entity delete(String id)  throws WebApplicationException {
+	public Entity delete(String id) {
 		try {
 			return entities.delete(id);
 		} catch (NotFoundException e) {
