@@ -130,17 +130,13 @@ public class CalendarService {
 
 
     public Iterator<Date> getAvailablePeriods(String calendarId) {
-//TODO
-        /*
-         * Dei esta try -> mas agora damos update a lista de availableDays qdo criamos uma reservation
-         */
         Calendar calendar = this.get(calendarId);
         if (calendar == null) {
             return null;
         }
-            List<Date> availableDays = calendar.getAvailableDays();
+        List<Date> availableDays = calendar.getAvailableDays();
 
-            return availableDays.iterator();
+        return availableDays.iterator();
     }
 
     public Iterator<String> getReservations(String calendarId) {
