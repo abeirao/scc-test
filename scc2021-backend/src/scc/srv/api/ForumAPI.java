@@ -28,7 +28,7 @@ public interface ForumAPI {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Forum get(@PathParam("id") String id) throws WebApplicationException;
+	public Forum get(@PathParam("id") String id);
 	
 	/**
 	 * 
@@ -51,7 +51,7 @@ public interface ForumAPI {
 	@Path("/new/{forumId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Messsage addMessage(@PathParam("forumId") String forumId, Messsage newMessage) throws WebApplicationException;
+	public Messsage addMessage(@PathParam("forumId") String forumId, Messsage newMessage);
 	
 	/**
 	 * 
@@ -64,7 +64,7 @@ public interface ForumAPI {
 	@Path("/reply/{forumId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String reply(@PathParam("forumId") String forumId, Messsage messageToReply, Messsage newMessage) throws WebApplicationException;
+	public String reply(@PathParam("forumId") String forumId, Messsage messageToReply, Messsage newMessage);
 	
 	/**
 	 * 
@@ -74,7 +74,7 @@ public interface ForumAPI {
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Forum delete(@PathParam("id") String id) throws WebApplicationException;
+	public Forum delete(@PathParam("id") String id);
 
 	/**
 	 * 
@@ -84,5 +84,5 @@ public interface ForumAPI {
 	@GET
 	@Path("/{id}/forums")
 	@Produces(MediaType.APPLICATION_JSON)
-	Iterator<Forum> getForumByEntity(@PathParam("entityId") String entityId) throws WebApplicationException;
+	Iterator<Forum> getForumByEntity(@PathParam("entityId") String entityId);
 }

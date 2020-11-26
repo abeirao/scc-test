@@ -29,7 +29,7 @@ public interface EntityAPI {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public Entity get(@PathParam("id") String id) throws WebApplicationException ;
+	public Entity get(@PathParam("id") String id);
 
 	/**
 	 *
@@ -51,7 +51,7 @@ public interface EntityAPI {
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Entity delete(@PathParam("id") String id) throws WebApplicationException ;
+	public Entity delete(@PathParam("id") String id);
 
 	/**
 	 *
@@ -72,7 +72,7 @@ public interface EntityAPI {
 	@PUT
 	@Path("/{id}/media/{mediaId}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	void addMedia(@PathParam("id") String id, @PathParam("mediaId") String mediaId) throws WebApplicationException ;
+	void addMedia(@PathParam("id") String id, @PathParam("mediaId") String mediaId);
 
 	/**
 	 *

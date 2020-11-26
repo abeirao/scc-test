@@ -29,7 +29,7 @@ public interface CalendarAPI {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	Calendar get(@PathParam("id") String id) throws WebApplicationException ;
+	Calendar get(@PathParam("id") String id);
 	
 	/**
 	 * 
@@ -61,11 +61,11 @@ public interface CalendarAPI {
 	@GET
 	@Path("/available/{calendarId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	Iterator<Date> getAvailablePeriods(@PathParam("calendarId") String calendarId) throws WebApplicationException;
+	Iterator<Date> getAvailablePeriods(@PathParam("calendarId") String calendarId);
 
 	@GET
 	@Path("/reservations/{calendarId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	Iterator<String> getReservations(@PathParam("calendarId") String calendarId) throws WebApplicationException;
+	Iterator<String> getReservations(@PathParam("calendarId") String calendarId);
 	
 }
