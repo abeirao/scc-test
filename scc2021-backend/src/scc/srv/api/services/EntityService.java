@@ -84,7 +84,8 @@ public class EntityService   {
 			// delete from cache
 			jedis.del(ENTITY_KEY_PREFIX + id);
 			// delete from database
-			return (Entity) cosmosDB.delete(CosmosDBLayer.ENTITIES, entity).getItem();
+			cosmosDB.delete(CosmosDBLayer.ENTITIES, entity).getItem();
+			return entity;
 		} catch (NotFoundException e) {
 	        throw e;
 	    } catch (Exception e) {

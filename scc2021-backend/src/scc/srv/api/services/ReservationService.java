@@ -117,7 +117,8 @@ public class ReservationService {
 			// delete reservation from reservations by entity on cache 
 			jedis.srem(RESERVATION_ENTITY_KEY_PREFIX + reservation.getEntityId(), mapper.writeValueAsString(reservation));
 			// delete reservation from database
-			return (Reservation) cosmosDB.delete(CosmosDBLayer.RESERVATIONS, reservation).getItem();
+			cosmosDB.delete(CosmosDBLayer.RESERVATIONS, reservation).getItem();
+			return reservation;
 		} catch (NotFoundException e) {
 			throw e;
 		} catch (Exception e) {

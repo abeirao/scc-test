@@ -16,7 +16,7 @@ import scc.srv.api.services.ForumService;
 public class ForumController implements ForumAPI {
 
 	private ForumService forums;
-	
+
 	public ForumController() {
 		this.forums = new ForumService();
 	}

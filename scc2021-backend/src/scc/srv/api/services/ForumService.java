@@ -83,7 +83,7 @@ public class ForumService  {
 
 	public String reply(String forumId, Messsage messageToReply, Messsage newMessage) {
 		Forum forum = cosmosDB.getForum(forumId);
-		newMessage.set_replyToId(messageToReply.getId());
+		newMessage.setReplyToId(messageToReply.getId());
 		List<Messsage> temp = forum.getMessages();
 		temp.add(newMessage);
 
@@ -93,7 +93,6 @@ public class ForumService  {
 		try {
 			jedis.set(FORUM_KEY_PREFIX + forum.getId(), mapper.writeValueAsString(forum));
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 		return newMessage.getMsg();
@@ -107,7 +106,8 @@ public class ForumService  {
 			// delete forum from forums by entity on cache 
 			jedis.srem(FORUM_ENTITY_KEY_PREFIX + forum.getEntityId(), mapper.writeValueAsString(forum));
 			// delete from database
-			return (Forum) cosmosDB.delete(CosmosDBLayer.FORUMS, forum).getItem();
+			cosmosDB.delete(CosmosDBLayer.FORUMS, forum).getItem();
+			return forum;
 		} catch (NotFoundException e) {
 			throw e;
 		} catch( Exception e) {

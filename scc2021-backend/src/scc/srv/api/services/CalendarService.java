@@ -105,7 +105,8 @@ public class CalendarService {
 	        else
 	            jedis.del(CALENDAR_KEY_PREFIX + id);
 	
-	        return (Calendar) cosmosDB.delete(CosmosDBLayer.CALENDARS, calendar).getItem();
+	        cosmosDB.delete(CosmosDBLayer.CALENDARS, calendar).getItem();
+	        return calendar;
         } catch (NotFoundException e) {
         	throw e;
 		} catch (Exception e) {
