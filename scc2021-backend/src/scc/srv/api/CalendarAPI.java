@@ -30,16 +30,6 @@ public interface CalendarAPI {
 	@Produces(MediaType.APPLICATION_JSON)
 	Calendar get(@PathParam("id") String id);
 	
-	/**
-	 * 
-	 * @param calendar to be created
-	 * @return Calendar
-	 */
-	@POST
-	@Path("/")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	Calendar create(Calendar calendar);
 
 	@PUT
 	@Path("/")

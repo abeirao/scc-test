@@ -1,5 +1,6 @@
 package scc.srv.api.controllers;
 
+import scc.data.Calendar;
 import scc.data.Entity;
 import scc.data.Reservation;
 import scc.exceptions.DayAlreadyOccupiedException;
@@ -69,5 +70,14 @@ public class EntityController implements EntityAPI {
 			System.out.println("Day already occupied with a reservation");
 			throw new WebApplicationException(Response.Status.CONFLICT);
 		}
+	}
+
+	@Override
+	public Calendar createCalendar(Calendar calendar) {
+		try {
+			return entities.createCalendar(calendar);
+		} catch (NotFoundException e){
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+			}
 	}
 }

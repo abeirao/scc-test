@@ -224,6 +224,7 @@ function genNewCalendar(context, events, done) {
   context.vars.name = `${Faker.company.companyName()}`
   context.vars.availableDays = []
   context.vars.calendarEntry = {}
+  context.vars.entityId = entityIds.sample()
   return done()
 }
 

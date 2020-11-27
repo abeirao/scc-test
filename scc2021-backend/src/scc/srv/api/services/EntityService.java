@@ -24,6 +24,7 @@ import javax.ws.rs.NotFoundException;
 public class EntityService   {
 
 	public static final String ENTITY_KEY_PREFIX = "entity: ";
+	private static final String CALENDAR_KEY_PREFIX = "calendar:" ;
 
 	ObjectMapper mapper = new ObjectMapper();
 
@@ -137,5 +138,22 @@ public class EntityService   {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Calendar createCalendar(Calendar calendar) {
+		try {
+			List<Date> availableDays = calendarService.computeAvailableDays();
+			calendar.setAvailableDays(availableDays);
+			calendar.setId(Utils.randomUUID().toString());
+			cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
+			jedis.set(CALENDAR_KEY_PREFIX + calendar.getId(), mapper.writeValueAsString(calendar));
+			Entity entity = this.get(calendar.getEntityId());
+			entity.setCalendarId(calendar.getId());
+			this.update(entity);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return calendar;
 	}
 }

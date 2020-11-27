@@ -4,75 +4,88 @@ import java.util.*;
 
 public class Calendar {
 
-	private String _rid;
-  private String id;
-  private String name;
-  private List<Date> availableDays;
-  private Map <Date, String> calendarEntry;
+    private String _rid;
+    private String id;
+    private String name;
+    private List<Date> availableDays;
+    private Map<Date, String> calendarEntry;
+    private String entityId;
 
-	public String get_rid() {
-		return _rid;
-	}
-	public void set_rid(String _rid) {
-		this._rid = _rid;
-	}
+    public String getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
+    }
+
+    public String get_rid() {
+        return _rid;
+    }
+
+    public void set_rid(String _rid) {
+        this._rid = _rid;
+    }
+
     public String getId() {
-		return id;
-	}
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public List<Date> getAvailableDays() {
-		return availableDays;
-	}
+    public List<Date> getAvailableDays() {
+        return availableDays;
+    }
 
-	public void setAvailableDays(List<Date> availableDays) {
-		Collections.sort(availableDays, new Comparator<Date>() {
-			public int compare(Date o1, Date o2) {
-				if(o1.equals(o2)){
-					return 0;
-				} else if(o1.after(o2)) {
-					return 1;
-				} else {
-					return -1;
-				}
-			}
-		});
+    public void setAvailableDays(List<Date> availableDays) {
+        Collections.sort(availableDays, new Comparator<Date>() {
+            public int compare(Date o1, Date o2) {
+                if (o1.equals(o2)) {
+                    return 0;
+                } else if (o1.after(o2)) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        });
 
-		this.availableDays = availableDays;
-	}
+        this.availableDays = availableDays;
+    }
 
-	public Iterator<String> getReservations() {
-		return calendarEntry.values().iterator();
-	}
+    public Iterator<String> getReservations() {
+        return calendarEntry.values().iterator();
+    }
 
-	public void setCalendarEntry(Map<Date, String> calendarEntry) {
-		this.calendarEntry = calendarEntry;
-	}
+    public void setCalendarEntry(Map<Date, String> calendarEntry) {
+        this.calendarEntry = calendarEntry;
+    }
 
-	public void putReservation(Reservation reservation, Date day) {
-		calendarEntry.put(day, reservation.getId());
-		int i = availableDays.indexOf(day);
-		if(i != -1) {
-			availableDays.remove(i);
-		}
-	}
+    public void putReservation(Reservation reservation, Date day) {
+        calendarEntry.put(day, reservation.getId());
+        int i = availableDays.indexOf(day);
+        if (i != -1) {
+            availableDays.remove(i);
+        }
+    }
 
-    public Map<Date, String> getCalendarEntry() { return calendarEntry; }
+    public Map<Date, String> getCalendarEntry() {
+        return calendarEntry;
+    }
 
-	@Override
-	public String toString() {
-		return "Calendar [_rid=" + _rid + ", id=" + id + ", name=" + name + ", availableDays=" + availableDays.toString() +
-				", calendarEntry=" + calendarEntry.toString()  + "]";
-	}
+    @Override
+    public String toString() {
+        return "Calendar [_rid=" + _rid + ", id=" + id + ", name=" + name + ", availableDays=" + availableDays.toString() +
+                ", calendarEntry=" + calendarEntry.toString() + "]";
+    }
 }

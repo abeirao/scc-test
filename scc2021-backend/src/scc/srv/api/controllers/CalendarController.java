@@ -33,10 +33,6 @@ public class CalendarController implements CalendarAPI {
 		}
 	}
 
-	@Override
-	public Calendar create(Calendar calendar) {
-		return calendars.create(calendar);
-	}
 
 	@Override
 	public Calendar delete(String id) {

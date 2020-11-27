@@ -62,26 +62,11 @@ public class CalendarService {
     }
 
 
-    public Calendar create(Calendar calendar) {
-        try {
-        	List<Date> availableDays = this.computeAvailableDays();        	
-        	calendar.setAvailableDays(availableDays);
-        	calendar.setId(Utils.randomUUID().toString());
-        	
-            cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
-            jedis.set(CALENDAR_KEY_PREFIX + calendar.getId(), mapper.writeValueAsString(calendar));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        return calendar;
-    }
-
     /**
      * calculates the number of available days, which will be the days until the end of the respective month
      * @return a list of available dates
      */
-    private List<Date> computeAvailableDays() {  
+    public List<Date> computeAvailableDays() {
 		ZoneId defaultZoneId = ZoneId.systemDefault();  	
     	LocalDate today = LocalDate.now();
     	LocalDate endDate = today.withDayOfMonth(today.lengthOfMonth());     	
