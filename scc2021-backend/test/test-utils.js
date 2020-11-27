@@ -17,15 +17,18 @@ module.exports = {
   selectMsgFromList,
   processUploadReply,
   selectImageToDownload,
-	replyPostForum,
-	replyDeleteEntity,
-	genNewForum,
+  replyPostForum,
+  genNewForum,
+  replyDeleteForum,
+  replyDeleteEntity,
   selectForum
+
+  
 }
 
 const fs = require('fs')
-const Faker = require('C:\\Users\\António Beirão\\AppData\\Roaming\\npm\\node_modules\\faker')
-const fetch = require('C:\\Users\\António Beirão\\AppData\\Roaming\\npm\\node_modules\\node-fetch')
+const Faker = require('faker')
+const fetch = require('node-fetch')
 
 var imagesIds = [];
 var images = [];
@@ -185,11 +188,25 @@ function replyPostEntity(requestParams, response, context, ee, next) {
 }
 
 function replyDeleteEntity(requestParams, response, context, ee, next) {
-	if( response.statusCode == 200) {
-		let entity = response.toJSON().body
-		const index = array.indexOf(entity)
-		entityIds.splice(index, 1)
+	if( response.statusCode == 204) {
+		let entity = context.vars.entityId
+		const index = entityIds.indexOf(entity)
+		if(entityIds.length > 0){
+			entityIds.splice(index, 1)
+		}		
 		fs.writeFileSync('entities.data', JSON.stringify(entityIds))
+	}
+    return next()
+}
+
+function replyDeleteForum(requestParams, response, context, ee, next) {
+	if( response.statusCode == 204) {
+		let forum = context.vars.forumId
+		const index = forumIds.indexOf(forum)
+		if(forumIds.length > 0){
+			forumIds.splice(index, 1)
+		}
+		fs.writeFileSync('forum.data', JSON.stringify(forumIds))
 	}
     return next()
 }
