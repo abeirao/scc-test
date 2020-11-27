@@ -44,9 +44,11 @@ public class CalendarService {
     public Calendar get(String id) throws NotFoundException {
         Calendar calendar;
         try {
-            calendar = mapper.readValue(jedis.get(CALENDAR_KEY_PREFIX + id), Calendar.class);
-
-            if (calendar == null) {
+            String object = jedis.get(CALENDAR_KEY_PREFIX + id);
+            if(object != null) {
+                calendar = mapper.readValue(object, Calendar.class);
+            }
+            else {
                 calendar = cosmosDB.getCalendar(id);
                 jedis.set(CALENDAR_KEY_PREFIX + id, mapper.writeValueAsString(calendar));
             }
