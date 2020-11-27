@@ -13,16 +13,18 @@ config:
       arrivalCount: 1
 
 
+
 scenarios:
-  - name: "Add new Forum"
+  - name: 'Add new forum'
     weight: 1
     flow:
       - function: "genNewForum"
       - post:
-        url: "/forum/"
-        headers:
-          Accept: application/json
-        json:
-          entityId: "{{ entityId }}"
-          messages: []
-        afterResponse: "replyPostForum"
+          url: "/forum/"
+          headers:
+            Accept: application/json
+          json:
+            entityId: "{{ entityId }}"
+            messages: []
+          afterResponse: "replyPostForum"
+
