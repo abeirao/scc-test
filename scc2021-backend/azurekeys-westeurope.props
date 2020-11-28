@@ -3,5 +3,5 @@ BlobStoreConnection=DefaultEndpointsProtocol=DefaultEndpointsProtocol=https;Acco
 COSMOSDB_KEY=bbgF4Re4UQMuEsX0MZSEjuLDCZdMU76srR5VLAnaluK5QuXKcZUeKeFPEp8mMAgZwTMcAUz6T8oW61WTIh5ymg==
 COSMOSDB_URL=https://scc-cosmos-50415.documents.azure.com:443/
 COSMOSDB_DATABASE=scc50415p
-REDIS_KEY=SNy5cDp2amufBRmYuGDTbbeuSWkP4h+dMGNM32DajS0=
-REDIS_URL=scc202150415-cache.redis.cache.windows.net
+REDIS_KEY=MsuRd94p9xWZFx6Exz0UmsMQuP5lRk7+xxm9tay2a4Q=
+REDIS_URL=scc-redis.redis.cache.windows.net
