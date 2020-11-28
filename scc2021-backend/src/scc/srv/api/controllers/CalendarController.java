@@ -25,7 +25,7 @@ public class CalendarController implements CalendarAPI {
 	}
 
 	@Override
-	public Calendar get(String id) {
+	public Calendar get(String id) throws WebApplicationException {
 		try {
 			return calendars.get(id);
 		} catch (NotFoundException e) {
@@ -35,7 +35,7 @@ public class CalendarController implements CalendarAPI {
 
 
 	@Override
-	public Calendar delete(String id) {
+	public Calendar delete(String id) throws WebApplicationException  {
 		try {
 			return calendars.delete(id);
 		} catch (NotFoundException e) {
