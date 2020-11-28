@@ -26,7 +26,6 @@ scenarios:
           json:
             name: "{{ name }}"
             day: "{{ day }}"
-            id: "{{ id }}"
             entityId: "{{ entityId }}"
           expect:
             - statusCode: 200
