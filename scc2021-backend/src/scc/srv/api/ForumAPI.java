@@ -81,7 +81,7 @@ public interface ForumAPI {
 	 * @return
 	 */
 	@GET
-	@Path("/{id}/forums")
+	@Path("/{entityId}/forums")
 	@Produces(MediaType.APPLICATION_JSON)
 	Iterator<Forum> getForumByEntity(@PathParam("entityId") String entityId);
 }

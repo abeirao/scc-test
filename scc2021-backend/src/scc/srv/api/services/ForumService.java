@@ -40,21 +40,15 @@ public class ForumService {
                 forum = cosmosDB.getForum(id);
             }
             jedis.set(FORUM_KEY_PREFIX + id, mapper.writeValueAsString(forum));
-        return forum;
-    } catch(
-    NotFoundException e)
+            return forum;
+        } catch (NotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 
-    {
-        throw e;
-    } catch(
-    Exception e)
-
-    {
-        e.printStackTrace();
-        return null;
     }
-
-}
 
     public Forum create(Forum forum) {
         forum.setId(Utils.randomUUID().toString());
@@ -70,7 +64,7 @@ public class ForumService {
 
     public Messsage addMessage(String forumId, Messsage newMessage) {
         Forum forum = cosmosDB.getForum(forumId);
-
+        newMessage.setId(Utils.randomUUID().toString());
         List<Messsage> messages = forum.getMessages();
         messages.add(newMessage);
         forum.setMessages(messages);
@@ -87,6 +81,7 @@ public class ForumService {
 
     public String reply(String forumId, String messageIdToReply, Messsage newMessage) {
         Forum forum = cosmosDB.getForum(forumId);
+        newMessage.setId(Utils.randomUUID().toString());
         newMessage.setReplyToId(messageIdToReply);
         List<Messsage> temp = forum.getMessages();
         temp.add(newMessage);
