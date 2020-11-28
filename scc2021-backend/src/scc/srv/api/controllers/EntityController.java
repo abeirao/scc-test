@@ -30,7 +30,7 @@ public class EntityController implements EntityAPI {
 	}
 	
 	@Override
-	public Entity get(String id) {
+	public Entity get(String id) throws WebApplicationException {
 		try {
 			return entities.get(id);
 		} catch (NotFoundException e) {
@@ -44,7 +44,7 @@ public class EntityController implements EntityAPI {
 	}
 
 	@Override
-	public Entity delete(String id) {
+	public Entity delete(String id) throws WebApplicationException  {
 		try {
 			return entities.delete(id);
 		} catch (NotFoundException e) {
@@ -63,7 +63,7 @@ public class EntityController implements EntityAPI {
 	}
 
 	@Override
-	public void createReservation(Reservation reservation) {
+	public void createReservation(Reservation reservation) throws WebApplicationException  {
 		try {
 			entities.createReservation(reservation);
 		} catch (DayAlreadyOccupiedException e) {
@@ -73,7 +73,7 @@ public class EntityController implements EntityAPI {
 	}
 
 	@Override
-	public Calendar createCalendar(Calendar calendar) {
+	public Calendar createCalendar(Calendar calendar) throws WebApplicationException  {
 		try {
 			return entities.createCalendar(calendar);
 		} catch (NotFoundException e){
