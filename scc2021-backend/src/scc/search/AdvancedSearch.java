@@ -80,8 +80,6 @@ public class AdvancedSearch
 			}
 			
 			
-			System.out.println();
-			System.out.println("=============== Second query ======================");
 			// NOT SO SIMPLE QUERY 1
 			obj = new JsonObject();
 			obj.addProperty("count", "true");
@@ -105,9 +103,7 @@ public class AdvancedSearch
 					System.out.println( val.getKey() + "->" + val.getValue());
 				}
 			}
-
-			System.out.println();
-			System.out.println("=============== Third query ======================");
+			
 			// NOT SO SIMPLE QUERY 2
 			obj = new JsonObject();
 			obj.addProperty("count", "true");
