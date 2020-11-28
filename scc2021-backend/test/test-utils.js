@@ -22,7 +22,8 @@ module.exports = {
   replyDeleteForum,
   replyDeleteEntity,
   selectForum,
-	replyPostMessage
+  replyPostMessage,
+  selectMessage
 }
 
 const fs = require('fs')
@@ -292,6 +293,7 @@ function  replyPostMessage(requestParams, response, context, ee ,next) {
 		messageIds.push(message.id)
 		fs.writeFileSync('message.data', JSON.stringify(messageIds))
 	}
+	return next()
 }
 
 /**
@@ -329,6 +331,17 @@ function selectMsgFromList(requestParams, response, context, ee, next) {
 		}
 	}
     return next()
+}
+
+function selectMessage(requestParams, response, context, ee, next) {
+	if (response.statusCode == 200) {
+		let msg = JSON.parse(responde.body)
+		context.vars.msgJSON = msg
+		}
+		else {
+			delete context.vars.msgJSON
+		}
+	return done()
 }
 
 /**
