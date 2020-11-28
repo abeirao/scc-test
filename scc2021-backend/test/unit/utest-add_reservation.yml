@@ -20,7 +20,7 @@ scenarios:
     flow:
       - function: "genNewReservation"
       - post:
-          url: "/reservation"
+          url: "/entity/reservations"
           headers:
             Accept: application/json
           json:

@@ -14,56 +14,56 @@ import scc.srv.api.services.ReservationService;
 @Path(ReservationAPI.ENDPOINT)
 public class ReservationController implements ReservationAPI {
 
-	private ReservationService reservations;
-	
-	public ReservationController() {
-		this.reservations = new ReservationService();
-	}
+    private ReservationService reservations;
 
-	@Override
-	public Reservation addReservation(Reservation reservation) {
-		return reservations.addReservation(reservation);
-	}
-	
-	@Override
-	public Reservation updateReservation(Reservation reservation) throws WebApplicationException{
+    public ReservationController() {
+        this.reservations = new ReservationService();
+    }
 
-		try{
-			return reservations.update(reservation);
-		} catch (NotFoundException e){
-			throw new WebApplicationException(Response.Status.NOT_FOUND);
-		}
-	}
+    @Override
+    public Reservation addReservation(Reservation reservation) {
+        return reservations.addReservation(reservation);
+    }
 
-	@Override
-	public Reservation get(String id) throws WebApplicationException{
-		try {
-			return reservations.get(id);
-		} catch (NotFoundException e) {
-			throw new WebApplicationException(Response.Status.NOT_FOUND);
-		}
-	}
+    @Override
+    public Reservation updateReservation(Reservation reservation) throws WebApplicationException {
 
-	@Override
-	public Reservation delete(String id) throws WebApplicationException{
-		try {
-			return reservations.delete(id);
-		} catch (NotFoundException e) {
-			throw new WebApplicationException(Response.Status.NOT_FOUND);
-		}
-	}
+        try {
+            return reservations.update(reservation);
+        } catch (NotFoundException e) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+    }
 
-	@Override
-	public Iterator<Reservation> getReservations() {
-		return reservations.getReservations();
-	}
+    @Override
+    public Reservation get(String id) throws WebApplicationException {
+        try {
+            return reservations.get(id);
+        } catch (NotFoundException e) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+    }
 
-	@Override
-	public Iterator<Reservation> getReservationsFromEntity(String entityId) throws WebApplicationException {
-		try {
-			return reservations.getReservationsFromEntity(entityId);
-		} catch (NotFoundException e) {
-			throw new WebApplicationException(Response.Status.NOT_FOUND);
-		}
-	}
+    @Override
+    public Reservation delete(String id) throws WebApplicationException {
+        try {
+            return reservations.delete(id);
+        } catch (NotFoundException e) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public Iterator<Reservation> getReservations() {
+        return reservations.getReservations();
+    }
+
+    @Override
+    public Iterator<Reservation> getReservationsFromEntity(String entityId) throws WebApplicationException {
+        try {
+            return reservations.getReservationsFromEntity(entityId);
+        } catch (NotFoundException e) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+    }
 }

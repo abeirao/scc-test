@@ -46,22 +46,10 @@ public class PageService {
 			return entityService.getAll();
 	}
 
-	
+
 	public boolean listedEntity(String entityId) {
 		return entityService.get(entityId).isListed();
 
-	}
-
-	
-	public void setEntityLike(String entityId) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
-	public String reservationStatistics() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public Entity listEntity(String entityId) {

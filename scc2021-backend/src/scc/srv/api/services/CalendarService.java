@@ -45,10 +45,9 @@ public class CalendarService {
         Calendar calendar;
         try {
             String object = jedis.get(CALENDAR_KEY_PREFIX + id);
-            if(object != null) {
+            if (object != null) {
                 calendar = mapper.readValue(object, Calendar.class);
-            }
-            else {
+            } else {
                 calendar = cosmosDB.getCalendar(id);
                 jedis.set(CALENDAR_KEY_PREFIX + id, mapper.writeValueAsString(calendar));
             }
@@ -61,41 +60,41 @@ public class CalendarService {
         }
     }
 
-
     /**
      * calculates the number of available days, which will be the days until the end of the respective month
+     *
      * @return a list of available dates
      */
     public List<Date> computeAvailableDays() {
-		ZoneId defaultZoneId = ZoneId.systemDefault();
-    	LocalDate today = LocalDate.now();
-    	LocalDate endDate = today.plusMonths(1);
-		long numOfDays = ChronoUnit.DAYS.between(today, endDate);
-		List<LocalDate> listOfDates = LongStream.range(0, numOfDays)
-		                                .mapToObj(today::plusDays)
-		                                .collect(Collectors.toList());
-		List<Date> availableDays = new LinkedList<Date>();
-		for (LocalDate date: listOfDates)
-			availableDays.add(Date.from(date.atStartOfDay(defaultZoneId).toInstant()));
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        LocalDate today = LocalDate.now();
+        LocalDate endDate = today.plusMonths(1);
+        long numOfDays = ChronoUnit.DAYS.between(today, endDate);
+        List<LocalDate> listOfDates = LongStream.range(0, numOfDays)
+                .mapToObj(today::plusDays)
+                .collect(Collectors.toList());
+        List<Date> availableDays = new LinkedList<Date>();
+        for (LocalDate date : listOfDates)
+            availableDays.add(Date.from(date.atStartOfDay(defaultZoneId).toInstant()));
 
-		return availableDays;
-	}
+        return availableDays;
+    }
 
-	public Calendar delete(String id) throws NotFoundException {
+    public Calendar delete(String id) throws NotFoundException {
         Calendar calendar = null;
         try {
             calendar = mapper.readValue(jedis.get(CALENDAR_KEY_PREFIX + id), Calendar.class);
 
-	        if (calendar == null)
-	            calendar = cosmosDB.getCalendar(id);
-	        else
-	            jedis.del(CALENDAR_KEY_PREFIX + id);
+            if (calendar == null)
+                calendar = cosmosDB.getCalendar(id);
+            else
+                jedis.del(CALENDAR_KEY_PREFIX + id);
 
-	        cosmosDB.delete(CosmosDBLayer.CALENDARS, calendar).getItem();
-	        return calendar;
+            cosmosDB.delete(CosmosDBLayer.CALENDARS, calendar).getItem();
+            return calendar;
         } catch (NotFoundException e) {
-        	throw e;
-		} catch (Exception e) {
+            throw e;
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -113,17 +112,9 @@ public class CalendarService {
 
 
     public Iterator<Date> getAvailablePeriods(String calendarId) {
-//TODO
-        /*
-         * Dei esta try -> mas agora damos update a lista de availableDays qdo criamos uma reservation
-         */
         Calendar calendar = this.get(calendarId);
-        if (calendar == null) {
-            return null;
-        }
-            List<Date> availableDays = calendar.getAvailableDays();
-
-            return availableDays.iterator();
+        List<Date> availableDays = calendar.getAvailableDays();
+        return availableDays.iterator();
     }
 
     public Iterator<String> getReservations(String calendarId) {

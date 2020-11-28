@@ -124,25 +124,14 @@ public class EntityService {
             Calendar calendar = calendarService.get(entity.getCalendarId());
             List<Date> availableDays = calendar.getAvailableDays();
             Date day = null;
-            if (availableDays.size() > 0) 
-                day = availableDays.get(availableDays.indexOf(reservation.getDay()));
-
-            /*
-            for (Date d: availableDays) {
-            	Date p = reservation.getDay();
-            	if (d.compareTo(p) == 0) 
-            		day = d;            	
-            	else if (d.getDay() == p.getDay() && d.getMonth() == p.getMonth() && d.getYear() == p.getYear()) 
-            		day = d;
-            } */           	
-
-            if (day == null)
+            int i = availableDays.indexOf(reservation.getDay());
+            if (i == -1) {
                 throw new DayAlreadyOccupiedException();
-            else {
-                calendar.putReservation(reservation, reservation.getDay());
-                reservationService.addReservation(reservation);
-                calendarService.update(calendar);
             }
+            calendar.putReservation(reservation, reservation.getDay());
+            reservationService.addReservation(reservation);
+            calendarService.update(calendar);
+
 
         } catch (Exception e) {
             e.printStackTrace();

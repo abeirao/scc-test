@@ -37,12 +37,4 @@ public interface PageAPI {
 	@Produces(MediaType.APPLICATION_JSON)
 	Entity listEntity(@PathParam("entityId") String entityId);
 
-	@GET
-	@Path("/like/{entityId}")
-	void setEntityLike(@PathParam("entityId") String entityId);
-	
-	@GET
-	@Path("/stats")
-	@Produces(MediaType.TEXT_PLAIN)
-	String reservationStatistics();
 }
