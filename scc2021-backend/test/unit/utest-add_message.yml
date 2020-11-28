@@ -27,11 +27,12 @@ scenarios:
             replyToId: "{{ replyToId }}"
           capture:
             - json: '$.id'
-              as: "msgId"
+              as: "forumId"
           expect:
             - statusCode: 200
-          ifTrue: "forumId"
           afterResponse: "replyPostMessage"
+
+      - function: "selectForum"
       - get:
           url: "/forum/{{ forumId }}"
           headers:
@@ -39,3 +40,4 @@ scenarios:
           expect:
             - statusCode: 200
           ifTrue: "forumId"
+
