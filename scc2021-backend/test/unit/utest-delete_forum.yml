@@ -1,5 +1,5 @@
 # Unit test using artillery
-# Test: deletes entity;
+# Test: delete forum
 config:
   target: 'https://scc-test-50698.azurewebsites.net'
   plugins:
@@ -14,14 +14,14 @@ config:
 
 
 scenarios:
-  - name: 'Delete entity'
+  - name: 'Delete forum'
     weight: 1
     flow:
-      - function: "selectEntity"
+      - function: "selectForum"
       - delete:
-          url: "/entity/{{ entityId }}"
+          url: "/entity/{{ forumId }}"
           headers:
             Accept: application/json
           expect:
             - statusCode: 204
-          afterResponse: "replyDeleteEntity"
+          afterResponse: "replyDeleteForum"
