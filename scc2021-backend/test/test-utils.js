@@ -21,9 +21,8 @@ module.exports = {
   genNewForum,
   replyDeleteForum,
   replyDeleteEntity,
-  selectForum
-
-  
+  selectForum,
+	replyPostMessage
 }
 
 const fs = require('fs')
@@ -36,6 +35,7 @@ var entityIds = [];
 var reservationIds = [];
 var calendarIds = [];
 var forumIds = [];
+var messageIds = [];
 var loaded = false;
 
 // All endpoints starting with the following prefixes will be aggregated in the same for the statistics
@@ -82,6 +82,10 @@ function loadData() {
   if( fs.existsSync('forum.data')) {
     let str = fs.readFileSync('forum.data','utf8')
     forumIds = JSON.parse(str)
+  }
+  if( fs.existsSync('message.data')){
+  	let str = fs.readFileSync('message.data', 'utf8')
+	  messageIds = JSON.parse(str)
   }
 	fs.readdirSync('../images').forEach(file => {
 		if( file.endsWith('.jpg')) {
@@ -282,6 +286,14 @@ function replyPostForum(requestParams, response, context, ee, next) {
 	return next()
 }
 
+function  replyPostMessage(requestParams, response, context, ee ,next) {
+	if(response.statusCode == 200){
+		let message = response.toJSON().body
+		messageIds.push(message.id)
+		fs.writeFileSync('message.data', JSON.stringify(messageIds))
+	}
+}
+
 /**
  * Generate data for a new message. Starts by loading data if it was not loaded yet.
  * Stores in the variables:
@@ -330,10 +342,10 @@ function selectMsgFromList(requestParams, response, context, ee, next) {
 function genNewMessageReply(context, events, done) {
 	loadData();
 	if( typeof context.vars.msgJSON !== undefined) {
-		context.vars.forumId = context.vars.msgJSON.forumId
+		context.vars.forumId = forumIds.sample()
 		context.vars.fromWho = `${Faker.name.firstName()} ${Faker.name.lastName()}`
 		context.vars.msg = `${Faker.lorem.paragraph()}`
-		context.vars.replyToId = context.vars.msgJSON.id
+		context.vars.replyToId = messageIds.sample()
 	} else {
 		delete context.vars.forumId
 	}
