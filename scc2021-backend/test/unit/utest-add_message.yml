@@ -21,7 +21,7 @@ scenarios:
           headers:
             Accept: application/json
           json:
-            entityId: "{{ forumId }}"
+            forumId: "{{ forumId }}"
             fromWho: "{{ fromWho }}"
             msg: "{{ msg }}"
             replyToId: "{{ replyToId }}"
