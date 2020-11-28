@@ -41,8 +41,8 @@ public class ForumController implements ForumAPI {
 	}
 
 	@Override
-	public String reply(String forumId, Messsage messageToReply, Messsage newMessage) {
-		return forums.reply(forumId, messageToReply, newMessage);
+	public String reply(String forumId, String messageIdToReply, Messsage newMessage) {
+		return forums.reply(forumId, messageIdToReply, newMessage);
 	}
 
 	@Override

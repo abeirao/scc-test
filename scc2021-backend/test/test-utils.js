@@ -279,7 +279,6 @@ function genNewMessage(context, events, done) {
 		context.vars.msg = `${Faker.lorem.paragraph()}`
 		context.vars.forumId = forumIds.sample()
 		context.vars.replyToId = null
-		delete context.vars.replyToId
 	} else {
 		delete context.vars.forumId
 	}
