@@ -41,7 +41,7 @@ public class Test {
 			ent.setCalendarId(calendarId);
 			Reservation res = new Reservation();
 			res.setName("very nice reservation");
-			res.setDay(new SimpleDateFormat("dd/MM/yyyy").parse("18/11/2020"));
+			res.setDay(new SimpleDateFormat("dd/MM/yyyy").parse("29/11/2020"));
 			res.setId("0" + System.currentTimeMillis());
 			res.setEntityId(entityId);	
 
