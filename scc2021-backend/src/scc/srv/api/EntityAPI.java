@@ -76,13 +76,12 @@ public interface EntityAPI {
 
 	/**
 	 *
-	 * @param id
 	 * @param reservation
 	 */
 	@POST
-	@Path("/{id}/reservations")
+	@Path("/reservations")
 	@Consumes(MediaType.APPLICATION_JSON)
-	void createReservation(@PathParam("id") String id, Reservation reservation);
+	void createReservation(Reservation reservation);
 
 	/**
 	 *

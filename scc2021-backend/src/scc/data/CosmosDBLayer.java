@@ -46,17 +46,17 @@ public class CosmosDBLayer {
 			return instance;
 
 		//GEO REPLICATION CODE
-		//ArrayList<String> preferredRegions = new ArrayList<String>();
-		//preferredRegions.add(REGION_1);
-		//preferredRegions.add(REGION_2);
-		///preferredRegions.add(REGION_3);
+		ArrayList<String> preferredRegions = new ArrayList<String>();
+		preferredRegions.add(REGION_1);
+		preferredRegions.add(REGION_2);
+		preferredRegions.add(REGION_3);
 
 		CosmosClient client = new CosmosClientBuilder()
 		         .endpoint(CONNECTION_URL)
 		         .key(DB_KEY)
 		         .directMode()		// comment this is not to use direct mode
-				 //.multipleWriteRegionsEnabled(true)
-				 //.preferredRegions(preferredRegions)
+				 .multipleWriteRegionsEnabled(true)
+				 .preferredRegions(preferredRegions)
 		         .consistencyLevel(ConsistencyLevel.SESSION)
 		         .connectionSharingAcrossClientsEnabled(true)
 		         .contentResponseOnWriteEnabled(true)

@@ -63,9 +63,9 @@ public class EntityController implements EntityAPI {
 	}
 
 	@Override
-	public void createReservation(String id, Reservation reservation) {
+	public void createReservation(Reservation reservation) {
 		try {
-			entities.createReservation(id, reservation);
+			entities.createReservation(reservation);
 		} catch (DayAlreadyOccupiedException e) {
 			System.out.println("Day already occupied with a reservation");
 			throw new WebApplicationException(Response.Status.CONFLICT);

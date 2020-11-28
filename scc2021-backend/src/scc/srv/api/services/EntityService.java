@@ -117,9 +117,9 @@ public class EntityService {
     }
 
 
-    public void createReservation(String id, Reservation reservation) throws DayAlreadyOccupiedException {
+    public void createReservation(Reservation reservation) throws DayAlreadyOccupiedException {
         try {
-            Entity entity = this.get(id);
+            Entity entity = this.get(reservation.getEntityId());
 
             Calendar calendar = calendarService.get(entity.getCalendarId());
             List<Date> availableDays = calendar.getAvailableDays();
