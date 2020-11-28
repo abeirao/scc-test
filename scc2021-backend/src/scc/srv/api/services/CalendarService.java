@@ -67,31 +67,30 @@ public class CalendarService {
      * @return a list of available dates
      */
     public List<Date> computeAvailableDays() {
-		ZoneId defaultZoneId = ZoneId.systemDefault();  	
+		ZoneId defaultZoneId = ZoneId.systemDefault();
     	LocalDate today = LocalDate.now();
-    	LocalDate endDate = today.withDayOfMonth(today.lengthOfMonth());     	
-		long numOfDays = ChronoUnit.DAYS.between(today, endDate);	   
-		
+    	LocalDate endDate = today.plusMonths(1);
+		long numOfDays = ChronoUnit.DAYS.between(today, endDate);
 		List<LocalDate> listOfDates = LongStream.range(0, numOfDays)
 		                                .mapToObj(today::plusDays)
-		                                .collect(Collectors.toList());	
-		List<Date> availableDays = new LinkedList<Date>();		
-		for (LocalDate date: listOfDates) 
+		                                .collect(Collectors.toList());
+		List<Date> availableDays = new LinkedList<Date>();
+		for (LocalDate date: listOfDates)
 			availableDays.add(Date.from(date.atStartOfDay(defaultZoneId).toInstant()));
-		
-		return availableDays;		
+
+		return availableDays;
 	}
 
 	public Calendar delete(String id) throws NotFoundException {
         Calendar calendar = null;
         try {
             calendar = mapper.readValue(jedis.get(CALENDAR_KEY_PREFIX + id), Calendar.class);
-	        
+
 	        if (calendar == null)
 	            calendar = cosmosDB.getCalendar(id);
 	        else
 	            jedis.del(CALENDAR_KEY_PREFIX + id);
-	
+
 	        cosmosDB.delete(CosmosDBLayer.CALENDARS, calendar).getItem();
 	        return calendar;
         } catch (NotFoundException e) {
