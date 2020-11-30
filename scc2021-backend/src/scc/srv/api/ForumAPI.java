@@ -56,15 +56,15 @@ public interface ForumAPI {
 	/**
 	 * 
 	 * @param forumId
-	 * @param messageToReply
+	 * @param messageIdToReply
 	 * @param newMessage
 	 * @return
 	 */
 	@POST
-	@Path("/reply/{forumId}")
+	@Path("/reply/{forumId}/{messageIdToReply}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String reply(@PathParam("forumId") String forumId, Messsage messageToReply, Messsage newMessage);
+	public String reply(@PathParam("forumId") String forumId, @PathParam("messageIdToReply") String messageIdToReply, Messsage newMessage);
 	
 	/**
 	 * 
@@ -82,7 +82,7 @@ public interface ForumAPI {
 	 * @return
 	 */
 	@GET
-	@Path("/{id}/forums")
+	@Path("/{entityId}/forums")
 	@Produces(MediaType.APPLICATION_JSON)
 	Iterator<Forum> getForumByEntity(@PathParam("entityId") String entityId);
 }

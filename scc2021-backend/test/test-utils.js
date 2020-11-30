@@ -17,11 +17,13 @@ module.exports = {
   selectMsgFromList,
   processUploadReply,
   selectImageToDownload,
-	replyPostForum,
-	replyDeleteEntity,
-	genNewForum,
+  replyPostForum,
+  genNewForum,
+  replyDeleteForum,
+  replyDeleteEntity,
   selectForum,
-  replyDeleteForum
+  replyPostMessage,
+  selectMessage
 }
 
 const fs = require('fs')
@@ -34,6 +36,7 @@ var entityIds = [];
 var reservationIds = [];
 var calendarIds = [];
 var forumIds = [];
+var messageIds = [];
 var loaded = false;
 
 // All endpoints starting with the following prefixes will be aggregated in the same for the statistics
@@ -80,6 +83,10 @@ function loadData() {
   if( fs.existsSync('forum.data')) {
     let str = fs.readFileSync('forum.data','utf8')
     forumIds = JSON.parse(str)
+  }
+  if( fs.existsSync('message.data')){
+  	let str = fs.readFileSync('message.data', 'utf8')
+	  messageIds = JSON.parse(str)
   }
 	fs.readdirSync('../images').forEach(file => {
 		if( file.endsWith('.jpg')) {
@@ -143,6 +150,7 @@ function genNewEntity(context, events, done) {
 	loadData();
 	context.vars.name = `${Faker.company.companyName()}`
 	context.vars.description = `${Faker.company.catchPhrase()}`
+	context.vars.businessType = `${Faker.commerce.department()}`
 	context.vars.listed = Math.random() < 0.5
 	return done()
 }
@@ -186,11 +194,11 @@ function replyPostEntity(requestParams, response, context, ee, next) {
 
 function replyDeleteEntity(requestParams, response, context, ee, next) {
 	if( response.statusCode == 204) {
-		let entity = context.entityId
+		let entity = context.vars.entityId
 		const index = entityIds.indexOf(entity)
 		if(entityIds.length > 0){
 			entityIds.splice(index, 1)
-		}
+		}		
 		fs.writeFileSync('entities.data', JSON.stringify(entityIds))
 	}
     return next()
@@ -198,9 +206,9 @@ function replyDeleteEntity(requestParams, response, context, ee, next) {
 
 function replyDeleteForum(requestParams, response, context, ee, next) {
 	if( response.statusCode == 204) {
-		let forum = context.forumId
+		let forum = context.vars.forumId
 		const index = forumIds.indexOf(forum)
-		if(entityIds.length > 0){
+		if(forumIds.length > 0){
 			forumIds.splice(index, 1)
 		}
 		fs.writeFileSync('forum.data', JSON.stringify(forumIds))
@@ -208,29 +216,11 @@ function replyDeleteForum(requestParams, response, context, ee, next) {
     return next()
 }
 
-function genNewAvailableDaysRequest(context, events, done){
-	loadData();
-	if(calendarIds.length > 0) {
-		context.vars.calendarId = calendarIds.sample()
-	} else {
-		delete context.vars.calendarId
-	}
-	return done()
-}
-//TODO nao sei o qe isto faz e se esta bem
-function replyAvailableDays(requestParams, response, context, ee, next){
-	if(response.statusCode == 200){
-		let dates = response.toJSON().body
-		fs.writeFileSync('available.dates', JSON.stringify(dates))
-
-	}
-	return next();
-}
-
 function genNewForum(context, events, done){
 	loadData();
 	context.vars.entityId = entityIds.sample()
 	context.vars.messages = [];
+	return done()
 }
 
 function genNewCalendar(context, events, done) {
@@ -238,6 +228,7 @@ function genNewCalendar(context, events, done) {
   context.vars.name = `${Faker.company.companyName()}`
   context.vars.availableDays = []
   context.vars.calendarEntry = {}
+  context.vars.entityId = entityIds.sample()
   return done()
 }
 
@@ -253,7 +244,7 @@ function replyPostCalendar(requestParams, response, context, ee, next) {
 function genNewReservation(context, events, done) {
   loadData();
 	context.vars.name = `${Faker.name.findName()}`
-	context.vars.day = "2021-01-23"
+	context.vars.day = "2020-11-29"
 	context.vars.entityId = entityIds.sample()
 	return done()
 }
@@ -277,6 +268,15 @@ function replyPostForum(requestParams, response, context, ee, next) {
 	return next()
 }
 
+function  replyPostMessage(requestParams, response, context, ee ,next) {
+	if(response.statusCode == 200){
+		let message = response.toJSON().body
+		messageIds.push(message.id)
+		fs.writeFileSync('message.data', JSON.stringify(messageIds))
+	}
+	return next()
+}
+
 /**
  * Generate data for a new message. Starts by loading data if it was not loaded yet.
  * Stores in the variables:
@@ -291,7 +291,6 @@ function genNewMessage(context, events, done) {
 		context.vars.msg = `${Faker.lorem.paragraph()}`
 		context.vars.forumId = forumIds.sample()
 		context.vars.replyToId = null
-		delete context.vars.replyToId
 	} else {
 		delete context.vars.forumId
 	}
@@ -315,6 +314,17 @@ function selectMsgFromList(requestParams, response, context, ee, next) {
     return next()
 }
 
+function selectMessage(requestParams, response, context, ee, next) {
+	if (response.statusCode == 200) {
+		let msg = JSON.parse(responde.body)
+		context.vars.msgJSON = msg
+		}
+		else {
+			delete context.vars.msgJSON
+		}
+	return done()
+}
+
 /**
  * Generate data for a new message reply to message stored in variable msg. Starts by loading data if it was not loaded yet.
  * Stores in the variables:
@@ -326,10 +336,10 @@ function selectMsgFromList(requestParams, response, context, ee, next) {
 function genNewMessageReply(context, events, done) {
 	loadData();
 	if( typeof context.vars.msgJSON !== undefined) {
-		context.vars.forumId = context.vars.msgJSON.forumId
+		context.vars.forumId = forumIds.sample()
 		context.vars.fromWho = `${Faker.name.firstName()} ${Faker.name.lastName()}`
 		context.vars.msg = `${Faker.lorem.paragraph()}`
-		context.vars.replyToId = context.vars.msgJSON.id
+		context.vars.replyToId = messageIds.sample()
 	} else {
 		delete context.vars.forumId
 	}

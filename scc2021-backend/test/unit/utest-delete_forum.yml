@@ -1,7 +1,7 @@
 # Unit test using artillery
-# Test: delete forum;
+# Test: delete forum
 config:
-  target: 'https://scc-test-50415.azurewebsites.net'
+  target: 'https://scc-test-50698.azurewebsites.net'
   plugins:
     metrics-by-endpoint: {}
     expect: {}
@@ -19,7 +19,7 @@ scenarios:
     flow:
       - function: "selectForum"
       - delete:
-          url: "/forum/{{ forumId }}"
+          url: "/entity/{{ forumId }}"
           headers:
             Accept: application/json
           expect:

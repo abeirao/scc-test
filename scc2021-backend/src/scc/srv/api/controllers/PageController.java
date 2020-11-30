@@ -33,14 +33,5 @@ public class PageController implements PageAPI {
 		return pages.listEntity(entityId);
 	}
 
-	@Override
-	public void setEntityLike(String entityId) {
-		pages.setEntityLike(entityId);
-	}
-
-	@Override
-	public String reservationStatistics() {
-		return pages.reservationStatistics();
-	}
 
 }

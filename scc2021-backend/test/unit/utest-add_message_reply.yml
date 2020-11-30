@@ -1,7 +1,7 @@
 # Unit test using artillery
 # Test: post message to entity; get message
 config:
-  target: 'https://scc-test-50415.azurewebsites.net'
+  target: 'https://scc-test-50698.azurewebsites.net'
   plugins:
     metrics-by-endpoint: {}
     expect: {}
@@ -26,7 +26,7 @@ scenarios:
           ifTrue: "forumId"
       - function: "genNewMessageReply"
       - post:
-          url: "/forum/reply/{{forumId}}"
+          url: "/forum/reply/{{forumId}}/{{replyToId}}"
           headers:
             Accept: application/json
           json:

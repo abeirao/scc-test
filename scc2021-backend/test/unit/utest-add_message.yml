@@ -1,7 +1,7 @@
 # Unit test using artillery
 # Test: post message to entity; get message
 config:
-  target: 'https://scc-test-50415.azurewebsites.net'
+  target: 'https://scc-test-50698.azurewebsites.net'
   plugins:
     metrics-by-endpoint: {}
     expect: {}
@@ -21,16 +21,18 @@ scenarios:
           headers:
             Accept: application/json
           json:
-            entityId: "{{ forumId }}"
+            forumId: "{{ forumId }}"
             fromWho: "{{ fromWho }}"
             msg: "{{ msg }}"
             replyToId: "{{ replyToId }}"
           capture:
             - json: '$.id'
-              as: "msgId"
+              as: "forumId"
           expect:
             - statusCode: 200
-          ifTrue: "forumId"
+          afterResponse: "replyPostMessage"
+
+      - function: "selectForum"
       - get:
           url: "/forum/{{ forumId }}"
           headers:
@@ -38,3 +40,4 @@ scenarios:
           expect:
             - statusCode: 200
           ifTrue: "forumId"
+

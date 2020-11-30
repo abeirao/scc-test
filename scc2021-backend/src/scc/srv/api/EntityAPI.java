@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
+import scc.data.Calendar;
 import scc.data.Entity;
 import scc.data.Reservation;
 
@@ -76,13 +77,23 @@ public interface EntityAPI {
 
 	/**
 	 *
-	 * @param id
 	 * @param reservation
 	 */
 	@POST
-	@Path("/{id}/reservations")
+	@Path("/reservations")
 	@Consumes(MediaType.APPLICATION_JSON)
-	void createReservation(@PathParam("id") String id, Reservation reservation);
+	void createReservation(Reservation reservation);
+
+	/**
+	 *
+	 * @param calendar
+	 */
+	@POST
+	@Path("/calendar")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	Calendar createCalendar(Calendar calendar);
+
 
 	@GET
 	@Path("")

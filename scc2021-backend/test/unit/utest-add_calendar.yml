@@ -1,7 +1,7 @@
 # Unit test using artillery
 # Test: post calendar; get calendar
 config:
-  target: 'https://scc-test-50415.azurewebsites.net'
+  target: 'https://scc-test-50698.azurewebsites.net'
   plugins:
     metrics-by-endpoint: {}
     expect: {}
@@ -19,11 +19,12 @@ scenarios:
     flow:
       - function: "genNewCalendar"
       - post:
-          url: "/calendar"
+          url: "/entity/calendar"
           headers:
             Accept: application/json
           json:
             name: "{{ name }}"
             availableDays: []
             calendarEntry: {}
+            entityId: "{{entityId}}"
           afterResponse: "replyPostCalendar"
