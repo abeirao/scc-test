@@ -259,7 +259,7 @@
         <version>1.11.0</version>  
         <configuration> 
           <schemaVersion>V2</schemaVersion>  
-          <pricingTier>F1</pricingTier>  
+          <pricingTier>S3</pricingTier>  
           <region>westeurope</region>  
           <runtime> 
             <os>linux</os>  
