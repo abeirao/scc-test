@@ -33,24 +33,18 @@ public class CalendarService {
     ObjectMapper mapper = new ObjectMapper();
 
     private CosmosDBLayer cosmosDB;
-    private Jedis jedis;
 
     public CalendarService() {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         cosmosDB = CosmosDBLayer.getInstance();
-        jedis = RedisCache.getCachePool().getResource();
     }
 
     public Calendar get(String id) throws NotFoundException {
         Calendar calendar;
         try {
-            String object = jedis.get(CALENDAR_KEY_PREFIX + id);
-            if (object != null) {
-                calendar = mapper.readValue(object, Calendar.class);
-            } else {
-                calendar = cosmosDB.getCalendar(id);
-                jedis.set(CALENDAR_KEY_PREFIX + id, mapper.writeValueAsString(calendar));
-            }
+         
+            calendar = cosmosDB.getCalendar(id);
+            
             return calendar;
         } catch (NotFoundException e) {
             throw e;
@@ -81,14 +75,8 @@ public class CalendarService {
     }
 
     public Calendar delete(String id) throws NotFoundException {
-        Calendar calendar = null;
-        try {
-            calendar = mapper.readValue(jedis.get(CALENDAR_KEY_PREFIX + id), Calendar.class);
-
-            if (calendar == null)
-                calendar = cosmosDB.getCalendar(id);
-            else
-                jedis.del(CALENDAR_KEY_PREFIX + id);
+    	try {
+            Calendar calendar = cosmosDB.getCalendar(id);
 
             cosmosDB.delete(CosmosDBLayer.CALENDARS, calendar).getItem();
             return calendar;
@@ -102,11 +90,7 @@ public class CalendarService {
 
     public Calendar update(Calendar calendar) {
         cosmosDB.update(CosmosDBLayer.CALENDARS, calendar);
-        try {
-            jedis.set(CALENDAR_KEY_PREFIX + calendar.getId(), mapper.writeValueAsString(calendar));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+
         return calendar;
     }
 

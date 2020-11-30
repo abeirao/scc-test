@@ -23,23 +23,15 @@ public class ForumService {
     ObjectMapper mapper = new ObjectMapper();
 
     private CosmosDBLayer cosmosDB;
-    private Jedis jedis;
 
     public ForumService() {
         cosmosDB = CosmosDBLayer.getInstance();
-        jedis = RedisCache.getCachePool().getResource();
     }
 
     public Forum get(String id) throws NotFoundException {
         Forum forum = null;
         try {
-            String object = jedis.get(FORUM_KEY_PREFIX + id);
-            if (object != null) {
-                forum = mapper.readValue(object, Forum.class);
-            } else {
-                forum = cosmosDB.getForum(id);
-            }
-            jedis.set(FORUM_KEY_PREFIX + id, mapper.writeValueAsString(forum));
+            forum = cosmosDB.getForum(id);
             return forum;
         } catch (NotFoundException e) {
             throw e;
@@ -53,12 +45,7 @@ public class ForumService {
     public Forum create(Forum forum) {
         forum.setId(Utils.randomUUID().toString());
         cosmosDB.put(CosmosDBLayer.FORUMS, forum);
-        try {
-            jedis.set(FORUM_KEY_PREFIX + forum.getId(), mapper.writeValueAsString(forum));
-            jedis.sadd(FORUM_ENTITY_KEY_PREFIX + forum.getEntityId(), mapper.writeValueAsString(forum));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+
         return forum;
     }
 
@@ -70,11 +57,7 @@ public class ForumService {
         forum.setMessages(messages);
 
         cosmosDB.update(CosmosDBLayer.FORUMS, forum);
-        try {
-            jedis.set(FORUM_KEY_PREFIX + forum.getId(), mapper.writeValueAsString(forum));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        
 
         return newMessage;
     }
@@ -89,21 +72,13 @@ public class ForumService {
         forum.setMessages(temp);
         // update
         cosmosDB.update(CosmosDBLayer.FORUMS, forum);
-        try {
-            jedis.set(FORUM_KEY_PREFIX + forum.getId(), mapper.writeValueAsString(forum));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        
         return newMessage.getMsg();
     }
 
     public Forum delete(String id) throws NotFoundException {
         try {
             Forum forum = this.get(id);
-            // delete from cache
-            jedis.del(FORUM_KEY_PREFIX + forum.getId());
-            // delete forum from forums by entity on cache
-            jedis.srem(FORUM_ENTITY_KEY_PREFIX + forum.getEntityId(), mapper.writeValueAsString(forum));
             // delete from database
             cosmosDB.delete(CosmosDBLayer.FORUMS, forum).getItem();
             return forum;
@@ -116,18 +91,6 @@ public class ForumService {
     }
 
     public Iterator<Forum> getForumByEntity(String entityId) {
-        Set<Forum> forums = new HashSet<Forum>();
-        Set<String> s = jedis.smembers(FORUM_ENTITY_KEY_PREFIX + entityId);
-        if (s != null) {
-            s.forEach(x -> {
-                try {
-                    forums.add(mapper.readValue(x, Forum.class));
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-            });
-            return forums.iterator();
-        }
         return cosmosDB.getForumByEntity(entityId).iterator();
     }
 
