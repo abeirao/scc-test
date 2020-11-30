@@ -33,16 +33,24 @@ public class CalendarService {
     ObjectMapper mapper = new ObjectMapper();
 
     private CosmosDBLayer cosmosDB;
-    private EntityService entityService;
+    private Jedis jedis;
+
     public CalendarService() {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         cosmosDB = CosmosDBLayer.getInstance();
-        entityService = new EntityService();
+        jedis = RedisCache.getCachePool().getResource();
     }
 
     public Calendar get(String id) throws NotFoundException {
+        Calendar calendar;
         try {
-        	Calendar calendar = cosmosDB.getCalendar(id);               
+            String object = jedis.get(CALENDAR_KEY_PREFIX + id);
+            if (object != null) {
+                calendar = mapper.readValue(object, Calendar.class);
+            } else {
+                calendar = cosmosDB.getCalendar(id);
+                jedis.set(CALENDAR_KEY_PREFIX + id, mapper.writeValueAsString(calendar));
+            }
             return calendar;
         } catch (NotFoundException e) {
             throw e;
@@ -52,51 +60,41 @@ public class CalendarService {
         }
     }
 
-
-
-    public Calendar create(Calendar calendar) {
-        try {
-            List<Date> availableDays = this.computeAvailableDays();
-            calendar.setAvailableDays(availableDays);
-            calendar.setId(Utils.randomUUID().toString());
-
-            cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        return calendar;
-    }
-
     /**
      * calculates the number of available days, which will be the days until the end of the respective month
+     *
      * @return a list of available dates
      */
-    private List<Date> computeAvailableDays() {  
-		ZoneId defaultZoneId = ZoneId.systemDefault();  	
-    	LocalDate today = LocalDate.now();
-    	LocalDate endDate = today.withDayOfMonth(today.lengthOfMonth());     	
-		long numOfDays = ChronoUnit.DAYS.between(today, endDate);	   
-		
-		List<LocalDate> listOfDates = LongStream.range(0, numOfDays)
-		                                .mapToObj(today::plusDays)
-		                                .collect(Collectors.toList());	
-		List<Date> availableDays = new LinkedList<Date>();		
-		for (LocalDate date: listOfDates) 
-			availableDays.add(Date.from(date.atStartOfDay(defaultZoneId).toInstant()));
-		
-		return availableDays;		
-	}
+    public List<Date> computeAvailableDays() {
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        LocalDate today = LocalDate.now();
+        LocalDate endDate = today.plusMonths(1);
+        long numOfDays = ChronoUnit.DAYS.between(today, endDate);
+        List<LocalDate> listOfDates = LongStream.range(0, numOfDays)
+                .mapToObj(today::plusDays)
+                .collect(Collectors.toList());
+        List<Date> availableDays = new LinkedList<Date>();
+        for (LocalDate date : listOfDates)
+            availableDays.add(Date.from(date.atStartOfDay(defaultZoneId).toInstant()));
 
-	public Calendar delete(String id) throws NotFoundException {
+        return availableDays;
+    }
+
+    public Calendar delete(String id) throws NotFoundException {
         Calendar calendar = null;
         try {
-            calendar = cosmosDB.getCalendar(id);
-	        cosmosDB.delete(CosmosDBLayer.CALENDARS, calendar).getItem();
-	        return calendar;
+            calendar = mapper.readValue(jedis.get(CALENDAR_KEY_PREFIX + id), Calendar.class);
+
+            if (calendar == null)
+                calendar = cosmosDB.getCalendar(id);
+            else
+                jedis.del(CALENDAR_KEY_PREFIX + id);
+
+            cosmosDB.delete(CosmosDBLayer.CALENDARS, calendar).getItem();
+            return calendar;
         } catch (NotFoundException e) {
-        	throw e;
-		} catch (Exception e) {
+            throw e;
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -104,17 +102,18 @@ public class CalendarService {
 
     public Calendar update(Calendar calendar) {
         cosmosDB.update(CosmosDBLayer.CALENDARS, calendar);
+        try {
+            jedis.set(CALENDAR_KEY_PREFIX + calendar.getId(), mapper.writeValueAsString(calendar));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return calendar;
     }
 
 
     public Iterator<Date> getAvailablePeriods(String calendarId) {
         Calendar calendar = this.get(calendarId);
-        if (calendar == null) {
-            return null;
-        }
         List<Date> availableDays = calendar.getAvailableDays();
-
         return availableDays.iterator();
     }
 

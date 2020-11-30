@@ -22,7 +22,7 @@ import com.google.gson.JsonObject;
  * Based on the code from:
  * https://docs.microsoft.com/en-us/azure/search/search-get-started-java
  */
-public class SearchExample
+public class AdvancedSearch
 {
 	public static final String SEARCH_PROP_FILE = "azure-search.props";
 	public static final String PROP_SERVICE_NAME = "SearchServiceName";
@@ -80,8 +80,6 @@ public class SearchExample
 			}
 			
 			
-			System.out.println();
-			System.out.println("=============== Second query ======================");
 			// NOT SO SIMPLE QUERY 1
 			obj = new JsonObject();
 			obj.addProperty("count", "true");
@@ -105,9 +103,7 @@ public class SearchExample
 					System.out.println( val.getKey() + "->" + val.getValue());
 				}
 			}
-
-			System.out.println();
-			System.out.println("=============== Third query ======================");
+			
 			// NOT SO SIMPLE QUERY 2
 			obj = new JsonObject();
 			obj.addProperty("count", "true");

@@ -23,7 +23,7 @@ public class SearchDumpProperties
 	// az ad sp create-for-rbac --sdk-auth > azure.auth
 	static final String AZURE_AUTH_LOCATION = "azure.auth";
 	public static final String SEARCH_PROP_FILE = "azure-search.props";
-	public static final String SEARCH_SERVICE = "scccs4004";
+	public static final String SEARCH_SERVICE = "scccs50415";
 
 	public static void main(String[] args) {
 		String propFile = SEARCH_PROP_FILE;

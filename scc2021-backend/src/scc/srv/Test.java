@@ -28,23 +28,20 @@ public class Test {
 			// create data			
 			Calendar calendar = new Calendar();
 			String calendarId = "0" + System.currentTimeMillis();
-			calendar.setId(calendarId);
 			calendar.setName("nice calendar");
 			calendar.setCalendarEntry(new HashMap<Date, String>());
 			calendar.setAvailableDays(new ArrayList<Date>());
 			
 			String entityId = "0" + System.currentTimeMillis();
 			Entity ent = new Entity();
-			ent.setId(entityId);
 			ent.setName("SCC " + entityId);
 			ent.setDescription("The best hairdresser");
 			ent.setListed(true);
 			ent.setMediaIds(new String[] {"456"});
 			ent.setCalendarId(calendarId);
-			
 			Reservation res = new Reservation();
 			res.setName("very nice reservation");
-			res.setDay(new SimpleDateFormat("dd/MM/yyyy").parse("18/11/2020"));
+			res.setDay(new SimpleDateFormat("dd/MM/yyyy").parse("29/11/2020"));
 			res.setId("0" + System.currentTimeMillis());
 			res.setEntityId(entityId);	
 
@@ -56,7 +53,7 @@ public class Test {
 			/* TEST METHOD CALLS */
 			// test2();			
 			// testRedis(ent, res); 
-			// testServices(ent, res, forum, calendar);
+			testServices(ent, res, forum, calendar);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -80,9 +77,7 @@ public class Test {
 			Date day = new SimpleDateFormat("\"dd/MM/yyyy\"").parse("29/11/2020");
 			String resId = "1" + System.currentTimeMillis();
 			Reservation reservation = new Reservation();
-			reservation.setId(resId);
 			reservation.setName("Teste");
-			reservation.setEntityId(ent.getId());
 			reservation.setDay(day);
 			
 			EntityService entities = new EntityService();
@@ -135,17 +130,26 @@ public class Test {
 			ReservationService reservationService = new ReservationService();
 			ForumService forumService = new ForumService();
 			CalendarService calendarService = new CalendarService();
-			
-			System.out.println("Calendar");
-			System.out.println(calendarService.create(calendar).toString());
-	
+
+
 			System.out.println("Entity");
-			System.out.println(entityService.create(ent).toString());
+			Entity n = entityService.create(ent);
+			System.out.println(n.toString());
 			System.out.println(entityService.get(ent.getId()).toString());
-			entityService.createReservation(ent.getId(), res);
-		
+			calendar.setEntityId(n.getId());
+
+			System.out.println("Calendar");
+			Calendar c = entityService.createCalendar(calendar);
+			System.out.println(c.toString());
+			System.out.println(calendar.toString());
+			res.setEntityId(n.getId());
+
 			System.out.println("Reservation");
-			//System.out.println(reservationService.addReservation(res).toString());
+			entityService.createReservation(res);
+			calendar.setEntityId(n.getId());
+
+		
+			System.out.println(reservationService.addReservation(res).toString());
 			System.out.println(reservationService.get(res.getId()).toString());
 			
 			System.out.println("Forum");

@@ -22,7 +22,7 @@ public class ForumController implements ForumAPI {
 	}
 
 	@Override
-	public Forum get(String id) {
+	public Forum get(String id) throws WebApplicationException {
 		try {
 			return forums.get(id);
 		} catch (NotFoundException e) {
@@ -36,17 +36,26 @@ public class ForumController implements ForumAPI {
 	}
 
 	@Override
-	public Messsage addMessage(String forumId, Messsage newMessage) {
-		return forums.addMessage(forumId, newMessage);
+	public Messsage addMessage(String forumId, Messsage newMessage) throws WebApplicationException  {
+		try{
+			return forums.addMessage(forumId, newMessage);
+		} catch (NotFoundException e) {
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
+
 	}
 
 	@Override
-	public String reply(String forumId, Messsage messageToReply, Messsage newMessage) {
-		return forums.reply(forumId, messageToReply, newMessage);
+	public String reply(String forumId, String messageIdToReply, Messsage newMessage) throws WebApplicationException  {
+		try{
+			return forums.reply(forumId, messageIdToReply, newMessage);
+		} catch (NotFoundException e) {
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
 	}
 
 	@Override
-	public Forum delete(String id) {
+	public Forum delete(String id) throws WebApplicationException  {
 		try {
 			return forums.delete(id);
 		} catch (NotFoundException e) {
@@ -55,7 +64,11 @@ public class ForumController implements ForumAPI {
 	}
 
 	@Override
-	public Iterator<Forum> getForumByEntity(String entityId) {
-		return forums.getForumByEntity(entityId);
+	public Iterator<Forum> getForumByEntity(String entityId) throws WebApplicationException {
+		try {
+			return forums.getForumByEntity(entityId);
+		} catch (NotFoundException e){
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
 	}
 }
