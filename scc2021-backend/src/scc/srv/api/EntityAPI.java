@@ -29,7 +29,7 @@ public interface EntityAPI {
 	 */
 	@GET
 	@Path("/{id}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Entity get(@PathParam("id") String id);
 
 	/**

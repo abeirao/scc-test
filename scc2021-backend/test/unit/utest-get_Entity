@@ -1,0 +1,28 @@
+# Unit test using artillery
+# Test: getCalendar
+# Test: getCalendar
+config:
+  target: 'https://scc-test-50698.azurewebsites.net'
+  plugins:
+    metrics-by-endpoint: {}
+    expect: {}
+  processor: "../test-utils.js"
+  variables:
+    metricsProcessEndpoint : "myProcessEndpoint"  # function used to aggregate endpoints for statistics
+  phases:
+    - duration: 60
+      arrivalCount: 20
+
+
+scenarios:
+  - name: 'Upload calendar'
+    weight: 1
+    flow:
+      - function: "genNewCalendar"
+      - get:
+          url: "/entity/{{entityId}}"
+          headers:
+            Accept: application/json
+          expect:
+            - statusCode: 200
+          ifTrue: "entityId"
