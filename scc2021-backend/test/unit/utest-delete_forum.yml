@@ -9,8 +9,8 @@ config:
   variables:
      metricsProcessEndpoint : "myProcessEndpoint"  # function used to aggregate endpoints for statistics
   phases:
-  - duration: 1
-    arrivalCount: 1
+  - duration: 30
+    arrivalCount: 10
 
 
 scenarios:
@@ -19,9 +19,9 @@ scenarios:
     flow:
       - function: "selectForum"
       - delete:
-          url: "/entity/{{ forumId }}"
+          url: "/forum/{{ forumId }}"
           headers:
             Accept: application/json
           expect:
-            - statusCode: 204
+            - statusCode: 200
           afterResponse: "replyDeleteForum"

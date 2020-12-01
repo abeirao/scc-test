@@ -9,8 +9,8 @@ config:
   variables:
      metricsProcessEndpoint : "myProcessEndpoint"  # function used to aggregate endpoints for statistics
   phases:
-  - duration: 1
-    arrivalCount: 1
+  - duration: 60
+    arrivalCount: 20
 
 
 scenarios:
@@ -23,5 +23,5 @@ scenarios:
           headers:
             Accept: application/json
           expect:
-            - statusCode: 204
+            - statusCode: 200
           afterResponse: "replyDeleteEntity"
