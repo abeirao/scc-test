@@ -193,7 +193,7 @@ function replyPostEntity(requestParams, response, context, ee, next) {
 }
 
 function replyDeleteEntity(requestParams, response, context, ee, next) {
-	if( response.statusCode == 204) {
+	if( response.statusCode == 200) {
 		let entity = context.vars.entityId
 		const index = entityIds.indexOf(entity)
 		if(entityIds.length > 0){
