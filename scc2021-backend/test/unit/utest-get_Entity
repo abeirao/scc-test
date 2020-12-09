@@ -1,5 +1,6 @@
 # Unit test using artillery
-# Test: delete forum
+# Test: getCalendar
+# Test: getCalendar
 config:
   target: 'https://scc-test-50698.azurewebsites.net'
   plugins:
@@ -7,21 +8,21 @@ config:
     expect: {}
   processor: "../test-utils.js"
   variables:
-     metricsProcessEndpoint : "myProcessEndpoint"  # function used to aggregate endpoints for statistics
+    metricsProcessEndpoint : "myProcessEndpoint"  # function used to aggregate endpoints for statistics
   phases:
-  - duration: 30
-    arrivalCount: 10
+    - duration: 60
+      arrivalCount: 20
 
 
 scenarios:
-  - name: 'Delete forum'
+  - name: 'Upload calendar'
     weight: 1
     flow:
-      - function: "selectForum"
-      - delete:
-          url: "/forum/{{ forumId }}"
+      - function: "genNewCalendar"
+      - get:
+          url: "/entity/{{entityId}}"
           headers:
             Accept: application/json
           expect:
             - statusCode: 200
-          afterResponse: "replyDeleteForum"
+          ifTrue: "entityId"
