@@ -8,7 +8,7 @@ public class JDBCConnection {
 
     public static Optional<Connection> getConnection() {
         if (connection.isEmpty()) {
-            String url = "jdbc:postgresql://localhost:5432/sampledb";
+            String url = "jdbc:postgresql://database:5432/";
             String user = "postgres";
             String password = "postgres";
 
