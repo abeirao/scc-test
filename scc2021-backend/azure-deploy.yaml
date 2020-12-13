@@ -76,7 +76,8 @@ kind: Service
 metadata:
   name: azure-redis
 spec:
-  type: ClusterIP 
+  type: ExternalName
+  externalName: "cache"
   ports:
   - port: 6379
   selector:
@@ -117,7 +118,8 @@ kind: Service
 metadata:
   name: azure-db
 spec:
-  type: ClusterIP 
+  type: ExternalName
+  externalName: "database" 
   ports:
   - port: 5432
   selector:
