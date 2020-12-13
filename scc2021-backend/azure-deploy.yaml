@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-srv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azure-srv
+  template:
+    metadata:
+      labels:
+        app: azure-srv
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: azure-srv
+        image: hrealinho/scc2021-app
+        env:
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "yes"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 8080
+          name: srv
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-srv
+spec:
+  ports:
+  - port: 8080
+  selector:
+    app: azure-srv

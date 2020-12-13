@@ -24,7 +24,8 @@ public class RedisCache {
 		poolConfig.setTestWhileIdle(true);    poolConfig.setMinEvictableIdleTimeMillis(Duration.ofSeconds(60).toMillis()); poolConfig.setTimeBetweenEvictionRunsMillis(Duration.ofSeconds(30).toMillis());
 		poolConfig.setNumTestsPerEvictionRun(3);
 		poolConfig.setBlockWhenExhausted(true);
-		instance = new JedisPool(poolConfig, RedisHostname, 6380, 1000, RedisKey, true);
+		// create jedis pool on localhost:6379
+		instance = new JedisPool(poolConfig, "localhost"); //new JedisPool(poolConfig, RedisHostname, 6380, 1000, RedisKey, true);
 		return instance;
 	}
 }
