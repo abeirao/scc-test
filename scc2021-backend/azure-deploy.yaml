@@ -32,6 +32,7 @@ kind: Service
 metadata:
   name: azure-srv
 spec:
+  type: ClusterIP 
   ports:
   - port: 8080
   selector:
@@ -75,6 +76,7 @@ kind: Service
 metadata:
   name: azure-redis
 spec:
+  type: ClusterIP 
   ports:
   - port: 6379
   selector:
@@ -115,6 +117,7 @@ kind: Service
 metadata:
   name: azure-db
 spec:
+  type: ClusterIP 
   ports:
   - port: 5432
   selector:
