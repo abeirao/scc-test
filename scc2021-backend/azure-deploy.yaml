@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: azure-front
+  name: azure-srv
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: azure-front
+      app: azure-srv
   template:
     metadata:
       labels:
-        app: azure-front
+        app: azure-srv
     spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
@@ -26,9 +26,6 @@ spec:
             memory: 256Mi
         ports:
         - containerPort: 8080
-        env:
-        - name: REDIS
-          value: "azure-vote-back"
 ---
 apiVersion: v1
 kind: Service
@@ -102,9 +99,6 @@ spec:
       containers:
       - name: azure-db
         image: postgres
-        env:
-        - name: ALLOW_EMPTY_PASSWORD
-          value: "yes"
         resources:
           requests:
             cpu: 100m
@@ -125,3 +119,14 @@ spec:
   - port: 5432
   selector:
     app: azure-db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-front
+spec:
+  type: LoadBalancer 
+  ports: 
+  - port: 80
+  selector:
+  app: azure-srv
