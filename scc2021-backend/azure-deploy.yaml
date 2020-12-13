@@ -129,4 +129,4 @@ spec:
   ports: 
   - port: 80
   selector:
-  app: azure-srv
+    app: azure-srv
