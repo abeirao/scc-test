@@ -1,25 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: azure-srv
+  name: azure-front
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: azure-srv
+      app: azure-front
   template:
     metadata:
       labels:
-        app: azure-srv
+        app: azure-front
     spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
       containers:
-      - name: azure-srv
+      - name: azure-vote-front
         image: hrealinho/scc2021-app
-        env:
-        - name: ALLOW_EMPTY_PASSWORD
-          value: "yes"
         resources:
           requests:
             cpu: 100m
@@ -29,7 +26,9 @@ spec:
             memory: 256Mi
         ports:
         - containerPort: 8080
-          name: srv
+        env:
+        - name: REDIS
+          value: "azure-vote-back"
 ---
 apiVersion: v1
 kind: Service
