@@ -44,21 +44,21 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: azure-srv
+  name: azure-redis
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: azure-srv
+      app: azure-redis
   template:
     metadata:
       labels:
-        app: azure-srv
+        app: azure-redis
     spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
       containers:
-      - name: azure-cache
+      - name: azure-redis
         image: redis
         env:
         - name: ALLOW_EMPTY_PASSWORD
@@ -77,26 +77,26 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: azure-srv
+  name: azure-redis
 spec:
   ports:
   - port: 6379
   selector:
-    app: azure-srv
+    app: azure-redis
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: azure-srv
+  name: azure-db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: azure-srv
+      app: azure-db
   template:
     metadata:
       labels:
-        app: azure-srv
+        app: azure-db
     spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
@@ -120,9 +120,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: azure-srv
+  name: azure-db
 spec:
   ports:
   - port: 5432
   selector:
-    app: azure-srv
+    app: azure-db
