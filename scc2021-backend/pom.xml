@@ -122,6 +122,11 @@
       <artifactId>jersey-hk2</artifactId>  
       <version>2.29.1</version> 
     </dependency> 
+    <dependency>
+	    <groupId>org.postgresql</groupId>
+	    <artifactId>postgresql</artifactId>
+      <version>42.2.18</version> 	
+	</dependency>
   </dependencies>  
   <build> 
     <sourceDirectory>src</sourceDirectory>  
