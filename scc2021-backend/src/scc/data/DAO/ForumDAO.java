@@ -57,8 +57,46 @@ public class ForumDAO implements DAO<Forum, Long> {
         return getForums();
     }
 
-	public Optional<Long> save(Forum forum) { // TODO
-        return null;
+	public Optional<Long> save(Forum forum) { 
+        try {
+			Connection conn = JDBCConnection.getConnection(); 
+			
+			String sql = "INSERT INTO " + FORUMS +
+                    	" (id, entityId, messageIds) VALUES (?, ?, ?)";
+			
+			// the use of PreparedStatement prevents SQL injection 
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, forum.getId().toString());
+			stmt.setString(2, forum.getEntityId());
+			// prepare message ids array
+			List<Message> messages = forum.getMessages();
+			String[] messageIds = new String[messages.size()];
+			for (int i = 0; i < messages.size(); i++) 
+				messageIds[i] = messages.get(i).getId(); 
+			// put message ids into query
+			stmt.setArray(3, conn.createArrayOf("TEXT", messageIds));
+			// execute insert
+			int rows = stmt.executeUpdate();
+			
+			// insert messages into messages table
+			for (Message msg: forum.getMessages()) {
+				String query = "INSERT INTO " + MESSAGES +
+						" (id, forumId, msg, fromWho, replyToId) VALUES (?, ?, ?, ?, ?)";
+
+				PreparedStatement st = conn.prepareStatement(query);
+				st.setString(1, msg.getId().toString());
+				st.setString(2, msg.getForumId());
+				st.setString(3, msg.getMsg());
+				st.setString(4, msg.getFromWho());
+				st.setString(5, msg.getReplyToId());
+				// execute insert message
+				rows = st.executeUpdate();
+			}
+			return Optional.of(Long.parseLong(forum.getId()));
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	return Optional.empty();
+        }
     }
 
     public void update(Forum forum) { // TODO
@@ -97,6 +135,7 @@ public class ForumDAO implements DAO<Forum, Long> {
 			if (rs.next()) {	
 				String rid = rs.getString("id"); 
                 String entityId = rs.getString("entityId"); 
+                // get result set of message ids from forums table
                 ResultSet rMsgIds = rs.getArray(3).getResultSet();
 				List<String> listMsgIds = new ArrayList<String>();
 				while(rMsgIds.next()) 
@@ -117,6 +156,7 @@ public class ForumDAO implements DAO<Forum, Long> {
 						String msg = r.getString("msg");
 						String fromWho = r.getString("fromWho");
 						String replyToId = r.getString("replyToId");
+						
 						Message message = new Message();
 						message.setId(mId);
 						message.setForumId(forumId);

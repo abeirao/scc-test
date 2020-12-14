@@ -65,7 +65,7 @@ public class EntityDAO implements DAO<Entity, Long> {
 			stmt.setString(1, entity.getId().toString());
 			stmt.setString(2, entity.getName());
 			stmt.setString(3, entity.getDescription());
-			stmt.setArray(4, conn.createArrayOf("String", entity.getMediaIds()));
+			stmt.setArray(4, conn.createArrayOf("TEXT", entity.getMediaIds()));
 			stmt.setString(5, entity.getCalendarId());
 			stmt.setBoolean(6, entity.isListed());
 			
