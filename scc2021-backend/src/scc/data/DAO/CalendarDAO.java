@@ -59,6 +59,7 @@ public class CalendarDAO implements DAO<Calendar, Long> {
 				String rid = rs.getString("id"); 
 				String name = rs.getString("name");
                 String entityId = rs.getString("entityId");
+                
 				// TODO available Days and calendarEntry
                 	
 				rs.close();
