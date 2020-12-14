@@ -11,7 +11,7 @@ import java.util.Optional;
 
 import scc.data.Forum;
 import scc.data.JDBCConnection;
-import scc.data.Messsage;
+import scc.data.Message;
 
 public class ForumDAO implements DAO<Forum, Long> {
 	
@@ -27,7 +27,7 @@ public class ForumDAO implements DAO<Forum, Long> {
         String forumQuery = "CREATE TABLE IF NOT EXISTS " + FORUMS +
         				" (id TEXT)," +
         				" (entityId TEXT)," +
-        				" (messages TEXT[])";
+        				" (messageIds TEXT[])";
 
         String msgQuery = "CREATE TABLE IF NOT EXISTS " + MESSAGES +
 							" (id TEXT)," +
@@ -57,16 +57,16 @@ public class ForumDAO implements DAO<Forum, Long> {
         return getForums();
     }
 
-
-
 	public Optional<Long> save(Forum forum) {
         return null;
     }
 
     public void update(Forum forum) {
+    	
     }
 
     public void delete(Forum forum) {
+    	
     }
     
     private Forum getForum(Long id) {
@@ -84,8 +84,36 @@ public class ForumDAO implements DAO<Forum, Long> {
 			if (rs.next()) {	
 				String rid = rs.getString("id"); 
                 String entityId = rs.getString("entityId"); 
-                
-				// TODO messages
+                ResultSet rMsgIds = rs.getArray(3).getResultSet();
+				List<String> listMsgIds = new ArrayList<String>();
+				while(rMsgIds.next()) 
+					listMsgIds.add(rMsgIds.getString(1));	
+				
+				List<Message> messages = new ArrayList<Message>();
+				for (String msgId: listMsgIds) {
+					String query = "SELECT * FROM " + MESSAGES + " WHERE id=?;";
+					 
+					// the use of PreparedStatement prevents SQL injection 
+					PreparedStatement st = conn.prepareStatement(query);
+					st.setString(1, msgId);
+					
+					ResultSet r = st.executeQuery(); // ResultSet is a Cursor
+					if (r.next()) {
+						String mId = r.getString("id");
+						String forumId = r.getString("forumId");
+						String msg = r.getString("msg");
+						String fromWho = r.getString("fromWho");
+						String replyToId = r.getString("replyToId");
+						Message message = new Message();
+						message.setId(mId);
+						message.setForumId(forumId);
+						message.setMsg(msg);
+						message.setFromWho(fromWho);
+						message.setReplyToId(replyToId);
+						
+						messages.add(message);
+					}
+				}
 				
 				rs.close();
 				stmt.close();
@@ -94,17 +122,78 @@ public class ForumDAO implements DAO<Forum, Long> {
                 Forum forum = new Forum();
                 forum.setId(rid.toString());
                 forum.setEntityId(entityId);
+                forum.setMessages(messages);
 				return forum;
             }
             return null;
         } catch (Exception e) {
+        	e.printStackTrace();
             return null;
         }
     }
     
     private Collection<Forum> getForums() {
-		// TODO Auto-generated method stub
-		return null;
+    	
+    	try {
+			Connection conn = JDBCConnection.getConnection(); 
+			
+			String sql = "SELECT * FROM " + FORUMS;
+			 
+			// the use of PreparedStatement prevents SQL injection 
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			
+			ResultSet rs = stmt.executeQuery(); // ResultSet is a Cursor
+			
+			List<Forum> forums = new ArrayList<Forum>();
+			while (rs.next()) {	
+				String rid = rs.getString("id"); 
+                String entityId = rs.getString("entityId"); 
+                ResultSet rMsgIds = rs.getArray(3).getResultSet();
+				List<String> listMsgIds = new ArrayList<String>();
+				while(rMsgIds.next()) 
+					listMsgIds.add(rMsgIds.getString(1));	
+				
+				List<Message> messages = new ArrayList<Message>();
+				for (String msgId: listMsgIds) {
+					String query = "SELECT * FROM " + MESSAGES + " WHERE id=?;";
+					 
+					// the use of PreparedStatement prevents SQL injection 
+					PreparedStatement st = conn.prepareStatement(query);
+					st.setString(1, msgId);
+					
+					ResultSet r = st.executeQuery(); // ResultSet is a Cursor
+					if (r.next()) {
+						String mId = r.getString("id");
+						String forumId = r.getString("forumId");
+						String msg = r.getString("msg");
+						String fromWho = r.getString("fromWho");
+						String replyToId = r.getString("replyToId");
+						Message message = new Message();
+						message.setId(mId);
+						message.setForumId(forumId);
+						message.setMsg(msg);
+						message.setFromWho(fromWho);
+						message.setReplyToId(replyToId);
+						
+						messages.add(message);
+					}
+				}
+				
+				rs.close();
+				stmt.close();
+				conn.close();
+				
+                Forum forum = new Forum();
+                forum.setId(rid.toString());
+                forum.setEntityId(entityId);
+                forum.setMessages(messages);
+				forums .add(forum);
+            }
+            return forums;
+        } catch (Exception e) {
+        	e.printStackTrace();
+            return null;
+        }
 	}
 
 }

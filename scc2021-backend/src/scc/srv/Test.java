@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import scc.data.Calendar;
 import scc.data.Entity;
 import scc.data.Forum;
-import scc.data.Messsage;
+import scc.data.Message;
 import scc.data.Reservation;
 import scc.exceptions.DayAlreadyOccupiedException;
 import scc.redis.RedisCache;
@@ -48,7 +48,7 @@ public class Test {
 			Forum forum = new Forum();
 			forum.setId("0" + System.currentTimeMillis());
 			forum.setEntityId(ent.getId());
-			forum.setMessages(new ArrayList<Messsage>());
+			forum.setMessages(new ArrayList<Message>());
 			
 			/* TEST METHOD CALLS */
 			// test2();			

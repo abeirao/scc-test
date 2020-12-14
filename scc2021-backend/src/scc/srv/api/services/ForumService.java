@@ -62,10 +62,10 @@ public class ForumService {
         return forum;
     }
 
-    public Messsage addMessage(String forumId, Messsage newMessage) {
+    public Message addMessage(String forumId, Message newMessage) {
         Forum forum = cosmosDB.getForum(forumId);
         newMessage.setId(Utils.randomUUID().toString());
-        List<Messsage> messages = forum.getMessages();
+        List<Message> messages = forum.getMessages();
         messages.add(newMessage);
         forum.setMessages(messages);
 
@@ -79,11 +79,11 @@ public class ForumService {
         return newMessage;
     }
 
-    public String reply(String forumId, String messageIdToReply, Messsage newMessage) {
+    public String reply(String forumId, String messageIdToReply, Message newMessage) {
         Forum forum = cosmosDB.getForum(forumId);
         newMessage.setId(Utils.randomUUID().toString());
         newMessage.setReplyToId(messageIdToReply);
-        List<Messsage> temp = forum.getMessages();
+        List<Message> temp = forum.getMessages();
         temp.add(newMessage);
 
         forum.setMessages(temp);

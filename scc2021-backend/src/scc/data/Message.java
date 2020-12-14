@@ -1,6 +1,6 @@
 package scc.data;
 
-public class Messsage {
+public class Message {
 	private String _rid;
 	private String id;
 	private String forumId;

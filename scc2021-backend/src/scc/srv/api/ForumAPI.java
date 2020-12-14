@@ -13,7 +13,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
 import scc.data.Forum;
-import scc.data.Messsage;
+import scc.data.Message;
 
 @Path("/forum")
 public interface ForumAPI {
@@ -51,7 +51,7 @@ public interface ForumAPI {
 	@Path("/new/{forumId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Messsage addMessage(@PathParam("forumId") String forumId, Messsage newMessage);
+	public Message addMessage(@PathParam("forumId") String forumId, Message newMessage);
 	
 	/**
 	 * 
@@ -64,7 +64,7 @@ public interface ForumAPI {
 	@Path("/reply/{forumId}/{messageIdToReply}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String reply(@PathParam("forumId") String forumId, @PathParam("messageIdToReply") String messageIdToReply, Messsage newMessage);
+	public String reply(@PathParam("forumId") String forumId, @PathParam("messageIdToReply") String messageIdToReply, Message newMessage);
 	
 	/**
 	 * 

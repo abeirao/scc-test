@@ -8,7 +8,7 @@ import org.apache.http.protocol.ExecutionContext;
 import com.microsoft.azure.functions.annotation.*;
 
 import redis.clients.jedis.Jedis;
-import scc.data.Messsage;
+import scc.data.Message;
 import scc.data.Forum;
 import scc.data.CosmosDBLayer;
 import scc.data.Calendar;

@@ -8,7 +8,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
 import scc.data.Forum;
-import scc.data.Messsage;
+import scc.data.Message;
 import scc.srv.api.ForumAPI;
 import scc.srv.api.services.ForumService;
 
@@ -36,7 +36,7 @@ public class ForumController implements ForumAPI {
 	}
 
 	@Override
-	public Messsage addMessage(String forumId, Messsage newMessage) throws WebApplicationException  {
+	public Message addMessage(String forumId, Message newMessage) throws WebApplicationException  {
 		try{
 			return forums.addMessage(forumId, newMessage);
 		} catch (NotFoundException e) {
@@ -46,7 +46,7 @@ public class ForumController implements ForumAPI {
 	}
 
 	@Override
-	public String reply(String forumId, String messageIdToReply, Messsage newMessage) throws WebApplicationException  {
+	public String reply(String forumId, String messageIdToReply, Message newMessage) throws WebApplicationException  {
 		try{
 			return forums.reply(forumId, messageIdToReply, newMessage);
 		} catch (NotFoundException e) {
