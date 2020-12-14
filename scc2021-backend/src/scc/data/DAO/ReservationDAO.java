@@ -40,7 +40,7 @@ public class ReservationDAO implements DAO<Reservation, Long> {
 
 
     public Optional<Reservation> get(Long id) {
-        Reservation reservation = findReservation(id);
+        Reservation reservation = getReservation(id);
         return reservation == null ? Optional.empty(): Optional.of(reservation);
     }
 
@@ -110,7 +110,7 @@ public class ReservationDAO implements DAO<Reservation, Long> {
     }
     
 
-    private Reservation findReservation(Long id) {
+    private Reservation getReservation(Long id) {
         try {
 			Connection conn = JDBCConnection.getConnection(); 
 			
