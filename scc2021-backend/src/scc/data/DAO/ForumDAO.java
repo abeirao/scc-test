@@ -36,9 +36,30 @@ public class ForumDAO implements DAO<Forum, Long> {
             e.printStackTrace();
         }
 
+    }	  
+
+    public Optional<Forum> get(Long id) {
+    	Forum forum = getForum(id);
+        return forum == null? Optional.empty(): Optional.of(forum);
+    }
+
+    public Collection<Forum> getAll() {
+        return getForums();
+    }
+
+
+
+	public Optional<Long> save(Forum forum) {
+        return null;
+    }
+
+    public void update(Forum forum) {
+    }
+
+    public void delete(Forum forum) {
     }
     
-    private Forum findForum(Long id) {
+    private Forum getForum(Long id) {
         try {
 			Connection conn = JDBCConnection.getConnection(); 
 			
@@ -70,28 +91,10 @@ public class ForumDAO implements DAO<Forum, Long> {
             return null;
         }
     }
-   
-	  
-
-    public Optional<Forum> get(Long id) {
-    	Forum forum = findForum(id);
-        if (forum == null)
-            return Optional.empty();
-        return Optional.of(forum);
-    }
-
-    public Collection<Forum> getAll() {
-        return null;
-    }
-
-    public Optional<Long> save(Forum forum) {
-        return null;
-    }
-
-    public void update(Forum forum) {
-    }
-
-    public void delete(Forum forum) {
-    }
+    
+    private Collection<Forum> getForums() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
