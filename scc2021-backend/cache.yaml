@@ -3,7 +3,6 @@ kind: Service
 metadata:
   name: azure-redis
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: azure-redis
