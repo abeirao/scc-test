@@ -104,7 +104,6 @@ public class ReservationDAO implements DAO<Reservation, Long> {
 			
 			int rows = stmt.executeUpdate();
         } catch (Exception e) {
-
         	e.printStackTrace();
         }
     }

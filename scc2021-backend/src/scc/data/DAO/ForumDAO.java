@@ -57,16 +57,29 @@ public class ForumDAO implements DAO<Forum, Long> {
         return getForums();
     }
 
-	public Optional<Long> save(Forum forum) {
+	public Optional<Long> save(Forum forum) { // TODO
         return null;
     }
 
-    public void update(Forum forum) {
+    public void update(Forum forum) { // TODO
     	
     }
 
     public void delete(Forum forum) {
-    	
+        try {
+			Connection conn = JDBCConnection.getConnection(); 
+			
+			String sql = "DELETE * FROM " + FORUMS + " WHERE id=?;";
+			 
+			// the use of PreparedStatement prevents SQL injection 
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, forum.getId().toString());
+			// delete forum from forums table
+			int rows = stmt.executeUpdate();		
+			
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
     }
     
     private Forum getForum(Long id) {
@@ -148,11 +161,14 @@ public class ForumDAO implements DAO<Forum, Long> {
 			while (rs.next()) {	
 				String rid = rs.getString("id"); 
                 String entityId = rs.getString("entityId"); 
+                // get result set of message ids from forums table
                 ResultSet rMsgIds = rs.getArray(3).getResultSet();
+                // add message ids to a list
 				List<String> listMsgIds = new ArrayList<String>();
 				while(rMsgIds.next()) 
 					listMsgIds.add(rMsgIds.getString(1));	
 				
+				// get messages from messages table
 				List<Message> messages = new ArrayList<Message>();
 				for (String msgId: listMsgIds) {
 					String query = "SELECT * FROM " + MESSAGES + " WHERE id=?;";
@@ -187,7 +203,7 @@ public class ForumDAO implements DAO<Forum, Long> {
                 forum.setId(rid.toString());
                 forum.setEntityId(entityId);
                 forum.setMessages(messages);
-				forums .add(forum);
+				forums.add(forum);
             }
             return forums;
         } catch (Exception e) {

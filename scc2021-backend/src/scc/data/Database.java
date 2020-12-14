@@ -14,10 +14,8 @@ import java.util.logging.Level;
 
 
 public class Database {    
-
-	private static final String ENTITIES = "entities";	
-	private static final String FORUMS = "forums";	
 	
+	// Data Access Objects to manipulate data to and from the database
 	private DAO<Forum, Long> forums;
 	private DAO<Reservation, Long> reservations;
 	private DAO<Entity, Long> entities;
