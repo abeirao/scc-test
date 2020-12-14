@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azure-db
+  template:
+    metadata:
+      labels:
+        app: azure-db
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: azure-db
+        image: postgres
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 5432
+          name: db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-db
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 5432
+  selector:
+    app: azure-db
