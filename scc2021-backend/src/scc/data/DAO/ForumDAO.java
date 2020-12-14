@@ -58,7 +58,8 @@ public class ForumDAO implements DAO<Forum, Long> {
 					Messsage msg = (Messsage) rss.getObject("messages");
 					messages.add(msg);
 				}
-							
+				
+				rss.close();
 				rs.close();
 				stmt.close();
 				conn.close();
