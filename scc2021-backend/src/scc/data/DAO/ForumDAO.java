@@ -50,7 +50,7 @@ public class ForumDAO implements DAO<Forum, Long> {
 
     public Optional<Forum> get(Long id) {
     	Forum forum = getForum(id);
-        return forum == null? Optional.empty(): Optional.of(forum);
+        return forum != null ? Optional.of(forum): Optional.empty();
     }
 
     public Collection<Forum> getAll() {

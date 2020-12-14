@@ -41,7 +41,7 @@ public class ReservationDAO implements DAO<Reservation, Long> {
 
     public Optional<Reservation> get(Long id) {
         Reservation reservation = getReservation(id);
-        return reservation == null ? Optional.empty(): Optional.of(reservation);
+        return reservation != null ? Optional.of(reservation): Optional.empty();
     }
 
     public Collection<Reservation> getAll() {

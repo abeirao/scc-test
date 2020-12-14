@@ -46,7 +46,7 @@ public class EntityDAO implements DAO<Entity, Long> {
 
     public Optional<Entity> get(Long id) {
     	Entity entity = getEntity(id);
-        return entity == null ? Optional.empty(): Optional.of(entity);
+        return entity != null ? Optional.of(entity): Optional.empty();
     }
 
     public Collection<Entity> getAll() {

@@ -43,7 +43,28 @@ public class CalendarDAO implements DAO<Calendar, Long> {
         
     }
     
-    private Calendar findCalendar(Long id) {
+    public Optional<Calendar> get(Long id) {
+        Calendar calendar = getCalendar(id);
+        return calendar != null? Optional.of(calendar): Optional.empty();
+    }
+
+    public Collection<Calendar> getAll() {
+        return null;
+    }
+
+    public Optional<Long> save(Calendar calendar) {
+        return null;
+    }
+
+    public void update(Calendar calendar){
+    	
+    }
+
+    public void delete(Calendar calendar){
+    	
+    }
+    
+    private Calendar getCalendar(Long id) {
         try {
 			Connection conn = JDBCConnection.getConnection(); 
 			
@@ -77,24 +98,5 @@ public class CalendarDAO implements DAO<Calendar, Long> {
             return null;
         }
     }
-
-    public Optional<Calendar> get(Long id) {
-        Calendar calendar = findCalendar(id);
-        if (calendar == null)
-            return Optional.empty();
-        return Optional.of(calendar);
-    }
-
-    public Collection<Calendar> getAll() {
-        return null;
-    }
-
-    public Optional<Long> save(Calendar calendar) {
-        return null;
-    }
-
-    public void update(Calendar calendar){}
-
-    public void delete(Calendar calendar){}
     
 }
