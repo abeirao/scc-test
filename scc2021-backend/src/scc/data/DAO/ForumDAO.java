@@ -23,8 +23,10 @@ public class ForumDAO implements DAO<Forum, Long> {
 	}
 	
     private void create() {
-        String query = "CREATE TABLE IF NOT EXISTS " + FORUMS + " (id TEXT)," + " (entityId TEXT),"
-                + " (messages MESSAGE[])";
+        String query = "CREATE TABLE IF NOT EXISTS " + FORUMS +
+        				" (id TEXT)," +
+        				" (entityId TEXT)," +
+        				" (messages MESSAGE[])";
 
         try (Connection con = JDBCConnection.getConnection()) {
             // PreparedStatement pst = con.prepareStatement(query);
@@ -52,14 +54,8 @@ public class ForumDAO implements DAO<Forum, Long> {
 				String rid = rs.getString("id"); 
                 String entityId = rs.getString("entityId"); 
                 
-				ResultSet rss = stmt.executeQuery("select messages from " + FORUMS);		// Gets messages from forum
-				List<Messsage> messages = new ArrayList<Messsage>();
-				while (rss.next()) {
-					Messsage msg = (Messsage) rss.getObject("messages");
-					messages.add(msg);
-				}
+				// TODO messages
 				
-				rss.close();
 				rs.close();
 				stmt.close();
 				conn.close();
@@ -67,7 +63,6 @@ public class ForumDAO implements DAO<Forum, Long> {
                 Forum forum = new Forum();
                 forum.setId(rid.toString());
                 forum.setEntityId(entityId);
-                forum.setMessages(messages);
 				return forum;
             }
             return null;

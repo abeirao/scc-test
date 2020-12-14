@@ -58,28 +58,9 @@ public class CalendarDAO implements DAO<Calendar, Long> {
 			if (rs.next()) {	
 				String rid = rs.getString("id"); 
 				String name = rs.getString("name");
-				
-				ResultSet rx = stmt.executeQuery("select availableDays from " + CALENDARS);		// Gets availableDays
-				List<Date> availableDays = new ArrayList<Date>();
-				while (rx.next()) {
-					Date date = rx.getDate(1);
-					availableDays.add(date);
-				}
-				
-				
-				ResultSet rss = stmt.executeQuery("select calendarEntry from " + CALENDARS);	// Gets calendarEntry
-				Map<Date, String> calendarEntry = new HashMap<>();
-				while (rss.next()) {
-				    Date columnAsdate = rss.getDate(1);
-				    String columnBstring = rss.getString(2);
-
-				    calendarEntry.putIfAbsent(columnAsdate, columnBstring);
-				}
-
                 String entityId = rs.getString("entityId");
-                
-                rx.close();
-				rss.close();		
+				// TODO available Days and calendarEntry
+                	
 				rs.close();
 				stmt.close();
 				conn.close();
@@ -87,8 +68,6 @@ public class CalendarDAO implements DAO<Calendar, Long> {
                 Calendar calendar = new Calendar();
                 calendar.setId(rid.toString());
                 calendar.setName(name);
-                calendar.setAvailableDays(availableDays);
-                calendar.setCalendarEntry(calendarEntry);
                 calendar.setEntityId(entityId);
 				return calendar;
             }
