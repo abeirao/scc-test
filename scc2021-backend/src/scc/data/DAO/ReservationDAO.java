@@ -1,14 +1,82 @@
 package scc.data.DAO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Optional;
 
+import scc.data.JDBCConnection;
 import scc.data.Reservation;
 
 public class ReservationDAO implements DAO<Reservation, Long> {
 
+    private static final String RESERVATIONS = "reservations";
+
+    public ReservationDAO() {
+        // create table
+        create();
+    }
+
+    private void create() {        
+        String query = "CREATE TABLE IF NOT EXISTS " + RESERVATIONS +
+                        " (id TEXT)," +
+                        " (name TEXT)," + 
+                        " (entityId TEXT)"+ 
+                        " (day DATE)";
+
+        try (Connection con = JDBCConnection.getConnection()) {
+            //PreparedStatement pst = con.prepareStatement(query);
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+
+    private Reservation findReservation(Long id) {
+        try {
+			Connection conn = JDBCConnection.getConnection(); 
+			
+			String sql = "SELECT * FROM " + RESERVATIONS + " WHERE id=?;";
+			 
+			// the use of PreparedStatement prevents SQL injection 
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, id.toString());
+			
+			ResultSet rs = stmt.executeQuery(); // ResultSet is a Cursor
+			
+			if (rs.next()) {	// if the user exists
+				String rid = rs.getString("id"); // get by column label
+				String name = rs.getString("name"); 
+                String entityId = rs.getString("entityId"); 
+                Date day = rs.getDate("day");
+							
+				rs.close();
+				stmt.close();
+				conn.close();
+				
+                Reservation reservation = new Reservation();
+                reservation.setId(rid.toString());
+                reservation.setName(name);
+                reservation.setEntityId(entityId);
+                reservation.setDay(day);
+				return reservation;
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public Optional<Reservation> get(Long id) {
-        return null;
+        Reservation reservation = findReservation(id);
+        if (reservation == null)
+            return Optional.empty();
+        return Optional.of(reservation);
     }
 
     public Collection<Reservation> getAll() {

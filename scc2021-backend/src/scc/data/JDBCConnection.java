@@ -1,12 +1,15 @@
 package scc.data;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Optional;
 
 public class JDBCConnection {
-/*
+
     private static Optional<Connection> connection = Optional.empty();
 
-    public static Optional<Connection> getConnection() {
+    public static Connection getConnection() {
         if (connection.isEmpty()) {
             String url = "jdbc:postgresql://database:5432/";
             String user = "postgres";
@@ -16,11 +19,11 @@ public class JDBCConnection {
                 connection = Optional.ofNullable(
                     DriverManager.getConnection(url, user, password));
             } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
         }
 
-        return connection;
+        return connection.get();
     }
-    */
+    
 }

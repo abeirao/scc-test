@@ -16,6 +16,7 @@ import java.util.logging.Level;
 public class Database {    
 
 	private static final String ENTITIES = "entities";	
+	
 	private DAO<Forum, Long> forums;
 	private DAO<Reservation, Long> reservations;
 	private DAO<Entity, Long> entities;
