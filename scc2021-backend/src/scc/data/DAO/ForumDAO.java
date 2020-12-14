@@ -16,6 +16,7 @@ import scc.data.Messsage;
 public class ForumDAO implements DAO<Forum, Long> {
 	
 	private static final String FORUMS = "forums";
+	private static final String MESSAGES = "messages";
 	
 	public ForumDAO() {
 	    // create table
@@ -23,15 +24,24 @@ public class ForumDAO implements DAO<Forum, Long> {
 	}
 	
     private void create() {
-        String query = "CREATE TABLE IF NOT EXISTS " + FORUMS +
+        String forumQuery = "CREATE TABLE IF NOT EXISTS " + FORUMS +
         				" (id TEXT)," +
         				" (entityId TEXT)," +
-        				" (messages MESSAGE[])";
+        				" (messages TEXT[])";
+
+        String msgQuery = "CREATE TABLE IF NOT EXISTS " + MESSAGES +
+							" (id TEXT)," +
+							" (forumId TEXT)," +
+							" (msg TEXT)" +
+							" (fromWho TEXT)," +
+							" (replyToId TEXT)";
 
         try (Connection con = JDBCConnection.getConnection()) {
             // PreparedStatement pst = con.prepareStatement(query);
             Statement stmt = con.createStatement();
-            stmt.executeUpdate(query);
+            stmt.executeUpdate(forumQuery);
+            Statement st = con.createStatement();
+            st.executeUpdate(msgQuery);
         } catch (Exception e) {
             e.printStackTrace();
         }
