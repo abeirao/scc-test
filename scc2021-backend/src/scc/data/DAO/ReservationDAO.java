@@ -24,7 +24,7 @@ public class ReservationDAO implements DAO<Reservation, Long> {
         String query = "CREATE TABLE IF NOT EXISTS " + RESERVATIONS +
                         " (id TEXT)," +
                         " (name TEXT)," + 
-                        " (entityId TEXT)"+ 
+                        " (entityId TEXT),"+ 
                         " (day DATE)";
 
         try (Connection con = JDBCConnection.getConnection()) {
