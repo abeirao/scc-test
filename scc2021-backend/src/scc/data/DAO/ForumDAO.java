@@ -73,7 +73,7 @@ public class ForumDAO implements DAO<Forum, Long> {
 			String[] messageIds = new String[messages.size()];
 			for (int i = 0; i < messages.size(); i++) 
 				messageIds[i] = messages.get(i).getId(); 
-			// put message ids into query
+			// put message ids array into query
 			stmt.setArray(3, conn.createArrayOf("TEXT", messageIds));
 			// execute insert
 			int rows = stmt.executeUpdate();
