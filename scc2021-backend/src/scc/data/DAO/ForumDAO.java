@@ -25,16 +25,16 @@ public class ForumDAO implements DAO<Forum, Long> {
 	
     private void create() {
         String forumQuery = "CREATE TABLE IF NOT EXISTS " + FORUMS +
-        				" (id TEXT)," +
-        				" (entityId TEXT)," +
-        				" (messageIds TEXT[])";
+        				" (id TEXT PRIMARY KEY," +
+        				" entityId TEXT," +
+        				" messageIds TEXT[])";
 
         String msgQuery = "CREATE TABLE IF NOT EXISTS " + MESSAGES +
-							" (id TEXT)," +
-							" (forumId TEXT)," +
-							" (msg TEXT)" +
-							" (fromWho TEXT)," +
-							" (replyToId TEXT)";
+							" (id TEXT PRIMARY KEY," +
+							" forumId TEXT," +
+							" msg TEXT," +
+							" fromWho TEXT," +
+							" replyToId TEXT)";
 
         try (Connection con = JDBCConnection.getConnection()) {
             // PreparedStatement pst = con.prepareStatement(query);
@@ -99,8 +99,47 @@ public class ForumDAO implements DAO<Forum, Long> {
         }
     }
 
-    public void update(Forum forum) { // TODO
-    	
+    public void update(Forum forum) { 
+        try {
+			Connection conn = JDBCConnection.getConnection(); 
+			
+			String sql = "UPDATE " + FORUMS +
+                    	" (id, entityId, messageIds) = (?, ?, ?) WHERE id=?";
+			
+			// the use of PreparedStatement prevents SQL injection 
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, forum.getId().toString());
+			stmt.setString(2, forum.getEntityId());
+			// prepare message ids array
+			List<Message> messages = forum.getMessages();
+			String[] messageIds = new String[messages.size()];
+			for (int i = 0; i < messages.size(); i++) 
+				messageIds[i] = messages.get(i).getId(); 
+			// put message ids array into query
+			stmt.setArray(3, conn.createArrayOf("TEXT", messageIds));
+			stmt.setString(4, forum.getId());
+			// execute update
+			int rows = stmt.executeUpdate();
+			
+			// update messages to messages table
+			for (Message msg: forum.getMessages()) {
+				String query = "UPDATE " + MESSAGES +
+						" (id, forumId, msg, fromWho, replyToId) = (?, ?, ?, ?, ?) WHERE id=?";
+
+				PreparedStatement st = conn.prepareStatement(query);
+				st.setString(1, msg.getId().toString());
+				st.setString(2, msg.getForumId());
+				st.setString(3, msg.getMsg());
+				st.setString(4, msg.getFromWho());
+				st.setString(5, msg.getReplyToId());
+				st.setString(5, msg.getId());
+				// execute insert message
+				rows = st.executeUpdate();
+			}	
+			
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
     }
 
     public void delete(Forum forum) {

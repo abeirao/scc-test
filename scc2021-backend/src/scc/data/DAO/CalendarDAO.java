@@ -27,11 +27,11 @@ public class CalendarDAO implements DAO<Calendar, Long> {
 	
     private void create() {        
         String query = "CREATE TABLE IF NOT EXISTS " + CALENDARS +
-                        " (id TEXT)," +
-                        " (name TEXT)," + 
-                        " (availableDays LIST<DATE>),"+ 		// TODO
-                        " (calendarEntry MAP<DATE,TEXT>),"+		// TODO
-                        " (entityId TEXT)";
+                        " (id TEXT PRIMARY KEY," +
+                        " name TEXT," + 
+                        " availableDays LIST<DATE>,"+ 		// TODO
+                        " calendarEntry MAP<DATE,TEXT>,"+		// TODO
+                        " entityId TEXT)";
 
         try (Connection con = JDBCConnection.getConnection()) {
             //PreparedStatement pst = con.prepareStatement(query);

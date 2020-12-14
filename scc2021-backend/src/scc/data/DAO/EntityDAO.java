@@ -27,12 +27,12 @@ public class EntityDAO implements DAO<Entity, Long> {
 
     private void create() {
         String query = "CREATE TABLE IF NOT EXISTS " + ENTITIES +
-		        		" (id TEXT)," + 
-		        		" (name TEXT)," + 
-		        		" (description TEXT)," + 
-		        		" (mediaIds TEXT[])," + 
-		        		" (calendarId TEXT)," + 
-		        		" (listed BOOLEAN)";
+		        		" (id TEXT PRIMARY KEY," + 
+		        		" name TEXT," + 
+		        		" description TEXT," + 
+		        		" mediaIds TEXT[]," + 
+		        		" calendarId TEXT," + 
+		        		" listed BOOLEAN)";
 
         try (Connection con = JDBCConnection.getConnection()) {
             // PreparedStatement pst = con.prepareStatement(query);
