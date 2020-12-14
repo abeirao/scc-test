@@ -29,8 +29,8 @@ public class CalendarDAO implements DAO<Calendar, Long> {
         String query = "CREATE TABLE IF NOT EXISTS " + CALENDARS +
                         " (id TEXT)," +
                         " (name TEXT)," + 
-                        " (availableDays LIST<DATE>),"+ 		// Isto n pode ser List<Date> né?
-                        " (calendarEntry MAP<DATE,TEXT>),"+		// Isto não pode ser MAP<DATE,TEXT> né?
+                        " (availableDays LIST<DATE>),"+ 		// TODO
+                        " (calendarEntry MAP<DATE,TEXT>),"+		// TODO
                         " (entityId TEXT)";
 
         try (Connection con = JDBCConnection.getConnection()) {
