@@ -41,14 +41,11 @@ public class ReservationDAO implements DAO<Reservation, Long> {
 
     public Optional<Reservation> get(Long id) {
         Reservation reservation = findReservation(id);
-        if (reservation == null)
-            return Optional.empty();
-        return Optional.of(reservation);
+        return reservation == null ? Optional.empty(): Optional.of(reservation);
     }
 
     public Collection<Reservation> getAll() {
-        List<Reservation> reservations = getReservations();
-        return reservations;
+        return getReservations();
     }
 
 	public Optional<Long> save(Reservation reservation) {
@@ -68,12 +65,31 @@ public class ReservationDAO implements DAO<Reservation, Long> {
 			int rows = stmt.executeUpdate();
 			return Optional.of(Long.parseLong(reservation.getId()));
         } catch (Exception e) {
-        	
+        	e.printStackTrace();
+        	return Optional.empty();
         }
     }
 
     public void update(Reservation reservation) {
-    	
+        try {
+			Connection conn = JDBCConnection.getConnection(); 
+			
+			String sql = "UPDATE " + RESERVATIONS +
+                    	" SET (id, name, entityId, day)=(?, ?, ?, ?) WHERE id=?;";
+			
+			// the use of PreparedStatement prevents SQL injection 
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, reservation.getId().toString());
+			stmt.setString(2, reservation.getName());
+			stmt.setString(3, reservation.getEntityId());
+			stmt.setDate(4, (java.sql.Date) reservation.getDay());	
+			stmt.setString(5, reservation.getId().toString());		
+			
+			int rows = stmt.executeUpdate();
+			
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
     }
 
     public void delete(Reservation reservation) {
@@ -88,7 +104,8 @@ public class ReservationDAO implements DAO<Reservation, Long> {
 			
 			int rows = stmt.executeUpdate();
         } catch (Exception e) {
-        	
+
+        	e.printStackTrace();
         }
     }
     
@@ -124,6 +141,7 @@ public class ReservationDAO implements DAO<Reservation, Long> {
             }
             return null;
         } catch (Exception e) {
+        	e.printStackTrace();
             return null;
         }
     }
@@ -157,6 +175,7 @@ public class ReservationDAO implements DAO<Reservation, Long> {
 			conn.close();
 	    	return reservations;
         } catch (Exception e) {
+        	e.printStackTrace();
             return null;
         }
 	}
