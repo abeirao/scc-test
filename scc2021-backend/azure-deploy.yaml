@@ -15,7 +15,7 @@ spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
       containers:
-      - name: azure-vote-front
+      - name: azure-srv
         image: hrealinho/scc2021-app
         resources:
           requests:
