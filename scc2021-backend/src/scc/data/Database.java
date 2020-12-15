@@ -102,6 +102,19 @@ public class Database {
 	public Iterator<Calendar> getCalendars() {
 		return calendars.getAll().iterator();
 	}
+
+	public void updateCalendar(Calendar calendar) {
+		calendars.update(calendar);		
+	}
+	public void updateEntity(Entity entity) {
+		entities.update(entity);		
+	}
+	public void updateForum(Forum forum) {
+		forums.update(forum);		
+	}
+	public void updateReservation(Reservation reservation) {
+		reservations.update(reservation);		
+	}
 }
 	
 	
