@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: azure-redis
+      app:azure-redis
   template:
     metadata:
       labels:
