@@ -48,15 +48,18 @@ public class ForumDAO implements DAO<Forum, Long> {
 
     }	  
 
+    @Override
     public Optional<Forum> get(Long id) {
     	Forum forum = getForum(id);
         return forum != null ? Optional.of(forum): Optional.empty();
     }
 
+    @Override
     public Collection<Forum> getAll() {
         return getForums();
     }
 
+    @Override
 	public Optional<Long> save(Forum forum) { 
         try {
 			Connection conn = JDBCConnection.getConnection(); 
@@ -99,6 +102,7 @@ public class ForumDAO implements DAO<Forum, Long> {
         }
     }
 
+    @Override
     public void update(Forum forum) { 
         try {
 			Connection conn = JDBCConnection.getConnection(); 
@@ -142,6 +146,7 @@ public class ForumDAO implements DAO<Forum, Long> {
         }
     }
 
+    @Override
     public void delete(Forum forum) {
         try {
 			Connection conn = JDBCConnection.getConnection(); 
@@ -156,6 +161,74 @@ public class ForumDAO implements DAO<Forum, Long> {
 			
         } catch (Exception e) {
         	e.printStackTrace();
+        }
+    }
+    
+    public Collection<Forum> getForumByEntity(String entityId) {
+        try {
+			Connection conn = JDBCConnection.getConnection(); 
+			
+			String sql = "SELECT * FROM " + FORUMS + " WHERE entityId=?;";
+			 
+			// the use of PreparedStatement prevents SQL injection 
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, entityId);	
+			
+			ResultSet rs = stmt.executeQuery(); // ResultSet is a Cursor
+			
+			List<Forum> forums = new ArrayList<Forum>();
+			while (rs.next()) {	
+				
+				String rid = rs.getString("id"); 
+                String rEntityId = rs.getString("entityId"); 
+                // get result set of message ids from forums table
+                ResultSet rMsgIds = rs.getArray(3).getResultSet();
+				List<String> listMsgIds = new ArrayList<String>();
+				while(rMsgIds.next()) 
+					listMsgIds.add(rMsgIds.getString(1));	
+				
+				List<Message> messages = new ArrayList<Message>();
+				for (String msgId: listMsgIds) {
+					String query = "SELECT * FROM " + MESSAGES + " WHERE id=?;";
+					 
+					// the use of PreparedStatement prevents SQL injection 
+					PreparedStatement st = conn.prepareStatement(query);
+					st.setString(1, msgId);
+					
+					ResultSet r = st.executeQuery(); // ResultSet is a Cursor
+					if (r.next()) {
+						String mId = r.getString("id");
+						String forumId = r.getString("forumId");
+						String msg = r.getString("msg");
+						String fromWho = r.getString("fromWho");
+						String replyToId = r.getString("replyToId");
+						
+						Message message = new Message();
+						message.setId(mId);
+						message.setForumId(forumId);
+						message.setMsg(msg);
+						message.setFromWho(fromWho);
+						message.setReplyToId(replyToId);
+						
+						messages.add(message);
+					}
+				}
+				
+				rs.close();
+				stmt.close();
+				conn.close();
+				
+                Forum forum = new Forum();
+                forum.setId(rid.toString());
+                forum.setEntityId(rEntityId);
+                forum.setMessages(messages);
+                
+				forums.add(forum);
+			}
+			return forums;
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	return null;
         }
     }
     
