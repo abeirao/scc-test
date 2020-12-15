@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import redis.clients.jedis.Jedis;
 import scc.data.Calendar;
 import scc.data.CosmosDBLayer;
+import scc.data.Database;
 import scc.data.Entity;
 import scc.data.Forum;
 import scc.data.Reservation;
@@ -28,14 +29,14 @@ public class EntityService {
 
     ObjectMapper mapper = new ObjectMapper();
 
-    private CosmosDBLayer cosmosDB;
+    private Database database;
     private Jedis jedis;
     private CalendarService calendarService;
     private ReservationService reservationService;
     private ForumService forums;
 
     public EntityService() {
-        cosmosDB = CosmosDBLayer.getInstance();
+        database = new Database();
         jedis = RedisCache.getCachePool().getResource();
         calendarService = new CalendarService();
         reservationService = new ReservationService();
@@ -43,7 +44,7 @@ public class EntityService {
     }
 
     public Iterator<Entity> getAll() {
-        return cosmosDB.getAllEntities().iterator();
+        return database.getEntities();
     }
 
     public Entity get(String id) throws NotFoundException {
@@ -54,7 +55,7 @@ public class EntityService {
                 entity = mapper.readValue(object, Entity.class);
 
             } else {
-                entity = cosmosDB.getEntity(id);
+                entity = database.getEntityById(id);
                 jedis.set(ENTITY_KEY_PREFIX + id, mapper.writeValueAsString(entity));
             }
             return entity;
@@ -70,7 +71,7 @@ public class EntityService {
         try {
             entity.setId(Utils.randomUUID().toString());
             // add to db
-            cosmosDB.put(CosmosDBLayer.ENTITIES, entity);
+            database.putEntity(entity);
             // add to cache
             jedis.set(ENTITY_KEY_PREFIX + entity.getId(), mapper.writeValueAsString(entity));
 
@@ -87,7 +88,7 @@ public class EntityService {
             // delete from cache
             jedis.del(ENTITY_KEY_PREFIX + id);
             // delete from database
-            cosmosDB.delete(CosmosDBLayer.ENTITIES, entity).getItem();
+            database.delEntity(entity);
             return entity;
         } catch (NotFoundException e) {
             throw e;
@@ -98,7 +99,7 @@ public class EntityService {
     }
 
     public Entity update(Entity entity) {
-        cosmosDB.update(CosmosDBLayer.ENTITIES, entity);
+        database.updateEntity(entity);
         try {
             jedis.set(ENTITY_KEY_PREFIX + entity.getId(), mapper.writeValueAsString(entity));
         } catch (JsonProcessingException e) {
@@ -108,7 +109,7 @@ public class EntityService {
     }
 
     public void addMedia(String id, String mediaId) {
-        Entity entity = cosmosDB.getEntity(id);
+        Entity entity = database.getEntityById(id);
         String[] mediaIds = entity.getMediaIds();
         mediaIds = new String[mediaIds.length + 1];
         mediaIds[mediaIds.length - 1] = mediaId;
@@ -143,7 +144,7 @@ public class EntityService {
             List<Date> availableDays = calendarService.computeAvailableDays();
             calendar.setAvailableDays(availableDays);
             calendar.setId(Utils.randomUUID().toString());
-            cosmosDB.put(CosmosDBLayer.CALENDARS, calendar);
+            database.putCalendar(calendar);
             jedis.set(CALENDAR_KEY_PREFIX + calendar.getId(), mapper.writeValueAsString(calendar));
             Entity entity = this.get(calendar.getEntityId());
             entity.setCalendarId(calendar.getId());

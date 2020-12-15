@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import redis.clients.jedis.Jedis;
 import scc.data.Calendar;
 import scc.data.CosmosDBLayer;
+import scc.data.Database;
 import scc.data.Entity;
 import scc.data.Reservation;
 import scc.redis.RedisCache;
@@ -32,12 +33,12 @@ public class CalendarService {
 
     ObjectMapper mapper = new ObjectMapper();
 
-    private CosmosDBLayer cosmosDB;
+    private Database database;
     private Jedis jedis;
 
     public CalendarService() {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        cosmosDB = CosmosDBLayer.getInstance();
+        database = new Database();
         jedis = RedisCache.getCachePool().getResource();
     }
 
@@ -48,7 +49,7 @@ public class CalendarService {
             if (object != null) {
                 calendar = mapper.readValue(object, Calendar.class);
             } else {
-                calendar = cosmosDB.getCalendar(id);
+                calendar = database.getCalendarById(id);
                 jedis.set(CALENDAR_KEY_PREFIX + id, mapper.writeValueAsString(calendar));
             }
             return calendar;
@@ -86,11 +87,11 @@ public class CalendarService {
             calendar = mapper.readValue(jedis.get(CALENDAR_KEY_PREFIX + id), Calendar.class);
 
             if (calendar == null)
-                calendar = cosmosDB.getCalendar(id);
+                calendar = database.getCalendarById(id);
             else
                 jedis.del(CALENDAR_KEY_PREFIX + id);
 
-            cosmosDB.delete(CosmosDBLayer.CALENDARS, calendar).getItem();
+            database.delCalendar(calendar);
             return calendar;
         } catch (NotFoundException e) {
             throw e;
@@ -101,7 +102,7 @@ public class CalendarService {
     }
 
     public Calendar update(Calendar calendar) {
-        cosmosDB.update(CosmosDBLayer.CALENDARS, calendar);
+        database.updateCalendar(calendar);
         try {
             jedis.set(CALENDAR_KEY_PREFIX + calendar.getId(), mapper.writeValueAsString(calendar));
         } catch (JsonProcessingException e) {

@@ -22,11 +22,11 @@ public class ForumService {
 
     ObjectMapper mapper = new ObjectMapper();
 
-    private CosmosDBLayer cosmosDB;
+    private Database database;
     private Jedis jedis;
 
     public ForumService() {
-        cosmosDB = CosmosDBLayer.getInstance();
+        database = new Database();
         jedis = RedisCache.getCachePool().getResource();
     }
 
@@ -37,7 +37,7 @@ public class ForumService {
             if (object != null) {
                 forum = mapper.readValue(object, Forum.class);
             } else {
-                forum = cosmosDB.getForum(id);
+                forum = database.getForumById(id);
             }
             jedis.set(FORUM_KEY_PREFIX + id, mapper.writeValueAsString(forum));
             return forum;
@@ -52,7 +52,7 @@ public class ForumService {
 
     public Forum create(Forum forum) {
         forum.setId(Utils.randomUUID().toString());
-        cosmosDB.put(CosmosDBLayer.FORUMS, forum);
+        database.putForum(forum);
         try {
             jedis.set(FORUM_KEY_PREFIX + forum.getId(), mapper.writeValueAsString(forum));
             jedis.sadd(FORUM_ENTITY_KEY_PREFIX + forum.getEntityId(), mapper.writeValueAsString(forum));
@@ -63,13 +63,13 @@ public class ForumService {
     }
 
     public Message addMessage(String forumId, Message newMessage) {
-        Forum forum = cosmosDB.getForum(forumId);
+        Forum forum = database.getForumById(forumId);
         newMessage.setId(Utils.randomUUID().toString());
         List<Message> messages = forum.getMessages();
         messages.add(newMessage);
         forum.setMessages(messages);
 
-        cosmosDB.update(CosmosDBLayer.FORUMS, forum);
+        database.updateForum(forum);
         try {
             jedis.set(FORUM_KEY_PREFIX + forum.getId(), mapper.writeValueAsString(forum));
         } catch (JsonProcessingException e) {
@@ -80,7 +80,7 @@ public class ForumService {
     }
 
     public String reply(String forumId, String messageIdToReply, Message newMessage) {
-        Forum forum = cosmosDB.getForum(forumId);
+        Forum forum = database.getForumById(forumId);
         newMessage.setId(Utils.randomUUID().toString());
         newMessage.setReplyToId(messageIdToReply);
         List<Message> temp = forum.getMessages();
@@ -88,7 +88,7 @@ public class ForumService {
 
         forum.setMessages(temp);
         // update
-        cosmosDB.update(CosmosDBLayer.FORUMS, forum);
+        database.updateForum(forum);
         try {
             jedis.set(FORUM_KEY_PREFIX + forum.getId(), mapper.writeValueAsString(forum));
         } catch (JsonProcessingException e) {
@@ -105,7 +105,7 @@ public class ForumService {
             // delete forum from forums by entity on cache
             jedis.srem(FORUM_ENTITY_KEY_PREFIX + forum.getEntityId(), mapper.writeValueAsString(forum));
             // delete from database
-            cosmosDB.delete(CosmosDBLayer.FORUMS, forum).getItem();
+            database.delForum(forum);
             return forum;
         } catch (NotFoundException e) {
             throw e;
@@ -128,7 +128,7 @@ public class ForumService {
             });
             return forums.iterator();
         }
-        return cosmosDB.getForumByEntity(entityId).iterator();
+        return database.getForumByEntity(entityId).iterator();
     }
 
 

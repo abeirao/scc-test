@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import redis.clients.jedis.Jedis;
 import scc.data.CosmosDBLayer;
+import scc.data.Database;
 import scc.data.Entity;
 import scc.data.Reservation;
 import scc.redis.RedisCache;
@@ -23,11 +24,11 @@ public class ReservationService {
 
     ObjectMapper mapper = new ObjectMapper();
 
-    private CosmosDBLayer cosmosDB;
+    private Database database;
     private Jedis jedis;
 
     public ReservationService() {
-        cosmosDB = CosmosDBLayer.getInstance();
+        database = new Database();
         jedis = RedisCache.getCachePool().getResource();
     }
 
@@ -39,7 +40,7 @@ public class ReservationService {
                 reservation = mapper.readValue(object, Reservation.class);
 
             } else {
-                reservation = cosmosDB.getReservation(id);
+                reservation = database.getReservationById(id);
                 jedis.set(RESERVATION_KEY_PREFIX + id, mapper.writeValueAsString(reservation));
             }
             return reservation;
@@ -66,7 +67,7 @@ public class ReservationService {
                 return reservations.iterator();
             }
             // if query not on cache
-            return cosmosDB.getReservationsByEntity(entityId).iterator();
+            return database.getReservationsByEntity(entityId).iterator();
 
         } catch (NotFoundException e) {
             throw e;
@@ -78,13 +79,13 @@ public class ReservationService {
     }
 
     public Iterator<Reservation> getReservations() {
-        return cosmosDB.getAllReservations().iterator();
+        return database.getReservations();
     }
 
     public Reservation addReservation(Reservation reservation) {
         reservation.setId(Utils.randomUUID().toString());
 
-        cosmosDB.put(CosmosDBLayer.RESERVATIONS, reservation);
+        database.putReservation(reservation);
         try {
             // add reservation to cache
             jedis.set(RESERVATION_KEY_PREFIX + reservation.getId(), mapper.writeValueAsString(reservation));
@@ -104,7 +105,7 @@ public class ReservationService {
             // add reservation to entity reservations in cache
             jedis.sadd(RESERVATION_ENTITY_KEY_PREFIX + reservation.getEntityId(), mapper.writeValueAsString(reservation));
 
-            cosmosDB.update(CosmosDBLayer.RESERVATIONS, reservation);
+            database.updateReservation(reservation);
             return reservation;
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,7 +122,7 @@ public class ReservationService {
             // delete reservation from reservations by entity on cache
             jedis.srem(RESERVATION_ENTITY_KEY_PREFIX + reservation.getEntityId(), mapper.writeValueAsString(reservation));
             // delete reservation from database
-            cosmosDB.delete(CosmosDBLayer.RESERVATIONS, reservation).getItem();
+            database.delReservation(reservation);
             return reservation;
         } catch (NotFoundException e) {
             throw e;

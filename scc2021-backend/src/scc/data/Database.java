@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import scc.data.DAO.*;
@@ -114,6 +117,14 @@ public class Database {
 	}
 	public void updateReservation(Reservation reservation) {
 		reservations.update(reservation);		
+	}
+
+	public Collection<Forum> getForumByEntity(String entityId) {		
+		return ((ForumDAO) forums).getForumByEntity(entityId);
+	}
+
+	public Collection<Reservation> getReservationsByEntity(String entityId) {		
+		return ((ReservationDAO) reservations).getReservationsByEntity(entityId);
 	}
 }
 	

@@ -19,11 +19,9 @@ public class PageService {
 
 	ObjectMapper mapper = new ObjectMapper();
 	
-	private CosmosDBLayer cosmosDB;
 	private Jedis jedis;
 	private EntityService entityService;
 	public PageService() {
-		cosmosDB =  CosmosDBLayer.getInstance();
 		jedis = RedisCache.getCachePool().getResource();
 		entityService = new EntityService();
 	}
