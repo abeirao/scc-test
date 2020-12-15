@@ -38,16 +38,18 @@ public class ReservationDAO implements DAO<Reservation, Long> {
         }        
     }
 
-
+    @Override
     public Optional<Reservation> get(Long id) {
         Reservation reservation = getReservation(id);
         return reservation != null ? Optional.of(reservation): Optional.empty();
     }
-
+    
+    @Override
     public Collection<Reservation> getAll() {
         return getReservations();
     }
 
+    @Override
 	public Optional<Long> save(Reservation reservation) {
         try {
 			Connection conn = JDBCConnection.getConnection(); 
@@ -70,6 +72,7 @@ public class ReservationDAO implements DAO<Reservation, Long> {
         }
     }
 
+    @Override
     public void update(Reservation reservation) {
         try {
 			Connection conn = JDBCConnection.getConnection(); 
@@ -92,6 +95,7 @@ public class ReservationDAO implements DAO<Reservation, Long> {
         }
     }
 
+    @Override
     public void delete(Reservation reservation) {
         try {
 			Connection conn = JDBCConnection.getConnection(); 
@@ -106,6 +110,41 @@ public class ReservationDAO implements DAO<Reservation, Long> {
         } catch (Exception e) {
         	e.printStackTrace();
         }
+    }
+    
+    public Collection<Reservation> getReservationsByEntity(String entityId){
+    	List<Reservation> reservations = new LinkedList<Reservation>();
+        try {
+			Connection conn = JDBCConnection.getConnection(); 
+			
+			String sql = "SELECT * FROM " + RESERVATIONS + " WHERE entityId=?";
+			// the use of PreparedStatement prevents SQL injection 
+			PreparedStatement stmt = conn.prepareStatement(sql);			
+			stmt.setString(1, entityId);
+			ResultSet rs = stmt.executeQuery(); // ResultSet is a Cursor
+			
+			while (rs.next()) {	// if the user exists
+				String rid = rs.getString("id"); // get by column label
+				String name = rs.getString("name"); 
+                String rEntityId = rs.getString("entityId"); 
+                java.util.Date day = new Date(rs.getDate("day").getTime());
+											
+                Reservation reservation = new Reservation();
+                reservation.setId(rid.toString());
+                reservation.setName(name);
+                reservation.setEntityId(rEntityId);
+                reservation.setDay(day);
+                
+				reservations.add(reservation);
+            }
+			rs.close();
+			stmt.close();
+			conn.close();
+	    	return reservations;
+        } catch (Exception e) {
+        	e.printStackTrace();
+            return null;
+        }  	
     }
     
 
