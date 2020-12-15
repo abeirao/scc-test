@@ -39,7 +39,7 @@ spec:
     app: azure-srv
 ---
 apiVersion: apps/v1
-kind: Service
+kind: Deployment
 metadata:
   name: azure-redis
 spec:
