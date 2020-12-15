@@ -37,7 +37,7 @@ public class CalendarDAO implements DAO<Calendar, Long> {
         String query = "CREATE TABLE IF NOT EXISTS " + CALENDARS +
                         " (id TEXT PRIMARY KEY," +
                         " name TEXT," + 
-                        " availableDays LIST<DATE>,"+ 		// TODO
+                        " availableDays DATE[],"+ 		// TODO
                         " calendarEntry MAP<DATE,TEXT>,"+		// TODO
                         " entityId TEXT)";
         
@@ -68,7 +68,7 @@ public class CalendarDAO implements DAO<Calendar, Long> {
     }
 
     public Collection<Calendar> getAll() {
-        return null;
+        return getCalendars();
     }
 
     public Optional<Long> save(Calendar calendar) {
@@ -105,7 +105,7 @@ public class CalendarDAO implements DAO<Calendar, Long> {
 				rows = st.executeUpdate();
 			}
 			
-			//TODO insert calendarEntry
+			//TODO insert into calendarEntry
 			
 			return Optional.of(Long.parseLong(calendar.getId()));
         } catch (Exception e) {
@@ -115,10 +115,65 @@ public class CalendarDAO implements DAO<Calendar, Long> {
     }
 
     public void update(Calendar calendar){
+    	try {
+			Connection conn = JDBCConnection.getConnection(); 
+			
+			String sql = "UPDATE " + CALENDARS +
+                    	" (id, name, availableDays, calendarEntry, entityId) = (?, ?, ?, ?, ?) WHERE id=?";
+			
+			// the use of PreparedStatement prevents SQL injection 
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, calendar.getId().toString());
+			stmt.setString(2, calendar.getEntityId());
+
+			List<Date> availableDays = calendar.getAvailableDays();
+			String[] availableDaysIds = new String[availableDays.size()];
+			for (int i = 0; i < availableDays.size(); i++) 
+				availableDaysIds[i] = availableDays.get(i).toString();
+
+			stmt.setArray(3, conn.createArrayOf("TEXT", availableDaysIds));
+			stmt.setObject(4, calendar.getCalendarEntry());
+			stmt.setString(5, calendar.getId());
+			// execute update
+			int rows = stmt.executeUpdate();
+			
+			// update days to availableDays table
+			for (Date day: calendar.getAvailableDays()) {
+				String query = "UPDATE " + AVAILABLEDAYS +
+						" (id, days) = (?, ?) WHERE id=?";
+
+				PreparedStatement st = conn.prepareStatement(query);
+				//st.setString(1, day.getId().toString()); Nao devia ter id a tabela availableDays né? Devia existir sequer?
+				st.setString(2, day.toString());
+
+				// execute insert message
+				rows = st.executeUpdate();
+			}
+			
+			//TODO update calendarEntry
+			
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
     	
     }
 
     public void delete(Calendar calendar){
+    	
+        try {
+			Connection conn = JDBCConnection.getConnection(); 
+			
+			String sql = "DELETE * FROM " + CALENDARS + " WHERE id=?;";
+			 
+			// the use of PreparedStatement prevents SQL injection 
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, calendar.getId().toString());
+			// delete forum from forums table
+			int rows = stmt.executeUpdate();		
+			
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
     	
     }
     
