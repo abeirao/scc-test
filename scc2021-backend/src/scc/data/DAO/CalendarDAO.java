@@ -87,9 +87,9 @@ public class CalendarDAO implements DAO<Calendar, Long> {
 			
 			// prepare availableDaysIds array
 			List<Date> availableDays = calendar.getAvailableDays();
-			Date[] availableDaysArr = new Date[availableDays.size()];
+			java.sql.Date[] availableDaysArr = new java.sql.Date[availableDays.size()];
 			for (int i = 0; i < availableDays.size(); i++) 
-				availableDaysArr[i] = availableDays.get(i);
+				availableDaysArr[i] = new java.sql.Date(availableDays.get(i).getTime());
 			
 			// put availableDaysIds array into query
 			stmt.setArray(3, conn.createArrayOf("DATE", availableDaysArr));
@@ -107,7 +107,7 @@ public class CalendarDAO implements DAO<Calendar, Long> {
 	                	" (date, reservation) VALUES (?, ?)";
 				
 					PreparedStatement st = conn.prepareStatement(query);
-					st.setDate(1, (java.sql.Date) key);
+					st.setDate(1, new java.sql.Date(key.getTime()));
 					st.setString(2, value);
 										
 					st.executeUpdate();
@@ -128,7 +128,7 @@ public class CalendarDAO implements DAO<Calendar, Long> {
 			Connection conn = JDBCConnection.getConnection(); 
 			
 			String sql = "UPDATE " + CALENDARS +
-                    	" (id, name, availableDays, calendarEntry, entityId )=(?, ?, ?, ?, ?) WHERE id=?";
+                    	" SET (id, name, availableDays, calendarEntry, entityId)=(?, ?, ?, ?, ?) WHERE id=?";
 			
 			// the use of PreparedStatement prevents SQL injection 
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -159,9 +159,9 @@ public class CalendarDAO implements DAO<Calendar, Long> {
 	                	" (date, reservation) = (?, ?) WHERE date=?";
 				
 					PreparedStatement st = conn.prepareStatement(query);
-					st.setDate(1, (java.sql.Date) key);
+					st.setDate(1, new java.sql.Date(key.getTime()));
 					st.setString(2, value);
-					st.setDate(3, (java.sql.Date) key);
+					st.setDate(3, new java.sql.Date(key.getTime()));
 										
 					st.executeUpdate();
 				} catch (SQLException e) {
@@ -211,6 +211,7 @@ public class CalendarDAO implements DAO<Calendar, Long> {
 				String name = rs.getString("name");
                 String entityId = rs.getString("entityId");
                 
+                // get available days list 
                 ResultSet ravailableDays = rs.getArray(3).getResultSet();
 				List<Date> availableDays = new ArrayList<Date>();
 				while(ravailableDays.next()) 
@@ -237,37 +238,30 @@ public class CalendarDAO implements DAO<Calendar, Long> {
 				*/
     			
 				ResultSet calendarEntryRs = rs.getArray(4).getResultSet();
-				Map<String, String> calendarEntryS = new HashMap<>();
+				List<Date> keys = new ArrayList<>();
 				while(calendarEntryRs.next()) 
-					calendarEntryS.put(calendarEntryRs.getString(1), calendarEntryRs.getString(2));
+					keys.add(new Date(rs.getDate(1).getTime()));
 				
 				Map<Date, String> calendarEntry = new HashMap<>();
 				
-				calendarEntryS.forEach((key, value) -> {
+				// get calendar entries from calendar 
+				for (Date key: keys) {					
 					String query = "SELECT * FROM " + CALENDAR_ENTRY + " WHERE day=?;";
 					
 					PreparedStatement st;
-					try {
-						st = conn.prepareStatement(query);
-						st.setString(1, key);
-						
-						ResultSet r = st.executeQuery(); // ResultSet is a Cursor
-						
-						if (r.next()) {
-							String dayy = r.getString("days");
-							Date days = new Date();
-							days.parse(dayy);
-							String idEntity = r.getString("name");
-														
-							calendarEntry.put(days, idEntity);
-						}						
-	
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}				
-
-				});
+				
+					st = conn.prepareStatement(query);
+					st.setDate(1, new java.sql.Date(key.getTime()));
+					
+					ResultSet r = st.executeQuery(); // ResultSet is a Cursor
+					
+					if (r.next()) {
+						String reservation = r.getString("reservation");														
+						calendarEntry.put(key, reservation);
+					}		
+					r.close();
+					st.close();
+				}
     			
                 	
 				rs.close();
@@ -289,95 +283,68 @@ public class CalendarDAO implements DAO<Calendar, Long> {
     }
     
     private Collection<Calendar> getCalendars() {
-    	
         try {
-			Connection conn = JDBCConnection.getConnection(); 
-			
-			String sql = "SELECT * FROM " + CALENDARS;
-			 
-			// the use of PreparedStatement prevents SQL injection 
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			
-			ResultSet rs = stmt.executeQuery(); // ResultSet is a Cursor
-			
-			List<Calendar> calendars = new ArrayList<Calendar>();
-			while (rs.next()) {				
-				String rid = rs.getString("id"); 
-				String name = rs.getString("name");
+ 			List<Calendar> calendars = new ArrayList<Calendar>();
+ 			
+ 			Connection conn = JDBCConnection.getConnection();  			
+ 			String sql = "SELECT * FROM " + CALENDARS; 			 
+ 			// the use of PreparedStatement prevents SQL injection 
+ 			PreparedStatement stmt = conn.prepareStatement(sql); 			
+ 			ResultSet rs = stmt.executeQuery(); // ResultSet is a Cursor
+ 			
+ 			while (rs.next()) {	
+ 				String rid = rs.getString("id"); 
+ 				String name = rs.getString("name");
                 String entityId = rs.getString("entityId");
-                
-                ResultSet ravailableDaysIds = rs.getArray(3).getResultSet();
-				List<String> availableDaysIds = new ArrayList<String>();
-				while(ravailableDaysIds.next()) 
-					availableDaysIds.add(ravailableDaysIds.getString(1));
-				
-				List<Date> availableDays = new ArrayList<Date>();
-				for (String day: availableDaysIds) {
-					String query = "SELECT * FROM " + AVAILABLEDAYS + " WHERE days=?;";
-					 
-					// the use of PreparedStatement prevents SQL injection 
-					PreparedStatement st = conn.prepareStatement(query);
-					st.setString(1, day);
-					
-					ResultSet r = st.executeQuery(); // ResultSet is a Cursor
-					if (r.next()) {
-						String dayy = r.getString("days");
-						Date days = new Date();
-						days.parse(dayy);
-						
-						availableDays.add(days);
-					}
-				}
-    			
-				ResultSet calendarEntryRs = rs.getArray(4).getResultSet();
-				Map<String, String> calendarEntryS = new HashMap<>();
-				while(calendarEntryRs.next()) 
-					calendarEntryS.put(calendarEntryRs.getString(1), calendarEntryRs.getString(2));
-				
-				Map<Date, String> calendarEntry = new HashMap<>();
-				
-				calendarEntryS.forEach((key, value) -> {
-					String query = "SELECT * FROM " + CALENDAR_ENTRY + " WHERE day=?;";
-					
-					PreparedStatement st;
-					try {
-						st = conn.prepareStatement(query);
-						st.setString(1, key);
-						
-						ResultSet r = st.executeQuery(); // ResultSet is a Cursor
-						
-						if (r.next()) {
-							String dayy = r.getString("days");
-							Date days = new Date();
-							days.parse(dayy);
-							String idEntity = r.getString("name");
-														
-							calendarEntry.put(days, idEntity);
-						}						
-
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}					
-
-				});    			
-                	
-				rs.close();
-				stmt.close();
-				conn.close();
-				
-                Calendar calendar = new Calendar();
-                calendar.setId(rid.toString());
-                calendar.setName(name);
-                calendar.setEntityId(entityId);
-                calendar.setAvailableDays(availableDays);
-                calendar.setCalendarEntry(calendarEntry);
-                calendars.add(calendar);
-				
-            }
-			return calendars;
-        } catch (Exception e) {
-            return null;
-        }    	
+                 
+                 // get available days list 
+                ResultSet ravailableDays = rs.getArray(3).getResultSet();
+ 				List<Date> availableDays = new ArrayList<Date>();
+ 				while(ravailableDays.next()) 
+ 					availableDays.add(ravailableDays.getDate(1));
+ 				     			
+ 				ResultSet calendarEntryRs = rs.getArray(4).getResultSet();
+ 				List<Date> keys = new ArrayList<>();
+ 				while(calendarEntryRs.next()) 
+ 					keys.add(new Date(rs.getDate(1).getTime()));
+ 				
+ 				Map<Date, String> calendarEntry = new HashMap<>();
+ 				
+ 				// get calendar entries from calendar 
+ 				for (Date key: keys) {					
+ 					String query = "SELECT * FROM " + CALENDAR_ENTRY + " WHERE day=?;";
+ 					
+ 					PreparedStatement st;
+ 				
+ 					st = conn.prepareStatement(query);
+ 					st.setDate(1, new java.sql.Date(key.getTime()));
+ 					
+ 					ResultSet r = st.executeQuery(); // ResultSet is a Cursor
+ 					
+ 					if (r.next()) {
+ 						String reservation = r.getString("reservation");														
+ 						calendarEntry.put(key, reservation);
+ 					}		
+ 					r.close();
+ 					st.close();
+ 				}
+     			
+                 	
+ 				rs.close();
+ 				stmt.close();
+ 				conn.close();
+ 				
+	            Calendar calendar = new Calendar();
+	            calendar.setId(rid.toString());
+	            calendar.setName(name);
+	            calendar.setEntityId(entityId);
+	            calendar.setAvailableDays(availableDays);
+	            calendar.setCalendarEntry(calendarEntry);
+ 				calendars.add(calendar);
+             }
+             return calendars;
+         } catch (Exception e) {
+             return null;
+         }
 	}    
 }

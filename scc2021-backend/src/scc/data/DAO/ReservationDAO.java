@@ -60,7 +60,7 @@ public class ReservationDAO implements DAO<Reservation, Long> {
 			stmt.setString(1, reservation.getId().toString());
 			stmt.setString(2, reservation.getName());
 			stmt.setString(3, reservation.getEntityId());
-			stmt.setDate(4, (java.sql.Date) reservation.getDay());			
+			stmt.setDate(4, new java.sql.Date(reservation.getDay().getTime()));			
 			
 			int rows = stmt.executeUpdate();
 			return Optional.of(Long.parseLong(reservation.getId()));
@@ -82,7 +82,7 @@ public class ReservationDAO implements DAO<Reservation, Long> {
 			stmt.setString(1, reservation.getId().toString());
 			stmt.setString(2, reservation.getName());
 			stmt.setString(3, reservation.getEntityId());
-			stmt.setDate(4, (java.sql.Date) reservation.getDay());	
+			stmt.setDate(4, new java.sql.Date(reservation.getDay().getTime()));	
 			stmt.setString(5, reservation.getId().toString());		
 			
 			int rows = stmt.executeUpdate();
@@ -125,7 +125,8 @@ public class ReservationDAO implements DAO<Reservation, Long> {
 				String rid = rs.getString("id"); // get by column label
 				String name = rs.getString("name"); 
                 String entityId = rs.getString("entityId"); 
-                Date day = rs.getDate("day");
+                java.util.Date day = new Date(rs.getDate("day").getTime());
+                
 							
 				rs.close();
 				stmt.close();
@@ -159,7 +160,7 @@ public class ReservationDAO implements DAO<Reservation, Long> {
 				String rid = rs.getString("id"); // get by column label
 				String name = rs.getString("name"); 
                 String entityId = rs.getString("entityId"); 
-                Date day = rs.getDate("day");
+                java.util.Date day = new Date(rs.getDate("day").getTime());
 											
                 Reservation reservation = new Reservation();
                 reservation.setId(rid.toString());

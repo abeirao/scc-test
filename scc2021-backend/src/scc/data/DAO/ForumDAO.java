@@ -104,7 +104,7 @@ public class ForumDAO implements DAO<Forum, Long> {
 			Connection conn = JDBCConnection.getConnection(); 
 			
 			String sql = "UPDATE " + FORUMS +
-                    	" (id, entityId, messageIds) = (?, ?, ?) WHERE id=?";
+                    	" SET (id, entityId, messageIds) = (?, ?, ?) WHERE id=?";
 			
 			// the use of PreparedStatement prevents SQL injection 
 			PreparedStatement stmt = conn.prepareStatement(sql);
