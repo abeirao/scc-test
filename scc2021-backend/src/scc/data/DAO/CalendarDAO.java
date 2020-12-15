@@ -62,16 +62,19 @@ public class CalendarDAO implements DAO<Calendar, Long> {
         }
         
     }
-    
+
+    @Override
     public Optional<Calendar> get(Long id) {
         Calendar calendar = getCalendar(id);
         return calendar != null? Optional.of(calendar): Optional.empty();
     }
 
+    @Override
     public Collection<Calendar> getAll() {
         return getCalendars();
     }
 
+    @Override
     public Optional<Long> save(Calendar calendar) {
     	try {
 			Connection conn = JDBCConnection.getConnection(); 
@@ -123,6 +126,7 @@ public class CalendarDAO implements DAO<Calendar, Long> {
         }
     }
 
+    @Override
     public void update(Calendar calendar){
     	try {
 			Connection conn = JDBCConnection.getConnection(); 
@@ -175,6 +179,7 @@ public class CalendarDAO implements DAO<Calendar, Long> {
     	
     }
 
+    @Override
     public void delete(Calendar calendar){
     	
         try {

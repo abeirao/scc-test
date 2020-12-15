@@ -44,15 +44,18 @@ public class EntityDAO implements DAO<Entity, Long> {
 
     }
 
+    @Override
     public Optional<Entity> get(Long id) {
     	Entity entity = getEntity(id);
         return entity != null ? Optional.of(entity): Optional.empty();
     }
 
+    @Override
     public Collection<Entity> getAll() {
         return getEntities();
     }
 
+    @Override
 	public Optional<Long> save(Entity entity) {
         try {
 			Connection conn = JDBCConnection.getConnection(); 
@@ -77,6 +80,7 @@ public class EntityDAO implements DAO<Entity, Long> {
         }
     }
 
+    @Override
     public void update(Entity entity) {
         try {
 			Connection conn = JDBCConnection.getConnection(); 
@@ -101,6 +105,7 @@ public class EntityDAO implements DAO<Entity, Long> {
         }
     }
 
+    @Override
     public void delete(Entity entity) {
         try {
 			Connection conn = JDBCConnection.getConnection(); 
