@@ -1,20 +1,21 @@
-apiVersion: v1
-kind: Service
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: azure-redis
+  name: cache
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: azure-redis
+      app: cache
   template:
     metadata:
       labels:
-        app: azure-redis
+        app: cache
     spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
       containers:
-      - name: azure-redis
+      - name: cache
         image: redis
         env:
         - name: ALLOW_EMPTY_PASSWORD
@@ -28,16 +29,14 @@ spec:
             memory: 256Mi
         ports:
         - containerPort: 6379
-          name: redis
+          name: cache
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: azure-redis
-spec:
+  name: cache
   type: LoadBalancer
   ports:
   - port: 6379
   selector:
-    app: azure-redis
----
+    app: cache

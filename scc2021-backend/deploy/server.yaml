@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: azure-srv
+  name: srv
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: azure-srv
+      app: srv
   template:
     metadata:
       labels:
-        app: azure-srv
+        app: srv
     spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
@@ -30,11 +30,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: azure-srv
+  name: srv
 spec:
   type: LoadBalancer 
   ports:
   - port: 8080
   selector:
-    app: azure-srv
+    app: srv
 ---
