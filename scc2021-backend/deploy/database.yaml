@@ -30,7 +30,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: srv
+  name: database
 spec:
   type: LoadBalancer 
   ports:
