@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        app: databaseazure-db
+        app: database
     spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
@@ -26,15 +26,15 @@ spec:
             memory: 256Mi
         ports:
         - containerPort: 5432
-          name: db
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: database
+  name: srv
 spec:
-  type: LoadBalancer
+  type: LoadBalancer 
   ports:
   - port: 5432
   selector:
     app: database
+---
