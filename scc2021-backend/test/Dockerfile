@@ -18,6 +18,5 @@ RUN npm install -g https://github.com/preguica/artillery-plugin-metrics-by-endpo
 
 RUN npm install -g artillery --unsafe-perm=true --allow-root
 
-RUN cd test
-RUN cd unit
+WORKDIR /test/unit
 RUN artillery run utest-add_entity.yml
