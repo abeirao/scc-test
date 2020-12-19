@@ -33,12 +33,12 @@ public class CalendarService {
 
     ObjectMapper mapper = new ObjectMapper();
 
-    private CosmosDBLayer database;
+    private Database database;
     private Jedis jedis;
 
     public CalendarService() {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        database = CosmosDBLayer.getInstance();
+        database = new Database();
         jedis = RedisCache.getCachePool().getResource();
     }
 
@@ -91,7 +91,7 @@ public class CalendarService {
             else
                 jedis.del(CALENDAR_KEY_PREFIX + id);
 
-            database.delete(CosmosDBLayer.CALENDARS, calendar);
+            database.delCalendar(calendar);
             return calendar;
         } catch (NotFoundException e) {
             throw e;
@@ -102,7 +102,7 @@ public class CalendarService {
     }
 
     public Calendar update(Calendar calendar) {
-        database.update(CosmosDBLayer.CALENDARS, calendar);
+        database.updateCalendar(calendar);
         try {
             jedis.set(CALENDAR_KEY_PREFIX + calendar.getId(), mapper.writeValueAsString(calendar));
         } catch (JsonProcessingException e) {
