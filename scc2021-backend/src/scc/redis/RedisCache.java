@@ -26,7 +26,7 @@ public class RedisCache {
 		poolConfig.setBlockWhenExhausted(true);
 		// connect to redis on cache:6379
 		// cache is the external name of the container service running redis (set through the k8s setup file)
-		instance = new JedisPool(poolConfig, "cache"); //new JedisPool(poolConfig, RedisHostname, 6380, 1000, RedisKey, true);
+		instance = new JedisPool(poolConfig, "azure-redis", 6379, 1000); //new JedisPool(poolConfig, RedisHostname, 6380, 1000, RedisKey, true);
 		return instance;
 	}
 }

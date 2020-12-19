@@ -9,7 +9,7 @@ public class JDBCConnection {
 
     private static Optional<Connection> connection = Optional.empty();
     
-    private static final String HOSTNAME = "database";
+    private static final String HOSTNAME = "azure-postgres";
 
     public static Connection getConnection() {
         if (connection.isEmpty()) {
