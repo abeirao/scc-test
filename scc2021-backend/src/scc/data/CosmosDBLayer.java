@@ -21,9 +21,9 @@ import javax.ws.rs.NotFoundException;
 public class CosmosDBLayer {
 	
 
-	private static final String CONNECTION_URL = "https://scc-cosmos-50415.documents.azure.com:443/";
-	private static final String DB_KEY = "bbgF4Re4UQMuEsX0MZSEjuLDCZdMU76srR5VLAnaluK5QuXKcZUeKeFPEp8mMAgZwTMcAUz6T8oW61WTIh5ymg==";//primary connection string> "AccountEndpoint=https://scc-cosmos-50415.documents.azure.com:443/;AccountKey=bbgF4Re4UQMuEsX0MZSEjuLDCZdMU76srR5VLAnaluK5QuXKcZUeKeFPEp8mMAgZwTMcAUz6T8oW61WTIh5ymg==;";//primary connection string> "AccountEndpoint=https://scc-cosmos-50415.documents.azure.com:443/;AccountKey=bbgF4Re4UQMuEsX0MZSEjuLDCZdMU76srR5VLAnaluK5QuXKcZUeKeFPEp8mMAgZwTMcAUz6T8oW61WTIh5ymg==;";
-	private static final String DB_NAME = "scc50415p";
+	private static final String CONNECTION_URL = "https://scctest50698.documents.azure.com:443/";
+	private static final String DB_KEY = "P0lNOIZArMkpaUPmZ8PnRcyUTnEJeDX6N0dieXRdbYJGVvImzP79fYuV7xduP0SMlrwmgKgo2PewVGR8uQUZHQ==";//primary connection string> "AccountEndpoint=https://scc-cosmos-50415.documents.azure.com:443/;AccountKey=bbgF4Re4UQMuEsX0MZSEjuLDCZdMU76srR5VLAnaluK5QuXKcZUeKeFPEp8mMAgZwTMcAUz6T8oW61WTIh5ymg==;";//primary connection string> "AccountEndpoint=https://scc-cosmos-50415.documents.azure.com:443/;AccountKey=bbgF4Re4UQMuEsX0MZSEjuLDCZdMU76srR5VLAnaluK5QuXKcZUeKeFPEp8mMAgZwTMcAUz6T8oW61WTIh5ymg==;";
+	private static final String DB_NAME = "scctest50698";
 	private static final String REGION_1 = "West Europe";
 	private static final String REGION_2 = "North Europe";
 	private static final String REGION_3 = "East US";
