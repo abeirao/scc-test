@@ -29,14 +29,14 @@ public class EntityService {
 
     ObjectMapper mapper = new ObjectMapper();
 
-    private Database database;
+    private CosmosDBLayer database;
     private Jedis jedis;
     private CalendarService calendarService;
     private ReservationService reservationService;
     private ForumService forums;
 
     public EntityService() {
-        database = new Database();
+        database = CosmosDBLayer.getInstance();
         jedis = RedisCache.getCachePool().getResource();
         calendarService = new CalendarService();
         reservationService = new ReservationService();
@@ -44,7 +44,7 @@ public class EntityService {
     }
 
     public Iterator<Entity> getAll() {
-        return database.getEntities();
+        return database.getEntities().iterator();
     }
 
     public Entity get(String id) throws NotFoundException {
@@ -99,7 +99,7 @@ public class EntityService {
     }
 
     public Entity update(Entity entity) {
-        database.updateEntity(entity);
+        database.update(CosmosDBLayer.ENTITIES, entity);
         try {
             jedis.set(ENTITY_KEY_PREFIX + entity.getId(), mapper.writeValueAsString(entity));
         } catch (JsonProcessingException e) {
@@ -144,7 +144,7 @@ public class EntityService {
             List<Date> availableDays = calendarService.computeAvailableDays();
             calendar.setAvailableDays(availableDays);
             calendar.setId(Utils.randomUUID().toString());
-            database.putCalendar(calendar);
+            database.put(CosmosDBLayer.CALENDARS, calendar);
             jedis.set(CALENDAR_KEY_PREFIX + calendar.getId(), mapper.writeValueAsString(calendar));
             Entity entity = this.get(calendar.getEntityId());
             entity.setCalendarId(calendar.getId());
