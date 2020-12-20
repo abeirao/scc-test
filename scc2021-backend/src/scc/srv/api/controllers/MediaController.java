@@ -1,5 +1,7 @@
 package scc.srv.api.controllers;
 
+import java.io.IOException;
+
 import javax.ws.rs.Path;
 
 import scc.srv.api.MediaAPI;
@@ -9,14 +11,20 @@ import scc.srv.api.services.MediaService;
 public class MediaController implements MediaAPI {
 
 	private MediaService media;
-	
+
 	public MediaController() {
 		this.media = new MediaService();
 	}
 
 	@Override
 	public byte[] download(String id) {
-		return media.download(id);
+		try {
+			return media.download(id);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
@@ -26,6 +34,12 @@ public class MediaController implements MediaAPI {
 
 	@Override
 	public String delete(String id) {
-		return media.delete(id);
+		try {
+			return media.delete(id);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
