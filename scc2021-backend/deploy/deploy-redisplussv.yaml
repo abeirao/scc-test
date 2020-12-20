@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-srv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azure-srv
+  template:
+    metadata:
+      labels:
+        app: azure-srv
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+        - name: azure-srv
+          image: hrealinho/scc2021-app
+          env:
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            ports:
+            - containerPort: 8080
+              name: server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-srv
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: azure-srv
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azure-redis
+  template:
+    metadata:
+      labels:
+        app: azure-redis
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+        - name: azure-redis
+          image: redis
+          env:
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 250m
+              memory: 512Mi
+          ports:
+          - containerPort: 6379
+            name: redis
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: azure-managed-disk
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: azurefile
+  resources:
+    requests:
+      storage: 1Gi
+  containers:
+    - name: azure-managed-disk
+      image: azure-managed-disk
+      volumeMounts:
+        - mountPath: "/mnt/vol"
+        name: mediavolume
+      volumes:
+        - name: mediavolume
+      persistentVolumeClaim:
+        claimName: azure-managed-disk
+
